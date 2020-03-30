@@ -26,9 +26,23 @@ class SampleSiteSeeder extends Seeder
             for ($p = 0; $p < $pages_count; $p++) {
                 $page = new Entity([
                     "model" => "page",
-                    "parent_entity_id" => $section->id
+                    "parent_entity_id" => $section->id,
+                    "content" => json_encode([
+                        "en" => [
+                            "title" => "Page " . $p,
+                            "url" => "/page-" . $p
+                        ]
+                    ])
                 ]);
                 $page->save();
+                for ($m = 0; $m < $media_count; $m++) {
+                    $media = Entity::where('model', 'media')->first();
+                    $medium = new Entity([
+                        "model" => "medium",
+                        "parent_entity_id" => $media->id
+                    ]);
+                    $medium->save();
+                }
             }
             for ($b = 0; $b < $subsections_count; $b++) {
                 $subsection = new Entity([

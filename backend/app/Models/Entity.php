@@ -11,11 +11,10 @@ class Entity extends Model
     protected $table = 'entities';
     public $incrementing = false;
     protected $fillable = ['id', 'model', 'content', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
-
-    public function getIsActiveAttribute($value)
-    {
-        return (!!$value);
-    }
+    protected $casts = [
+        'content' => 'array',
+        'is_active' => 'boolean'
+    ];
 
     public function entitiesRelated()
     {
@@ -49,6 +48,24 @@ class Entity extends Model
             if (!isset($entity['published_at'])) {
                 $entity['published_at'] = Carbon::now();
             }
+            //Look for a model
+            $modelClass = Entity::getClassFromModelId($entity['model']);
+            if (class_exists($modelClass)) {
+                $e = new $modelClass;
+                echo "\n" . $entity['model'] . "\n";
+                if (method_exists($e, "getFillable")) {
+                    echo "\n- fillable:\n";
+                    print_r($e->getFillable());
+                }
+                if (method_exists($e, "getTable")) {
+                    echo "\n- table:\n";
+                    print_r($e->getTable());
+                }
+                if (method_exists($e, "getContent")) {
+                    echo "\n- content:\n";
+                    print_r($e->getContent());
+                }
+            };
         });
         self::created(function ($entity) {
             // Create the ancestors relations
@@ -72,5 +89,13 @@ class Entity extends Model
                 }
             };
         });
+    }
+    private static function getClassFromModelId($modelId)
+    {
+        if (isset($modelId) && $modelId != '') {
+            return ("\\App\\Models\\" . (Str::studly($modelId)));
+        } else {
+            return NULL;
+        }
     }
 }

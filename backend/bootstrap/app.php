@@ -109,6 +109,8 @@ $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
+    require __DIR__.'/../routes/api.php';
+    require __DIR__.'/../routes/media.php';
     require __DIR__.'/../routes/web.php';
 });
 

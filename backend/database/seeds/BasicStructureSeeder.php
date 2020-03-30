@@ -17,8 +17,14 @@ class BasicStructureSeeder extends Seeder
         ]);
         $root->save();
         $home = new Entity([
-           "model" => "home",
-           "parent_entity_id" => $root->id
+            "model" => "home",
+            "parent_entity_id" => $root->id,
+            "content" => json_encode([
+                "en" => [
+                    "title" => "Home",
+                    "url" => "/"
+                ]
+            ])
         ]);
         $home->save();
         $collections = new Entity([
