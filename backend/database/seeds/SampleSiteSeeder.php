@@ -27,12 +27,12 @@ class SampleSiteSeeder extends Seeder
                 $page = new Entity([
                     "model" => "page",
                     "parent_entity_id" => $section->id,
-                    "content" => json_encode([
+                    "content" => [
                         "en" => [
                             "title" => "Page " . $p,
-                            "url" => "/page-" . $p
+                            "url" => "/section-".$s."/page-".$p
                         ]
-                    ])
+                    ]
                 ]);
                 $page->save();
                 for ($m = 0; $m < $media_count; $m++) {

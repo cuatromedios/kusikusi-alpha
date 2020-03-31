@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class EntityRelation extends Pivot
 {
     const RELATION_ANCESTOR = 'ancestor';
-    const RELATION_MEDIA = 'media';
+    const RELATION_MEDIA = 'medium';
 
     protected $table = 'relations';
     public $incrementing = false;

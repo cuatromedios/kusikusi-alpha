@@ -119,6 +119,23 @@ class Entity extends Model
                 ->where('relation_descendants.depth', '<=', $depth);
         })->orderBy('relation_descendants.depth', $order)->orderBy('relation_descendants.position');
     }
+    /**
+     * Scope a query to only get entities being called by another of type medium.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $entity_id The id of the entity calling the relations
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeMediaOf($query, $entity_id)
+    {
+        $query->join('relations as relation_media', function ($join) use ($entity_id) {
+            $join->on('relation_media.called_entity_id', '=', 'entities.id')
+                ->where('relation_media.caller_entity_id', '=', $entity_id)
+                ->where('relation_media.kind', '=', EntityRelation::RELATION_MEDIA);
+        })
+            ->addSelect('relation_media.kind', 'relation_media.position', 'relation_media.depth', 'relation_media.tags')
+            ->orderBy('relation_media.position');
+    }
 
     /**********************
      * RELATIONS
