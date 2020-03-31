@@ -15,7 +15,7 @@ class EntityController extends Controller
      */
     public function index()
     {
-        return Entity::get();
+        return Entity::paginate(5);
     }
 
     /**
