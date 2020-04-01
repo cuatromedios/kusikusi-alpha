@@ -17,7 +17,6 @@ class HtmlController extends Controller
                     ->get(),
             "ancestors" =>
                 Entity::ancestorOf($currentEntity->id)
-                    ->descendantOf('root')
                     ->get()
         ];
         return $result;
@@ -44,9 +43,9 @@ class HtmlController extends Controller
         return view('html.section', $result);
     }
 
-    public function page(Request $request, Entity $entity, $format = 'html')
+    public function page(Request $request, Entity $entity, $lang)
     {
         $result = $this->common($request, $entity);
-        return view($format.'.'.$entity->view, $result);
+        return view('html.'.$entity->view, $result);
     }
 }
