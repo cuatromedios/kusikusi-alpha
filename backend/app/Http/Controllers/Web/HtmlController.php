@@ -11,21 +11,20 @@ class HtmlController extends Controller
 
     private function common(Request $request, Entity $currentEntity) {
         $result = [
+            "lang" => $request->lang,
             "entity" => $currentEntity,
-            "media" =>
-                Entity::mediaOf($currentEntity->id)
-                    ->get(),
-            "ancestors" =>
-                Entity::ancestorOf($currentEntity->id)
-                    ->get()
+            "media" => Entity::mediaOf($currentEntity->id)->get(),
+            "ancestors" => Entity::ancestorOf($currentEntity->id)->get()
         ];
         return $result;
     }
     private function children(Request $request, Entity $entity) {
-        $children = Entity::childOf($entity->id)
-            ->withContents(['title', 'summary', 'url'], $request->lang)
-            ->with(['media' => EntityModel::onlyTags('icon')])
-            ->get()->compact();
+        $children = Entity::select('entities.id', 'model', 'content')
+            ->flatContents(['title', 'url'])
+            ->childOf($entity->id)
+            ->with('entitiesRelated')
+            ->get();
+        // print_r($children);
         return $children;
     }
 
@@ -33,19 +32,24 @@ class HtmlController extends Controller
     {
         $result = $this->common($request, $entity);
         $result['children'] = $this->children($request, $entity);
-        return view('html.home', $result);
+        return view('html.'.$entity->view, $result);
     }
 
     public function section(Request $request, Entity $entity)
     {
         $result = $this->common($request, $entity);
         $result['children'] = $this->children($request, $entity);
-        return view('html.section', $result);
+        return view('html.'.$entity->view, $result);
     }
 
     public function page(Request $request, Entity $entity, $lang)
     {
         $result = $this->common($request, $entity);
         return view('html.'.$entity->view, $result);
+    }
+    public function error(Request $request, $status)
+    {
+        $result = [ "status" => $status ];
+        return view('html.error', $result);
     }
 }

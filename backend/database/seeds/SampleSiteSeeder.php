@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Entity;
+use Faker\Generator as Faker;
 
 class SampleSiteSeeder extends Seeder
 {
@@ -13,49 +14,29 @@ class SampleSiteSeeder extends Seeder
     public function run()
     {
         $sections_count = 3;
-        $subsections_count = 2;
         $pages_count = 3;
         $media_count = 3;
+
         $home = Entity::where('model', 'home')->first();
         for ($s = 0; $s < $sections_count; $s++) {
-            $section = new Entity([
+            $section = factory(App\Models\Entity::class)->make([
                 "model" => "section",
                 "parent_entity_id" => $home->id
             ]);
             $section->save();
             for ($p = 0; $p < $pages_count; $p++) {
-                $page = new Entity([
+                $page = factory(App\Models\Entity::class)->make([
                     "model" => "page",
-                    "parent_entity_id" => $section->id,
-                    "content" => [
-                        "en" => [
-                            "title" => "Page " . $p,
-                            "url" => "/section-".$s."/page-".$p
-                        ]
-                    ]
+                    "parent_entity_id" => $section->id
                 ]);
                 $page->save();
                 for ($m = 0; $m < $media_count; $m++) {
                     $media = Entity::where('model', 'media')->first();
-                    $medium = new Entity([
+                    $medium = factory(App\Models\Entity::class)->make([
                         "model" => "medium",
                         "parent_entity_id" => $media->id
                     ]);
                     $medium->save();
-                }
-            }
-            for ($b = 0; $b < $subsections_count; $b++) {
-                $subsection = new Entity([
-                    "model" => "section",
-                    "parent_entity_id" => $section->id
-                ]);
-                $subsection->save();
-                for ($p = 0; $p < $pages_count; $p++) {
-                    $page = new Entity([
-                        "model" => "page",
-                        "parent_entity_id" => $subsection->id
-                    ]);
-                    $page->save();
                 }
             }
         }

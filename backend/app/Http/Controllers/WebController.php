@@ -41,26 +41,25 @@ class WebController extends Controller
         // Search for the entity is being called by its url, ignore inactive and soft deleted.
         // TODO: Is there a better way using Laravel Query builder or native
         $langs = config('cms.langs', ['en']);
-        $searchResult = Entity::select("id", "model");
-        foreach ($langs as $lang) {
-            $searchResult = $searchResult->orWhere("content->".$lang."->url", $url)->first();
+        $searchResult = Entity::select("id", "model")
+            ->orWhere("content->url", $url);
+        foreach ($langs as $searchLang) {
+            $searchResult->orWhere("content->url->$searchLang", $url);
         }
-        if (!$searchResult) {
-            return view('html.404', $request, ["lang" => $lang]);
+        $searchResult = $searchResult->first();
+        $defaultLang = $langs[0];
+        if (!$searchResult || !$searchResult->isPublished()) {
+            $controllerClassName = "App\\Http\\Controllers\\Web\\HtmlController";
+            $controller = new $controllerClassName;
+            return ($controller->error($request, 404));
         }
-        if (!$searchResult->isPublished()) {
-            return view('html.404', $request, ["lang" => $lang]);
-        }
-        $entity = Entity::select("*")->where("id", $searchResult->id);
-        foreach (config("cms.models.$searchResult->model.content") as $configModelKey => $configModelValue) {
-            if (Str::startsWith($configModelKey, "lang.")) {
-                $field = Str::replaceFirst("lang.", "", $configModelKey);
-                $entity = $entity->addSelect("content->".$lang."->".$field." as $field");
-            } else {
-                $entity = $entity->addSelect("content->$configModelKey as $configModelKey");
-            }
-        }
-        $entity = $entity->first();
+        // Select an entity with its contents
+        $lang = "en";
+        $entity = Entity::select("*")
+            ->where("id", $searchResult->id)
+            ->flatContents($searchResult->model, $lang)
+            ->with('entitiesRelated')
+            ->first();
         $request->request->add(['lang' => $lang]);
         $model_name = $entity->model;
         $controllerClassName = "App\\Http\\Controllers\\Web\\" . ucfirst($format) . 'Controller';
@@ -68,7 +67,7 @@ class WebController extends Controller
         if (method_exists($controller, $model_name)) {
             return ($controller->$model_name($request, $entity, $lang));
         } else {
-            return view('html.501', $request, ["lang" => $lang]);
+            return ($controller->error($request, 501));
         }
     }
 }

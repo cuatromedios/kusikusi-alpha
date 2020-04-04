@@ -1,4 +1,8 @@
-<h1>{{ $entity->title }}</h1>
+@extends('html_layout')
+@section('main')
+    <h1>{{ $entity->model }}: {{ $entity->title }}</h1>
+    <em>{{ $entity->summary }}</em>
+    {{ $entity->body }}
 <div>
     @forelse ($media as $mediumEntity)
         <img src="{{ $mediumEntity['medium']['thumb'] }}" alt="" />
@@ -6,3 +10,4 @@
         <em>No children</em>
     @endforelse
 </div>
+@endsection

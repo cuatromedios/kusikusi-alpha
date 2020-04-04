@@ -19,12 +19,11 @@ class BasicStructureSeeder extends Seeder
         $home = new Entity([
             "model" => "home",
             "parent_entity_id" => $root->id,
-            "content" => json_encode([
-                "en" => [
-                    "title" => "Home",
-                    "url" => "/"
-                ]
-            ])
+            "content" => [
+                "title" => ["en" => "Home"],
+                'welcome' => "Welcome to your new website",
+                "url" => ["en" => "/", "es" => "/es"],
+            ]
         ]);
         $home->save();
         $collections = new Entity([

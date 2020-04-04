@@ -16,15 +16,22 @@
 return [
     "langs" => ["en"], // The first lang will be the default each time the entity is loaded
     "models" => [
+        "home" => [
+            "content" => [
+                "title" => [ "multilang" => false ],
+                "welcome" => ["multilang" => false ],
+                "footer" => [ "multilang" => false ],
+            ]
+        ],
         "page" => [
             "content" => [
-                "lang.title" => [
+                "title" => [
                     "fulltextsearch" => true
                 ],
-                "lang.summary" => [
+                "summary" => [
                     "fulltextsearch" => true
                 ],
-                "lang.body" => [
+                "body" => [
                     "fulltextsearch" => true
                 ],
             ],
@@ -32,18 +39,19 @@ return [
         ],
         "section" => [
             "content" => [
-                "lang.title" => [
+                "title" => [
                     "fulltextsearch" => true
                 ],
-                "lang.summary" => [
+                "summary" => [
                     "fulltextsearch" => true
-                ]
+                ],
+                "body" => []
             ],
             "allowedChildren" => ['page']
         ],
         "medium" => [
             "content" => [
-                "lang.title" => [
+                "title" => [
                     "fulltextsearch" => true
                 ],
                 "size"

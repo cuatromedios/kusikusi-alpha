@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 
@@ -32,6 +33,7 @@ class Entity extends Model
      */
     public function scopeOfModel($query, $modelId)
     {
+        // TODO: Accept array of model ids
         return $query->where('model', $modelId);
     }
     /**
@@ -135,6 +137,30 @@ class Entity extends Model
         })
             ->addSelect('relation_media.kind', 'relation_media.position', 'relation_media.depth', 'relation_media.tags')
             ->orderBy('relation_media.position');
+    }
+    /**
+     * Scope a query to flat the languages object.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $modelOrFields The id of the model or an array of fields
+     * @param  string $lang The lang to use or null to use the default
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+
+    public function scopeFlatContents($query, $modelOrFields, $lang=null) {
+        if (is_string($modelOrFields)) {
+            $contentConfig = config("cms.models.$modelOrFields.content", []);
+            [$contentFields, $values] = Arr::divide($contentConfig);
+        } else {
+            $contentFields = $modelOrFields;
+        }
+        foreach ($contentFields as $field) {
+            if ($lang && Arr::get($contentConfig, "$field.multilang")) {
+                $query->addSelect("content->".$field."->".$lang." as $field");
+            } else {
+                $query->addSelect("content->$field as $field");
+            }
+        }
     }
 
     /**********************
