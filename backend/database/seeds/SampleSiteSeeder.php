@@ -37,6 +37,12 @@ class SampleSiteSeeder extends Seeder
                         "parent_entity_id" => $media->id
                     ]);
                     $medium->save();
+                    $page->addRelation([
+                        "called_entity_id" => $medium->id,
+                        "kind" => \App\models\EntityRelation::RELATION_MEDIA,
+                        "tags" => $m == 0 ? ['icon'] : ['gallery'],
+                        "position" => $m
+                    ]);
                 }
             }
         }

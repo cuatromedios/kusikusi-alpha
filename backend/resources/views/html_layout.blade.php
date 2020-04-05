@@ -16,7 +16,7 @@
         <p>Lang: {{ $lang }}</p>
     @endisset
 
-    @isset($children)
+    @isset($entity)
     Entity:
     <pre>
     @json($entity, JSON_PRETTY_PRINT);

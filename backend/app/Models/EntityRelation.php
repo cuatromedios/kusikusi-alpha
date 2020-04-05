@@ -10,10 +10,14 @@ class EntityRelation extends Pivot
 {
     const RELATION_ANCESTOR = 'ancestor';
     const RELATION_MEDIA = 'medium';
+    const RELATION_UNDEFINED = 'relation';
 
     protected $table = 'relations';
     public $incrementing = false;
     protected $fillable = ['caller_entity_id', 'called_entity_id', 'kind', 'position', 'depth', 'tags'];
+    protected $casts = [
+        'tags' => 'array'
+    ];
 
     protected static function boot()
     {

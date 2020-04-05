@@ -25,6 +25,7 @@ class CreateRelationsTable extends Migration
             $table->timestampsTz();
             $table->foreign('caller_entity_id')->references('id')->on('entities');
             $table->foreign('called_entity_id')->references('id')->on('entities');
+            $table->index(['caller_entity_id', 'called_entity_id', 'kind'], 'relation_search');
         });
     }
 

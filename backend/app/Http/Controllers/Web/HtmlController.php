@@ -22,7 +22,7 @@ class HtmlController extends Controller
         $children = Entity::select('entities.id', 'model', 'content')
             ->flatContents(['title', 'url'])
             ->childOf($entity->id)
-            ->with('entitiesRelated')
+            ->with('medium')
             ->get();
         // print_r($children);
         return $children;

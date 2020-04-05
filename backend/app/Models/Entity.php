@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -164,22 +165,91 @@ class Entity extends Model
     }
 
     /**********************
+     * METHODS
+     *********************/
+
+    /**
+     * Returns the id of the instance, if none is defined, it creates one
+     */
+    private function getId() {
+        if (!isset($this->id)) {
+            $this->id = Str::uuid();
+        }
+        return $this->id;
+    }
+    public function addRelation($relationData) {
+        if (!isset($relationData['caller_entity_id'])) {
+            $relationData['caller_entity_id'] = $this->getId();
+        }
+        self::createRelation($relationData);
+    }
+
+    public static function createRelation($relationData) {
+        if (!isset($relationData['caller_entity_id'])) {
+            throw new InvalidArgumentException('createRelation: caller_entity_id is needed');
+        }
+        if (!isset($relationData['called_entity_id'])) {
+            throw new InvalidArgumentException('createRelation: called_entity_id is needed');
+        }
+        if (!isset($relationData['kind'])) {
+            $relationData['kind'] = EntityRelation::RELATION_UNDEFINED;
+        }
+        if (!isset($relationData['position'])) {
+            $relationData['position'] = 0;
+        }
+        if (!isset($relationData['depth'])) {
+            $relationData['depth'] = 0;
+        }
+        if (!isset($relationData['tags'])) {
+            $relationData['tags'] = [];
+        }
+        EntityRelation::updateOrCreate(
+            [
+                "caller_entity_id" => $relationData['caller_entity_id'],
+                "called_entity_id" => $relationData['called_entity_id'],
+                "kind" => $relationData['kind']
+            ],
+            [
+                "position" => $relationData['position'],
+                "depth" => $relationData['depth'],
+                "tags" => $relationData['tags']
+            ]
+        );
+    }
+
+    /**********************
      * RELATIONS
      **********************/
-    public function entitiesRelated()
+    public function entitiesRelated($kind = null)
     {
         return $this->belongsToMany('App\Models\Entity', 'relations', 'caller_entity_id', 'called_entity_id')
             ->using('App\Models\EntityRelation')
             ->as('relation')
             ->withPivot('kind', 'position', 'depth', 'tags')
+            ->when($kind, function ($q) use ($kind) {
+                return $q->where('kind', $kind);
+            })
+            ->orderBy('position')
+            ->orderBy('created_at')
             ->withTimestamps();
     }
-    public function entitiesRelating() {
+    public function entitiesRelating($kind = null) {
         return $this->belongsToMany('App\Models\Entity', 'relations', 'called_entity_id', 'caller_entity_id')
             ->using('App\Models\EntityRelation')
             ->as('relation')
             ->withPivot('kind', 'position', 'depth', 'tags')
+            ->when($kind, function ($q) use ($kind) {
+                return $q->where('kind', $kind);
+            })
+            ->orderBy('position')
+            ->orderBy('created_at')
             ->withTimestamps();
+    }
+    public function media() {
+        return $this->entitiesRelated(EntityRelation::RELATION_MEDIA);
+    }
+    public function medium() {
+        return 'a';
     }
 
     /***********************
