@@ -6,9 +6,10 @@
     "type": "project",
     "require": {
         "php": "^7.2.5",
+        "ext-json": "*",
+        "ankurk91/laravel-eloquent-relationships": "^1.1",
         "flipbox/lumen-generator": "^6.0",
-        "laravel/lumen-framework": "^7.0",
-        "ext-json": "*"
+        "laravel/lumen-framework": "^7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.1",

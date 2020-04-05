@@ -15,7 +15,7 @@ class CreateRelationsTable extends Migration
     public function up()
     {
         Schema::create('relations', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('relation_id')->primary();
             $table->uuid('caller_entity_id')->index('caller');
             $table->uuid('called_entity_id')->index('called');
             $table->string('kind', 25)->default('relation')->index('kind');

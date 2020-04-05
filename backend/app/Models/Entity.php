@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Ankurk91\Eloquent\BelongsToOne;
 
 class Entity extends Model
 {
+    use BelongsToOne;
+
     /**********************
      * PROPERTIES
      **********************/
@@ -229,8 +232,8 @@ class Entity extends Model
             ->when($kind, function ($q) use ($kind) {
                 return $q->where('kind', $kind);
             })
-            ->orderBy('position')
-            ->orderBy('created_at')
+            ->orderBy(EntityRelation::TABLE.'.position')
+            ->orderBy(EntityRelation::TABLE.'.created_at')
             ->withTimestamps();
     }
     public function entitiesRelating($kind = null) {
@@ -241,15 +244,23 @@ class Entity extends Model
             ->when($kind, function ($q) use ($kind) {
                 return $q->where('kind', $kind);
             })
-            ->orderBy('position')
-            ->orderBy('created_at')
+            ->orderBy(EntityRelation::TABLE.'.position')
+            ->orderBy(EntityRelation::TABLE.'.created_at')
             ->withTimestamps();
     }
     public function media() {
         return $this->entitiesRelated(EntityRelation::RELATION_MEDIA);
     }
     public function medium() {
-        return 'a';
+        $kind = 'medium';
+        return $this->belongsToOne('App\Models\Entity', 'relations', 'caller_entity_id', 'called_entity_id')
+            ->using('App\Models\EntityRelation')
+            ->as('relation')
+            ->withPivot('kind', 'position', 'depth', 'tags')
+            ->where('kind', $kind)
+            ->orderBy(EntityRelation::TABLE.'.position')
+            ->orderBy(EntityRelation::TABLE.'.created_at')
+            ->withTimestamps();
     }
 
     /***********************
