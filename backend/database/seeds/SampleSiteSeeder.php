@@ -30,8 +30,8 @@ class SampleSiteSeeder extends Seeder
                     "parent_entity_id" => $section->id
                 ]);
                 $page->save();
+                $media = Entity::where('model', 'media')->first();
                 for ($m = 0; $m < $media_count; $m++) {
-                    $media = Entity::where('model', 'media')->first();
                     $medium = factory(App\Models\Entity::class)->make([
                         "model" => "medium",
                         "parent_entity_id" => $media->id
