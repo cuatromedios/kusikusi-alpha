@@ -22,7 +22,7 @@ class HtmlController extends Controller
         $children = Entity::select('id', 'model', 'content')
             ->flatContents(['title', 'url'])
             ->childOf($entity->id)
-            ->with(['medium' => function ($q) { $q->select('id','model')->whereJsonContains('tags', 'gallery'); }])
+            ->with(['medium' => function ($q) { $q->select('id','model', 'content->format as format')->whereJsonContains('tags', 'gallery'); }])
             ->get();
         return $children;
     }

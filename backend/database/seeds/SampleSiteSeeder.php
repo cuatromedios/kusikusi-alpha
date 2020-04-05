@@ -34,7 +34,10 @@ class SampleSiteSeeder extends Seeder
                 for ($m = 0; $m < $media_count; $m++) {
                     $medium = factory(App\Models\Entity::class)->make([
                         "model" => "medium",
-                        "parent_entity_id" => $media->id
+                        "parent_entity_id" => $media->id,
+                        "content" => [
+                            "format" => "jpg"
+                        ]
                     ]);
                     $medium->save();
                     $page->addRelation([
