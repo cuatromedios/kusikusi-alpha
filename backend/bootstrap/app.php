@@ -25,6 +25,12 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 $app->withEloquent();
+if(!class_exists('Storage')) {
+    class_alias('Illuminate\Support\Facades\Storage', 'Storage');
+}
+if(!class_exists('Image')) {
+    class_alias('Intervention\Image\ImageServiceProvider', 'Image');
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +53,14 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->singleton('filesystem', function ($app) {
+    return $app->loadComponent(
+        'filesystems',
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        'filesystem'
+    );
+});
+
 /*
 |--------------------------------------------------------------------------
 | Register Config Files
@@ -60,6 +74,8 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('cms');
+$app->configure('media');
+$app->configure('storage');
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +111,7 @@ $app->configure('cms');
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(Intervention\Image\ImageServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

@@ -13,9 +13,9 @@ class SampleSiteSeeder extends Seeder
      */
     public function run()
     {
-        $sections_count = 3;
-        $pages_count = 3;
-        $media_count = 3;
+        $sections_count = 2;
+        $pages_count = 2;
+        $media_count = 2;
 
         $home = Entity::where('model', 'home')->first();
         for ($s = 0; $s < $sections_count; $s++) {
@@ -32,14 +32,12 @@ class SampleSiteSeeder extends Seeder
                 $page->save();
                 $media = Entity::where('model', 'media')->first();
                 for ($m = 0; $m < $media_count; $m++) {
-                    $medium = factory(App\Models\Entity::class)->make([
+                    $medium = factory(App\Models\Entity::class)->states('medium')->make([
                         "model" => "medium",
-                        "parent_entity_id" => $media->id,
-                        "content" => [
-                            "format" => "jpg"
-                        ]
+                        "parent_entity_id" => $media->id
                     ]);
                     $medium->save();
+                    rename("storage/media/".$medium->content['path'], "storage/media/".$medium->id.".jpg");
                     $page->addRelation([
                         "called_entity_id" => $medium->id,
                         "kind" => \App\models\EntityRelation::RELATION_MEDIA,
