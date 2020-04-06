@@ -23,6 +23,7 @@ class Entity extends Model
         'content' => 'array',
         'is_active' => 'boolean'
     ];
+    protected $keyType = 'string';
 
     /**********************
      * SCOPES

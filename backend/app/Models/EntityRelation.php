@@ -23,8 +23,8 @@ class EntityRelation extends Pivot
     protected $casts = [
         'tags' => 'array'
     ];
-    protected $hidden = array('created_at', 'updated_at');
-
+    protected $hidden = array('created_at', 'updated_at', 'called_entity_id', 'caller_entity_id');
+    protected $keyType = 'string';
     protected static function boot()
     {
         parent::boot();
