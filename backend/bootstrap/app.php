@@ -75,7 +75,7 @@ $app->singleton('filesystem', function ($app) {
 $app->configure('app');
 $app->configure('cms');
 $app->configure('media');
-$app->configure('storage');
+$app->configure('filesystems');
 
 /*
 |--------------------------------------------------------------------------

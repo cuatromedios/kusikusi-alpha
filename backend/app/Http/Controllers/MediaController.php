@@ -35,7 +35,7 @@ class MediaController extends Controller
         $entity = Entity::findOrFail($id);
         $presetSettings = Config::get('media.presets.' . $preset, NULL);
         if (NULL === $presetSettings) {
-            return new \Exception('No media presets found');
+            return new \Exception("No media preset '$preset' found");
         }
 
         // Paths
