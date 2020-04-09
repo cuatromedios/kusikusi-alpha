@@ -14,14 +14,15 @@ class CreateEntitiesTable extends Migration
     public function up()
     {
         Schema::create('entities', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->bigIncrements('id');
+            $table->char('short_id', 16)->index()->unique();
             $table->string('model');
             $table->json('content')->nullable();
             $table->string('view')->nullable();
-            $table->uuid('parent_entity_id')->index('parent')->nullable();
+            $table->bigInteger('parent_entity_id')->index('parent')->nullable()->unsigned();
             $table->boolean('is_active')->default(true);
-            $table->uuid('created_by')->nullable();
-            $table->uuid('updated_by')->nullable();
+            $table->bigInteger('created_by')->nullable()->unsigned();
+            $table->bigInteger('updated_by')->nullable()->unsigned();
             $table->dateTimeTz('published_at')->default('2000-01-01 00:00:00');
             $table->dateTimeTz('unpublished_at')->default('9999-12-31 23:59:59');
             $table->integer('version')->unsigned()->default(1);

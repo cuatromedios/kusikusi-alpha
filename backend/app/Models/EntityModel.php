@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Ankurk91\Eloquent\BelongsToOne;
+use PUGX\Shortid\Shortid;
 
 class EntityModel extends Model
 {
@@ -17,13 +18,11 @@ class EntityModel extends Model
      * PROPERTIES
      **********************/
     protected $table = 'entities';
-    public $incrementing = false;
     protected $fillable = ['id', 'model', 'content', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
     protected $casts = [
         'content' => 'array',
         'is_active' => 'boolean'
     ];
-    protected $keyType = 'string';
 
     /**********************
      * SCOPES
@@ -270,9 +269,14 @@ class EntityModel extends Model
     {
         parent::boot();
         static::creating(function (Model $entity) {
-            // Set the default id as uuid
-            if (!isset($entity[$entity->getKeyName()])) {
-                $entity->setAttribute($entity->getKeyName(), Str::uuid());
+            if (!isset($entity['short_id'])) {
+                do {
+                    $short_id = Shortid::generate(8);
+                    $found_duplicate = Entity::where('short_id', $short_id)->first();
+                } while (!!$found_duplicate);
+                $entity->setAttribute('short_id', $short_id);
+            } else {
+                $entity->setAttribute('short_id', substr($entity['short_id'], 0, 16));
             }
             //Throw an error if not model is defined on create
             if (!isset($entity['model'])) {

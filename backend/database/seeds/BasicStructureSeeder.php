@@ -13,11 +13,13 @@ class BasicStructureSeeder extends Seeder
     public function run()
     {
         $root = new Entity([
-            "model" => "root"
+            "model" => "root",
+            "short_id" => "root"
         ]);
         $root->save();
         $home = new Entity([
             "model" => "home",
+            "short_id" => "home",
             "parent_entity_id" => $root->id,
             "content" => [
                 "title" => ["en" => "Home"],
@@ -28,11 +30,13 @@ class BasicStructureSeeder extends Seeder
         $home->save();
         $collections = new Entity([
             "model" => "collections",
+            "short_id" => "collections",
             "parent_entity_id" => $root->id
         ]);
         $collections->save();
         $users = new Entity([
             "model" => "users",
+            "short_id" => "users",
             "parent_entity_id" => $root->id
         ]);
         $users->save();
@@ -43,6 +47,7 @@ class BasicStructureSeeder extends Seeder
         $adminUser->save();
         $media = new Entity([
             "model" => "media",
+            "short_id" => "media",
             "parent_entity_id" => $root->id
         ]);
         $media->save();
