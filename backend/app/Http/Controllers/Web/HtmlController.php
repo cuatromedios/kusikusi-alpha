@@ -19,10 +19,10 @@ class HtmlController extends Controller
         return $result;
     }
     private function children(Request $request, Entity $entity) {
-        $children = Entity::select('id', 'model', 'content')
-            ->flatContents(['title'], $request->lang)
-            ->with('route')
+        $children = Entity::select('id', 'model')
             ->childOf($entity->id)
+            ->flatContents(['title'], $request->lang)
+            ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
             ->with(['medium' => function ($q) { $q->select('id','model','content->format as format')->whereJsonContains('tags', 'icon'); }])
             ->get();
         return $children;
