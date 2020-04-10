@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use http\Exception\InvalidArgumentException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Ankurk91\Eloquent\BelongsToOne;
 use PUGX\Shortid\Shortid;
@@ -24,6 +24,9 @@ class EntityModel extends Model
         'tags' => 'array',
         'is_active' => 'boolean'
     ];
+    protected $contentFields = [
+        "title" => [ "multilang" => true ]
+    ];
 
     /**********************
      * SCOPES
@@ -32,9 +35,9 @@ class EntityModel extends Model
     /**
      * Scope a query to only include entities of a given modelId.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  Builder $query
      * @param  mixed $modelId
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeOfModel($query, $modelId)
     {
@@ -44,8 +47,8 @@ class EntityModel extends Model
     /**
      * Scope a query to only include published entities.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  Builder $query
+     * @return Builder
      */
     public function scopeIsPublished($query)
     {
@@ -54,12 +57,14 @@ class EntityModel extends Model
             ->whereDate('unpublished_at', '>', Carbon::now())
             ->whereNull('deleted_at');
     }
+
     /**
      * Scope a query to only include children of a given parent id.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  integer $entity_id The id of the parent entity or the short_id
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @param integer $entity_id The id of the parent entity or the short_id
+     * @return Builder
+     * @throws \Exception
      */
     public function scopeChildOf($query, $entity_id)
     {
@@ -74,12 +79,14 @@ class EntityModel extends Model
         ->addSelect('relation_children.position as position')
         ->addSelect('relation_children.tags as tags');
     }
+
     /**
      * Scope a query to only include the parent of the given id.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  number $entity_id The id or short_id of the parent entity
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @param number $entity_id The id or short_id of the parent entity
+     * @return Builder
+     * @throws \Exception
      */
     public function scopeParentOf($query, $entity_id)
     {
@@ -92,12 +99,14 @@ class EntityModel extends Model
             ;
         });
     }
+
     /**
      * Scope a query to only include ancestors of a given entity.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  number $entity_id The id or short_id of the parent entity
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @param number $entity_id The id or short_id of the parent entity
+     * @return Builder
+     * @throws \Exception
      */
     public function scopeAncestorOf($query, $entity_id, $order = 'desc')
     {
@@ -112,12 +121,14 @@ class EntityModel extends Model
             ;
         })->orderBy('relation_ancestor.depth', $order);
     }
+
     /**
      * Scope a query to only include descendants of a given entity id.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  number $entity_id The id or short_id of the  entity
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @param number $entity_id The id or short_id of the  entity
+     * @return Builder
+     * @throws \Exception
      */
     public function scopeDescendantOf($query, $entity_id, $order = 'desc', $depth = NULL)
     {
@@ -135,12 +146,14 @@ class EntityModel extends Model
                 ->where('relation_descendants.depth', '<=', $depth);
         })->orderBy('relation_descendants.depth', $order)->orderBy('relation_descendants.position');
     }
+
     /**
      * Scope a query to only get entities being called by another of type medium.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  number $entity_id The id or short_id of the entity calling the media
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @param number $entity_id The id or short_id of the entity calling the media
+     * @return Builder
+     * @throws \Exception
      */
     public function scopeMediaOf($query, $entity_id)
     {
@@ -156,10 +169,10 @@ class EntityModel extends Model
     /**
      * Scope a query to flat the languages object.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  Builder $query
      * @param  string $modelOrFields The id of the model or an array of fields
      * @param  string $lang The lang to use or null to use the default
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
 
     public function scopeFlatContents($query, $modelOrFields, $lang=null) {
@@ -182,18 +195,10 @@ class EntityModel extends Model
      * PUBLIC METHODS
      *********************/
 
-    /**
-     * Returns the id of the instance, if none is defined, it creates one
-     */
-    private function getId() {
-        if (!isset($this->id)) {
-            $this->id = Str::uuid();
-        }
-        return $this->id;
-    }
+
     public function addRelation($relationData) {
         if (!isset($relationData['caller_entity_id'])) {
-            $relationData['caller_entity_id'] = $this->getId();
+            $relationData['caller_entity_id'] = $this->id;
         }
         self::createRelation($relationData);
     }
@@ -229,6 +234,15 @@ class EntityModel extends Model
                 "tags" => $relationData['tags']
             ]
         );
+    }
+    /**
+     * Get the content fields associated with the model.
+     *
+     * @return array
+     */
+    public function getContentFields()
+    {
+        return $this->content ?? [];
     }
 
     /**********************
