@@ -14,7 +14,11 @@ class HtmlController extends Controller
             "lang" => $request->lang,
             "entity" => $currentEntity,
             "media" => Entity::mediaOf($currentEntity->id)->get(),
-            "ancestors" => Entity::ancestorOf($currentEntity->id)->get()
+            "ancestors" => Entity::select('id', 'model')
+                ->ancestorOf($currentEntity->id)
+                ->flatContents(['title'], $request->lang)
+                ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
+                ->get()
         ];
         return $result;
     }

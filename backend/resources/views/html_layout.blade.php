@@ -30,6 +30,13 @@
     @json($children, JSON_PRETTY_PRINT);
     </pre>
     @endisset
+
+    @isset($ancestors)
+    Ancestors:
+    <pre>
+    @json($ancestors, JSON_PRETTY_PRINT);
+    </pre>
+    @endisset
 </footer>
 </body>
 </html>

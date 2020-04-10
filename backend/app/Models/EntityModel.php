@@ -57,7 +57,7 @@ class EntityModel extends Model
      * @param  string $entity_id The id of the parent entity
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeChildOf($query, $parent_entity_id)
+    public function scopeChildOf($query, $parent_entity_id, $options = [])
     {
         $query->join('relations as relation_children', function ($join) use ($parent_entity_id) {
             $join->on('relation_children.caller_entity_id', '=', 'entities.id')
