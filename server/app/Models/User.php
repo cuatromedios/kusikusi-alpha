@@ -23,6 +23,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+    public function authtokens () {
+        return $this->hasMany('App\Models\Authtoken');
+    }
     public static function boot($preset = [])
     {
         parent::boot();
