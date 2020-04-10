@@ -16,6 +16,7 @@ class HtmlController extends Controller
             "media" => Entity::mediaOf($currentEntity->id)->get(),
             "ancestors" => Entity::select('id', 'model')
                 ->ancestorOf($currentEntity->id)
+                ->descendantOf('root')
                 ->flatContents(['title'], $request->lang)
                 ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
                 ->get()
@@ -28,6 +29,8 @@ class HtmlController extends Controller
             ->flatContents(['title'], $request->lang)
             ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
             ->with(['medium' => function ($q) { $q->select('id','model','content->format as format')->whereJsonContains('tags', 'icon'); }])
+            ->orderBy('position')
+            ->orderBy('title')
             ->get();
         return $children;
     }

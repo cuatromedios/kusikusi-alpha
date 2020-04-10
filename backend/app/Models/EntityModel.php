@@ -21,6 +21,7 @@ class EntityModel extends Model
     protected $fillable = ['id', 'model', 'content', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
     protected $casts = [
         'content' => 'array',
+        'tags' => 'array',
         'is_active' => 'boolean'
     ];
 
@@ -48,34 +49,41 @@ class EntityModel extends Model
      */
     public function scopeIsPublished($query)
     {
-        return $query->where('is_active', true)->whereDate('published_at', '<=', Carbon::now())->whereDate('unpublished_at', '>', Carbon::now())->whereNull('deleted_at');
+        return $query->where('is_active', true)
+            ->whereDate('published_at', '<=', Carbon::now())
+            ->whereDate('unpublished_at', '>', Carbon::now())
+            ->whereNull('deleted_at');
     }
     /**
      * Scope a query to only include children of a given parent id.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $entity_id The id of the parent entity
+     * @param  integer $entity_id The id of the parent entity or the short_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeChildOf($query, $parent_entity_id, $options = [])
+    public function scopeChildOf($query, $entity_id)
     {
-        $query->join('relations as relation_children', function ($join) use ($parent_entity_id) {
+        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
+        $query->join('relations as relation_children', function ($join) use ($entity_id) {
             $join->on('relation_children.caller_entity_id', '=', 'entities.id')
-                ->where('relation_children.called_entity_id', '=', $parent_entity_id)
+                ->where('relation_children.called_entity_id', '=', $entity_id)
                 ->where('relation_children.depth', '=', 1)
                 ->where('relation_children.kind', '=', EntityRelation::RELATION_ANCESTOR)
             ;
-        });
+        })
+        ->addSelect('relation_children.position as position')
+        ->addSelect('relation_children.tags as tags');
     }
     /**
      * Scope a query to only include the parent of the given id.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $entity_id The id of the parent entity
+     * @param  number $entity_id The id or short_id of the parent entity
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeParentOf($query, $entity_id)
     {
+        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as relation_parent', function ($join) use ($entity_id) {
             $join->on('relation_parent.called_entity_id', '=', 'entities.id')
                 ->where('relation_parent.caller_entity_id', '=', $entity_id)
@@ -88,11 +96,12 @@ class EntityModel extends Model
      * Scope a query to only include ancestors of a given entity.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $entity_id The id of the parent entity
+     * @param  number $entity_id The id or short_id of the parent entity
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAncestorOf($query, $entity_id, $order = 'desc')
     {
+        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         if ($order != 'asc') {
             $order = 'desc';
         }
@@ -107,11 +116,12 @@ class EntityModel extends Model
      * Scope a query to only include descendants of a given entity id.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $entity_id The id of the parent entity
+     * @param  number $entity_id The id or short_id of the  entity
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeDescendantOf($query, $entity_id, $order = 'desc', $depth = NULL)
     {
+        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         if ($order != 'asc') {
             $order = 'desc';
         }
@@ -129,11 +139,12 @@ class EntityModel extends Model
      * Scope a query to only get entities being called by another of type medium.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $entity_id The id of the entity calling the relations
+     * @param  number $entity_id The id or short_id of the entity calling the media
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeMediaOf($query, $entity_id)
     {
+        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as relation_media', function ($join) use ($entity_id) {
             $join->on('relation_media.called_entity_id', '=', 'entities.id')
                 ->where('relation_media.caller_entity_id', '=', $entity_id)
@@ -168,7 +179,7 @@ class EntityModel extends Model
     }
 
     /**********************
-     * METHODS
+     * PUBLIC METHODS
      *********************/
 
     /**
@@ -266,6 +277,25 @@ class EntityModel extends Model
     }
     public function route() {
         return $this->hasOne('App\Models\Route')->where('default', true);
+    }
+
+    /***********************
+     * PRIVATE METHODS
+     *********************/
+
+    private function entityIdFromIdOrShortId ($idOrShortId) {
+        if (is_numeric($idOrShortId)) {
+            return $idOrShortId;
+        } elseif (is_string($idOrShortId)) {
+            $entity = Entity::select('id')->where('short_id', $idOrShortId)->first();
+            if ($entity) {
+                return $entity->id;
+            } else {
+                throw new \Exception('Entity not found by short_id');
+            }
+        } else {
+            throw new \Exception('The id should be and integer or a short_id string');
+        }
     }
 
     /***********************
