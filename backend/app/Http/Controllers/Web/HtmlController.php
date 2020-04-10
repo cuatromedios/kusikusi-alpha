@@ -50,6 +50,7 @@ class HtmlController extends Controller
     public function error(Request $request, $status)
     {
         $result = [ "status" => $status ];
+        $result['lang'] = $request->lang;
         return view('html.error', $result);
     }
 }

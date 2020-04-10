@@ -4,45 +4,49 @@
 
 use App\Model;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
+use App\Models\Entity;
 
-$factory->define(\App\Models\Entity::class, function (Faker $faker) {
-    $title = $faker->sentence;
+$factory->define(Entity::class, function (Faker $faker) {
+    $langs = config('cms.langs', ['en_US']);
+    $titles = [];
+    $summaries = [];
+    $bodies = [];
+    $slugs = [];
+    foreach ($langs as $lang) {
+        $personProviderClass = "\\Faker\\Provider\\{$lang}\\Person";
+        $companyProviderClass = "\\Faker\\Provider\\{$lang}\\Company";
+        $textProviderClass = "\\Faker\\Provider\\{$lang}\\Text";
+        $faker->addProvider(new $personProviderClass($faker));
+        $faker->addProvider(new  $companyProviderClass($faker));
+        $faker->addProvider(new  $textProviderClass($faker));
+        $titles[$lang] = $faker->name;
+        $summaries[$lang] = $faker->jobTitle;
+        $bodies[$lang] = $faker->text(100);
+        $slugs[$lang] = Str::slug($faker->name);
+    }
     return [
         "model" => "entity",
         "parent_entity_id" => null,
         "content" => [
-            "title" => $title,
-            "summary" => $faker->paragraph,
-            "body" => $faker->paragraph(3),
-            "slug" => \Illuminate\Support\Str::slug($title)
+            "title" => $titles,
+            "summary" => $summaries,
+            "body" => $bodies,
+            "slug" => $slugs
         ]
     ];
 });
-$factory->state(\App\Models\Entity::class, 'medium', function (Faker $faker) {
+$factory->state(Entity::class, 'medium', function (Faker $faker) {
     $title = $faker->lastName;
     $image = $faker->image('storage/media', rand(320,640),rand(320,640), 'nature', false);
     return [
         "model" => "entity",
         "parent_entity_id" => null,
         "content" => [
-            "title" => $title,
+            "title" => [ "en" => $title ],
             "format" => "jpg",
-            "slug" => \Illuminate\Support\Str::slug($title),
+            "slug" => [ "en" => Str::slug($title)],
             "path" =>  $image
-        ]
-    ];
-});
-$factory->state(\App\Models\Entity::class, 'multilang', function (Faker $faker) {
-    $titleEn = $faker->sentence(4);
-    $titleEs = $faker->sentence(4);
-    return [
-        "model" => "entity",
-        "parent_entity_id" => null,
-        "content" => [
-            "title" => [ "en" => $titleEn, "es" => $titleEs],
-            "summary" => [ "en" => $faker->paragraph, "es" => $faker->paragraph],
-            "body" => [ "en" => $faker->paragraph(3), "es" => $faker->paragraph(3)],
-            "slug" => [ "en" => \Illuminate\Support\Str::slug($titleEn), "es" => \Illuminate\Support\Str::slug($titleEs)]
         ]
     ];
 });

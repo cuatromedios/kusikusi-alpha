@@ -14,7 +14,7 @@
  */
 
 return [
-    "langs" => ["en", "es"], // The first lang will be the default each time the entity is loaded
+    "langs" => ["en_US"], // The first lang will be the default each time the entity is loaded
     "models" => [
         "home" => [
             "content" => [

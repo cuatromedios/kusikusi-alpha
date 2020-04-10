@@ -41,9 +41,8 @@ class WebController extends Controller
 
         // Search for the entity is being called by its url, ignore inactive and soft deleted.
         // TODO: Is there a better way using Laravel Query builder or native
-        $langs = config('cms.langs', ['en']);
-        $defaultLang = $langs[0];
-        /* $searchResult = Entity::select("id", "model")
+        /* $langs = config('cms.langs', ['en']);
+        $searchResult = Entity::select("id", "model")
             ->orWhere("content->url", $url);
         foreach ($langs as $searchLang) {
             $searchResult->orWhere("content->url->$searchLang", $url);
@@ -52,6 +51,7 @@ class WebController extends Controller
         */
         $searchResult = Route::where('path', $path)->first();
         if (!$searchResult) {
+            $request->lang = config('cms.langs', ['en_US'])[0];
             $controllerClassName = "App\\Http\\Controllers\\Web\\HtmlController";
             $controller = new $controllerClassName;
             return ($controller->error($request, 404));

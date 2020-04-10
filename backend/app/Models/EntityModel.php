@@ -277,7 +277,7 @@ class EntityModel extends Model
         static::creating(function (Model $entity) {
             if (!isset($entity['short_id'])) {
                 do {
-                    $short_id = Shortid::generate(8);
+                    $short_id = Shortid::generate(10);
                     $found_duplicate = Entity::where('short_id', $short_id)->first();
                 } while (!!$found_duplicate);
                 $entity->setAttribute('short_id', $short_id);
@@ -322,40 +322,10 @@ class EntityModel extends Model
             // Create the automatic created routes
             if (isset($entity->content['slug'])) {
                 Route::where('entity_id', $entity->id)->where('default', true)->delete();
-                if (is_array($entity->content['slug'])) {
-                    foreach ($entity->content['slug'] as $lang => $slug) {
-                        if ($parentEntity->routes->count()) {
-                            foreach($parentEntity->routes as $route) {
-                                if ($route->default && $route->lang === $lang) {
-                                    $parent_path = $route->path;
-                                    if ($parent_path === '/') {
-                                        $parent_path = '';
-                                    }
-                                    Route::create([
-                                        "entity_id" => $entity->id,
-                                        "entity_model" => $entity->model,
-                                        "path" => $parent_path."/".$slug,
-                                        "lang" => $lang,
-                                        "default" => true
-                                    ]);
-                                }
-                            }
-                        } else {
-                            Route::create([
-                                "entity_id" => $entity->id,
-                                "entity_model" => $entity->model,
-                                "path" => "/".$slug,
-                                "lang" => $lang,
-                                "default" => true
-                            ]);
-                        }
-                    }
-                } else if (is_string($entity->content['slug'])) {
+                foreach ($entity->content['slug'] as $lang => $slug) {
                     if ($parentEntity->routes->count()) {
                         foreach($parentEntity->routes as $route) {
-                            $route_added = false;
-                            if ($route->default && $route->lang === NULL) {
-                                $route_added = true;
+                            if ($route->default && $route->lang === $lang) {
                                 $parent_path = $route->path;
                                 if ($parent_path === '/') {
                                     $parent_path = '';
@@ -363,24 +333,18 @@ class EntityModel extends Model
                                 Route::create([
                                     "entity_id" => $entity->id,
                                     "entity_model" => $entity->model,
-                                    "path" => $parent_path."/".$entity->content['slug'],
+                                    "path" => $parent_path."/".$slug,
+                                    "lang" => $lang,
                                     "default" => true
                                 ]);
                             }
-                        }
-                        if (!$route_added) {
-                            Route::create([
-                                "entity_id" => $entity->id,
-                                "entity_model" => $entity->model,
-                                "path" => "/".$entity->content['slug'],
-                                "default" => true
-                            ]);
                         }
                     } else {
                         Route::create([
                             "entity_id" => $entity->id,
                             "entity_model" => $entity->model,
-                            "path" => "/".$entity->content['slug'],
+                            "path" => "/".$slug,
+                            "lang" => $lang,
                             "default" => true
                         ]);
                     }

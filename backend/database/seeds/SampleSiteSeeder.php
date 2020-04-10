@@ -13,8 +13,8 @@ class SampleSiteSeeder extends Seeder
      */
     public function run()
     {
-        $sections_count = 10;
-        $pages_count = 10;
+        $sections_count = 5;
+        $pages_count = 5;
         $media_count = 0;
 
         $home = Entity::where('short_id', 'home')->first();
