@@ -22,9 +22,9 @@ class BasicStructureSeeder extends Seeder
             "short_id" => "home",
             "parent_entity_id" => $root->id,
             "content" => [
-                "title" => ["en" => "Home"],
+                "title" => "Kusikusi Website",
                 'welcome' => "Welcome to your new website",
-                "url" => ["en" => "/", "es" => "/es"],
+                "slug" => "",
             ]
         ]);
         $home->save();

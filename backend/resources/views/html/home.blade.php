@@ -1,11 +1,11 @@
 @extends('html_layout')
 @section('main')
-    <h1>{{ $entity['content']['title'][$lang] }}</h1>
+    <h1>{{ $entity->title }}</h1>
     <p>{{ $entity->welcome }}</p>
 <div>
     <ul>
         @forelse ($children as $child)
-           <li><a href="{{ $child->url }}">{{ $child->title }}</a></li>
+           <li><a href="{{ $child->route->path }}">{{ $child->title }}</a></li>
         @empty
            <li>No children</li>
         @endforelse

@@ -261,6 +261,12 @@ class EntityModel extends Model
             ->orderBy(EntityRelation::TABLE.'.created_at')
             ->withTimestamps();
     }
+    public function routes() {
+        return $this->hasMany('App\Models\Route');
+    }
+    public function route() {
+        return $this->hasOne('App\Models\Route')->where('default', true);
+    }
 
     /***********************
      * BOOT
@@ -291,10 +297,11 @@ class EntityModel extends Model
                 $entity['published_at'] = Carbon::now();
             }
         });
-        self::created(function ($entity) {
+        self::saved(function ($entity) {
+            $parentEntity = Entity::with('routes')->find($entity['parent_entity_id']);
             // Create the ancestors relations
-            if (isset($entity['parent_entity_id']) && $entity['parent_entity_id'] != NULL) {
-                $parentEntity = Entity::findOrFail($entity['parent_entity_id']);
+            if (isset($entity['parent_entity_id']) && $entity['parent_entity_id'] != NULL && $entity->isDirty('parent_entity_id')) {
+                EntityRelation::where("caller_entity_id", $entity->id)->where('kind', EntityRelation::RELATION_ANCESTOR)->delete();
                 EntityRelation::create([
                     "caller_entity_id" => $entity->id,
                     "called_entity_id" => $parentEntity->id,
@@ -312,6 +319,69 @@ class EntityModel extends Model
                     $depth++;
                 }
             };
+            // Create the automatic created routes
+            if (isset($entity->content['slug'])) {
+                Route::where('entity_id', $entity->id)->where('default', true)->delete();
+                if (is_array($entity->content['slug'])) {
+                    foreach ($entity->content['slug'] as $lang => $slug) {
+                        if ($parentEntity->routes->count()) {
+                            foreach($parentEntity->routes as $route) {
+                                if ($route->default && $route->lang = $lang) {
+                                    Route::create([
+                                        "entity_id" => $entity->id,
+                                        "entity_model" => $entity->model,
+                                        "path" => $route->path."/".$entity->content['slug'],
+                                        "lang" => $lang,
+                                        "default" => true
+                                    ]);
+                                }
+                            }
+                        } else {
+                            Route::create([
+                                "entity_id" => $entity->id,
+                                "entity_model" => $entity->model,
+                                "path" => "/".$slug,
+                                "lang" => $lang,
+                                "default" => true
+                            ]);
+                        }
+                    }
+                } else if (is_string($entity->content['slug'])) {
+                    if ($parentEntity->routes->count()) {
+                        foreach($parentEntity->routes as $route) {
+                            $route_added = false;
+                            if ($route->default && $route->lang === NULL) {
+                                $route_added = true;
+                                $parent_path = $route->path;
+                                if ($parent_path === '/') {
+                                    $parent_path = '';
+                                }
+                                Route::create([
+                                    "entity_id" => $entity->id,
+                                    "entity_model" => $entity->model,
+                                    "path" => $parent_path."/".$entity->content['slug'],
+                                    "default" => true
+                                ]);
+                            }
+                        }
+                        if (!$route_added) {
+                            Route::create([
+                                "entity_id" => $entity->id,
+                                "entity_model" => $entity->model,
+                                "path" => "/".$entity->content['slug'],
+                                "default" => true
+                            ]);
+                        }
+                    } else {
+                        Route::create([
+                            "entity_id" => $entity->id,
+                            "entity_model" => $entity->model,
+                            "path" => "/".$entity->content['slug'],
+                            "default" => true
+                        ]);
+                    }
+                }
+            }
         });
     }
 }

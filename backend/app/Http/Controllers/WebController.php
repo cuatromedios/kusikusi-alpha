@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Entity;
+use App\Models\Route;
 use Illuminate\Support\Str;
 
 class WebController extends Controller
@@ -27,39 +28,47 @@ class WebController extends Controller
     public function any(Request $request)
     {
         $query = ($request->query());
-        $url = $request->path() == '/' ? '/' : '/' . $request->path();
-        $format = strtolower(pathinfo($url, PATHINFO_EXTENSION));
+        $path = $request->path() == '/' ? '/' : '/' . $request->path();
+        $format = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         if ($format === '') {
             $format = 'html';
         } else {
-            $url = substr($url, 0, strrpos($url, "."));
+            $path = substr($path, 0, strrpos($path, "."));
         }
-        $url = preg_replace('/\/index$/', '', $url);
-        $filename = strtolower(pathinfo($url, PATHINFO_FILENAME));
+        $path = preg_replace('/\/index$/', '', $path);
+        $filename = strtolower(pathinfo($path, PATHINFO_FILENAME));
 
         // Search for the entity is being called by its url, ignore inactive and soft deleted.
         // TODO: Is there a better way using Laravel Query builder or native
         $langs = config('cms.langs', ['en']);
-        $searchResult = Entity::select("id", "model")
+        $defaultLang = $langs[0];
+        /* $searchResult = Entity::select("id", "model")
             ->orWhere("content->url", $url);
         foreach ($langs as $searchLang) {
             $searchResult->orWhere("content->url->$searchLang", $url);
         }
         $searchResult = $searchResult->first();
-        $defaultLang = $langs[0];
-        if (!$searchResult || !$searchResult->isPublished()) {
+        */
+        $searchResult = Route::where('path', $path)->first();
+        if (!$searchResult) {
             $controllerClassName = "App\\Http\\Controllers\\Web\\HtmlController";
             $controller = new $controllerClassName;
             return ($controller->error($request, 404));
         }
         // Select an entity with its contents
-        $lang = "en";
+        $lang = $searchResult->lang;
         $entity = Entity::select("*")
-            ->where("id", $searchResult->id)
-            ->flatContents($searchResult->model, $lang)
+            ->where("id", $searchResult->entity_id)
+            ->flatContents($searchResult->entity_model, $lang)
             ->with('entitiesRelated')
+            ->with('routes')
             ->first();
+        if (!$entity->isPublished()) {
+            $controllerClassName = "App\\Http\\Controllers\\Web\\HtmlController";
+            $controller = new $controllerClassName;
+            return ($controller->error($request, 404));
+        }
         $request->request->add(['lang' => $lang]);
         $model_name = $entity->model;
         $controllerClassName = "App\\Http\\Controllers\\Web\\" . ucfirst($format) . 'Controller';

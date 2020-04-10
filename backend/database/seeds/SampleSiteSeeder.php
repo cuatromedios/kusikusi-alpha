@@ -13,9 +13,9 @@ class SampleSiteSeeder extends Seeder
      */
     public function run()
     {
-        $sections_count = 2;
-        $pages_count = 2;
-        $media_count = 1;
+        $sections_count = 10;
+        $pages_count = 10;
+        $media_count = 0;
 
         $home = Entity::where('short_id', 'home')->first();
         for ($s = 0; $s < $sections_count; $s++) {

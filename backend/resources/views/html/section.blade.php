@@ -5,7 +5,7 @@
 <div>
     <ul>
         @forelse ($children as $child)
-           <li><a href="{{ $child->url }}">{{ $child->title }}</a></li>
+           <li><a href="{{ $child->route->path }}.html">{{ $child->title }}</a></li>
         @empty
            <li>No children</li>
         @endforelse

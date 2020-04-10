@@ -14,7 +14,7 @@ $factory->define(\App\Models\Entity::class, function (Faker $faker) {
             "title" => $title,
             "summary" => $faker->paragraph,
             "body" => $faker->paragraph(3),
-            "url" => "/".\Illuminate\Support\Str::slug($title)
+            "slug" => \Illuminate\Support\Str::slug($title)
         ]
     ];
 });
@@ -27,7 +27,7 @@ $factory->state(\App\Models\Entity::class, 'medium', function (Faker $faker) {
         "content" => [
             "title" => $title,
             "format" => "jpg",
-            "url" => "/".\Illuminate\Support\Str::slug($title),
+            "slug" => \Illuminate\Support\Str::slug($title),
             "path" =>  $image
         ]
     ];
