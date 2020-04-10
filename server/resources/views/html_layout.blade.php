@@ -13,30 +13,8 @@
     @yield('main')
 </main>
 <footer>
-    @isset($lang)
-        <p>Lang: {{ $lang }}</p>
-    @endisset
 
-    @isset($entity)
-    Entity:
-    <pre>
-    @json($entity, JSON_PRETTY_PRINT);
-    </pre>
-    @endisset
-
-    @isset($children)
-    Children:
-    <pre>
-    @json($children, JSON_PRETTY_PRINT);
-    </pre>
-    @endisset
-
-    @isset($ancestors)
-    Ancestors:
-    <pre>
-    @json($ancestors, JSON_PRETTY_PRINT);
-    </pre>
-    @endisset
 </footer>
+@include('html.partials.debug')
 </body>
 </html>
