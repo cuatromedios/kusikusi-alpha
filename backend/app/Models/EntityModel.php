@@ -159,7 +159,7 @@ class EntityModel extends Model
             $contentFields = $modelOrFields;
         }
         foreach ($contentFields as $field) {
-            if ($lang && Arr::get($contentConfig, "$field.multilang")) {
+            if ($lang) {
                 $query->addSelect("content->".$field."->".$lang." as $field");
             } else {
                 $query->addSelect("content->$field as $field");
@@ -326,11 +326,15 @@ class EntityModel extends Model
                     foreach ($entity->content['slug'] as $lang => $slug) {
                         if ($parentEntity->routes->count()) {
                             foreach($parentEntity->routes as $route) {
-                                if ($route->default && $route->lang = $lang) {
+                                if ($route->default && $route->lang === $lang) {
+                                    $parent_path = $route->path;
+                                    if ($parent_path === '/') {
+                                        $parent_path = '';
+                                    }
                                     Route::create([
                                         "entity_id" => $entity->id,
                                         "entity_model" => $entity->model,
-                                        "path" => $route->path."/".$entity->content['slug'],
+                                        "path" => $parent_path."/".$slug,
                                         "lang" => $lang,
                                         "default" => true
                                     ]);

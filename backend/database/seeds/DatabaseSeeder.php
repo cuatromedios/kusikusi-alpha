@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call('BasicStructureSeeder');
-        $this->call('SampleSiteSeeder');
+        //$this->call('SampleSiteSeeder');
+        $this->call('SampleMultilangSiteSeeder');
     }
 }

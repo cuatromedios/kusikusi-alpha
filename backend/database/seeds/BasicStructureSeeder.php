@@ -34,17 +34,6 @@ class BasicStructureSeeder extends Seeder
             "parent_entity_id" => $root->id
         ]);
         $collections->save();
-        $users = new Entity([
-            "model" => "users",
-            "short_id" => "users",
-            "parent_entity_id" => $root->id
-        ]);
-        $users->save();
-        $adminUser = new Entity([
-            "model" => "user",
-            "parent_entity_id" => $users->id
-        ]);
-        $adminUser->save();
         $media = new Entity([
             "model" => "media",
             "short_id" => "media",

@@ -32,3 +32,17 @@ $factory->state(\App\Models\Entity::class, 'medium', function (Faker $faker) {
         ]
     ];
 });
+$factory->state(\App\Models\Entity::class, 'multilang', function (Faker $faker) {
+    $titleEn = $faker->sentence(4);
+    $titleEs = $faker->sentence(4);
+    return [
+        "model" => "entity",
+        "parent_entity_id" => null,
+        "content" => [
+            "title" => [ "en" => $titleEn, "es" => $titleEs],
+            "summary" => [ "en" => $faker->paragraph, "es" => $faker->paragraph],
+            "body" => [ "en" => $faker->paragraph(3), "es" => $faker->paragraph(3)],
+            "slug" => [ "en" => \Illuminate\Support\Str::slug($titleEn), "es" => \Illuminate\Support\Str::slug($titleEs)]
+        ]
+    ];
+});

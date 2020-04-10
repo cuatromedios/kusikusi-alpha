@@ -14,46 +14,34 @@
  */
 
 return [
-    "langs" => ["en"], // The first lang will be the default each time the entity is loaded
+    "langs" => ["en", "es"], // The first lang will be the default each time the entity is loaded
     "models" => [
         "home" => [
             "content" => [
-                "title" => [ "multilang" => false ],
-                "welcome" => ["multilang" => false ],
-                "footer" => [ "multilang" => false ],
+                "title" => [ "multilang" => true ],
+                "welcome" => [ "multilang" => true ],
+                "footer" => [ "multilang" => true ],
             ]
         ],
         "page" => [
             "content" => [
-                "title" => [
-                    "fulltextsearch" => true
-                ],
-                "summary" => [
-                    "fulltextsearch" => true
-                ],
-                "body" => [
-                    "fulltextsearch" => true
-                ],
+                "title" => [ "multilang" => true ],
+                "summary" => [ "multilang" => true ],
+                "body" => [ "multilang" => true ],
             ],
             "allowedChildren" => []
         ],
         "section" => [
             "content" => [
-                "title" => [
-                    "fulltextsearch" => true
-                ],
-                "summary" => [
-                    "fulltextsearch" => true
-                ],
+                "title" => [ "multilang" => true ],
+                "summary" => [ "multilang" => true ],
                 "body" => []
             ],
             "allowedChildren" => ['page']
         ],
         "medium" => [
             "content" => [
-                "title" => [
-                    "fulltextsearch" => true
-                ],
+                "title" => [ "multilang" => true ],
                 "size"
             ],
             "allowedChildren" => []
