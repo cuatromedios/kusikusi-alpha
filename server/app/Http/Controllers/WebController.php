@@ -52,7 +52,7 @@ class WebController extends Controller
         $searchResult = Route::where('path', $path)->first();
         if (!$searchResult) {
             $request->lang = config('cms.langs', ['en_US'])[0];
-            $controllerClassName = "App\\Http\\Controllers\\Web\\HtmlController";
+            $controllerClassName = "App\\Http\\Controllers\\HtmlController";
             $controller = new $controllerClassName;
             return ($controller->error($request, 404));
         }
@@ -65,13 +65,13 @@ class WebController extends Controller
             ->with('routes')
             ->first();
         if (!$entity->isPublished()) {
-            $controllerClassName = "App\\Http\\Controllers\\Web\\HtmlController";
+            $controllerClassName = "App\\Http\\Controllers\\HtmlController";
             $controller = new $controllerClassName;
             return ($controller->error($request, 404));
         }
         $request->request->add(['lang' => $lang]);
         $model_name = $entity->model;
-        $controllerClassName = "App\\Http\\Controllers\\Web\\" . ucfirst($format) . 'Controller';
+        $controllerClassName = "App\\Http\\Controllers\\" . ucfirst($format) . 'Controller';
         $controller = new $controllerClassName;
         if (method_exists($controller, $model_name)) {
             return ($controller->$model_name($request, $entity, $lang));
