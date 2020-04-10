@@ -1,5 +1,6 @@
 @extends('html_layout')
 @section('main')
+    @include('html.partials.breadcrumbs')
     <h1>{{ $entity->model }}: {{ $entity->title }}</h1>
     <em>{{ $entity->summary }}</em>
     {{ $entity->body }}
