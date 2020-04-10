@@ -8,17 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Ankurk91\Eloquent\BelongsToOne;
+use Illuminate\Support\Str;
 use PUGX\Shortid\Shortid;
+use App\Models\Traits\UsesUuid;
 
 class EntityModel extends Model
 {
     use BelongsToOne;
+    use UsesUuid;
 
     /**********************
      * PROPERTIES
      **********************/
     protected $table = 'entities';
     protected $fillable = ['id', 'model', 'content', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
+    protected $guarded = ['id'];
     protected $casts = [
         'content' => 'array',
         'tags' => 'array',
@@ -298,7 +302,7 @@ class EntityModel extends Model
      *********************/
 
     private function entityIdFromIdOrShortId ($idOrShortId) {
-        if (is_numeric($idOrShortId)) {
+        if (strlen($idOrShortId) === 36) {
             return $idOrShortId;
         } elseif (is_string($idOrShortId)) {
             $entity = Entity::select('id')->where('short_id', $idOrShortId)->first();
@@ -308,7 +312,7 @@ class EntityModel extends Model
                 throw new \Exception('Entity not found by short_id');
             }
         } else {
-            throw new \Exception('The id should be and integer or a short_id string');
+            throw new \Exception('The id should be an uuid or a short_id string');
         }
     }
 
@@ -319,6 +323,10 @@ class EntityModel extends Model
     {
         parent::boot();
         static::creating(function (Model $entity) {
+            // Set the default id as uuid
+            if (!isset($entity[$entity->getKeyName()])) {
+                $entity->setAttribute($entity->getKeyName(), Str::uuid());
+            }
             if (!isset($entity['short_id'])) {
                 do {
                     $short_id = Shortid::generate(10);

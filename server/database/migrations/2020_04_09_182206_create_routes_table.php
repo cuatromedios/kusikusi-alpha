@@ -14,8 +14,8 @@ class CreateRoutesTable extends Migration
     public function up()
     {
         Schema::create('routes', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('entity_id')->index()->nullable()->unsigned();
+            $table->uuid('id')->primary();
+            $table->uuid('entity_id')->index()->nullable();
             $table->string('path')->index()->nullable();
             $table->string('entity_model');
             $table->char('lang', 5)->index()->nullable();

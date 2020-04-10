@@ -14,8 +14,8 @@ class CreateAuthtokensTable extends Migration
     public function up()
     {
         Schema::create('authtokens', function (Blueprint $table) {
-            $table->char('token', 128)->unique()->primary();
-            $table->bigInteger('user_id')->unsigned()->index();
+            $table->char('token', 128)->primary();
+            $table->uuid('user_id')->index();
             $table->char('created_ip', 45)->nullable();
             $table->char('updated_ip', 45)->nullable();
             $table->dateTime('expire_at')->nullable();
