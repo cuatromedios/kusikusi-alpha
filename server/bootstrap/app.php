@@ -77,6 +77,7 @@ $app->configure('cms');
 $app->configure('media');
 $app->configure('filesystems');
 $app->configure('apidoc');
+$app->configure('validation');
 
 /*
 |--------------------------------------------------------------------------

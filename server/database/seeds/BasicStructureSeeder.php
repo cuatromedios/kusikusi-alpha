@@ -51,5 +51,20 @@ class BasicStructureSeeder extends Seeder
         ]);
         $media->save();
 
+        $user_name = "Administrator";
+        $user_email = "admin@example.com";
+        $user_profile = "admin";
+        print("*** Generated user:\n");
+        print("{\n");
+        print("  \"email\": \"{$user_email}\",\n");
+        $user = factory(App\Models\User::class)->make([
+            "name" => $user_name,
+            "email" => $user_email,
+            "profile" => $user_profile
+        ]);
+        print("}\n");
+
+        $user->save();
+
     }
 }

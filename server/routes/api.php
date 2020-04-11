@@ -12,6 +12,8 @@ $router->group(["prefix" => "api"], function () use ($router) {
     $router->get('/', function () use ($router) {
         return ["version" => '4.0'];
     });
+    $router->post('/user/login', ['uses' => 'UserController@authenticate']);
+
     /**
      * Authenticated routes
      */
