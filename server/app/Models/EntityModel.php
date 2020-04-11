@@ -152,6 +152,51 @@ class EntityModel extends Model
     }
 
     /**
+     * Scope a query to only get entities being called by.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $entity_id The id of the entity calling the relations
+     * @param  string $kind Filter by type of relation, if ommited all relations but 'ancestor' will be included
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRelatedBy($query, $entity_id, $kind = null)
+    {
+        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
+        $query->join('relations as related_by', function ($join) use ($entity_id, $kind) {
+            $join->on('related_by.called_entity_id', '=', 'entities.id')
+                ->where('related_by.caller_entity_id', '=', $entity_id);
+                if ($kind === null) {
+                    $join->where('related_by.kind', '!=', 'ancestor');
+                } else {
+                    $join->where('related_by.kind', '=', $kind);
+                }
+        })->addSelect('related_by.kind', 'related_by.position', 'related_by.depth', 'related_by.tags');
+    }
+
+    /**
+     * Scope a query to only get entities calling.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $entity_id The id of the entity calling the relations
+     * @param string $kind Filter by type of relation, if ommited all relations but 'ancestor' will be included
+     * @return \Illuminate\Database\Eloquent\Builder
+     * @throws \Exception
+     */
+    public function scopeRelating($query, $entity_id, $kind = null)
+    {
+        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
+        $query->join('relations as relating', function ($join) use ($entity_id, $kind) {
+            $join->on('relating.caller_entity_id', '=', 'entities.id')
+                ->where('relating.called_entity_id', '=', $entity_id);
+            if ($kind === null) {
+                $join->where('relating.kind', '!=', 'ancestor');
+            } else {
+                $join->where('relating.kind', '=', $kind);
+            }
+        })->addSelect('relating.kind', 'relating.position', 'relating.depth', 'relating.tags');
+    }
+
+    /**
      * Scope a query to only get entities being called by another of type medium.
      *
      * @param Builder $query
@@ -166,7 +211,7 @@ class EntityModel extends Model
             $join->on('relation_media.called_entity_id', '=', 'entities.id')
                 ->where('relation_media.caller_entity_id', '=', $entity_id)
                 ->where('relation_media.kind', '=', EntityRelation::RELATION_MEDIA);
-        })
+            })
             ->addSelect('relation_media.kind', 'relation_media.position', 'relation_media.depth', 'relation_media.tags')
             ->orderBy('relation_media.position');
     }

@@ -1,0 +1,125 @@
+{
+    "current_page": 1,
+    "data": [
+        {
+            "id": "35337182-7a0c-44c4-a11f-68cd9da930b2",
+            "content": {
+                "body": {
+                    "en_US": "Consequatur tempora deleniti ea cum totam. Qui quidem quis eius expedita atque officia incidunt."
+                },
+                "slug": {
+                    "en_US": "mrs-karlie-torp"
+                },
+                "title": {
+                    "en_US": "Felipa Haley PhD"
+                },
+                "summary": {
+                    "en_US": "Railroad Inspector"
+                }
+            },
+            "model": "page",
+            "kind": "ancestor",
+            "position": 0,
+            "depth": 1,
+            "tags": null
+        },
+        {
+            "id": "4cbbd1cd-3708-4ac2-8ff7-7261cd6fbe81",
+            "content": {
+                "body": {
+                    "en_US": "Voluptatem sed autem voluptas eum fuga amet neque. Odit accusantium nemo et architecto."
+                },
+                "slug": {
+                    "en_US": "amely-koepp"
+                },
+                "title": {
+                    "en_US": "Ashley D'Amore"
+                },
+                "summary": {
+                    "en_US": "Homeland Security"
+                }
+            },
+            "model": "page",
+            "kind": "ancestor",
+            "position": 0,
+            "depth": 1,
+            "tags": null
+        },
+        {
+            "id": "6d776ddf-b416-42c7-86cf-c665770c96ff",
+            "content": {
+                "body": {
+                    "en_US": "Error animi autem sunt et. Qui quia eos sunt sint dicta eligendi quasi. Ut quae aut facilis vel."
+                },
+                "slug": {
+                    "en_US": "janis-jenkins-jr"
+                },
+                "title": {
+                    "en_US": "Mr. Reagan Deckow I"
+                },
+                "summary": {
+                    "en_US": "Pesticide Sprayer"
+                }
+            },
+            "model": "page",
+            "kind": "ancestor",
+            "position": 0,
+            "depth": 1,
+            "tags": null
+        },
+        {
+            "id": "7d504be2-ca0f-4836-b6d2-f00c2dff209c",
+            "content": {
+                "body": {
+                    "en_US": "Consequatur deserunt non quo sint. Voluptas sint et aliquam qui."
+                },
+                "slug": {
+                    "en_US": "mr-xavier-yundt-iv"
+                },
+                "title": {
+                    "en_US": "Joyce Kohler MD"
+                },
+                "summary": {
+                    "en_US": "Transportation Equipment Maintenance"
+                }
+            },
+            "model": "page",
+            "kind": "ancestor",
+            "position": 0,
+            "depth": 1,
+            "tags": null
+        },
+        {
+            "id": "801892f7-8dcb-4fdc-a1fd-5251ceb6af09",
+            "content": {
+                "body": {
+                    "en_US": "Assumenda quaerat ipsam dolores ducimus itaque earum sit. Aut dolorem nisi et harum sunt molestiae."
+                },
+                "slug": {
+                    "en_US": "ms-lauretta-rohan"
+                },
+                "title": {
+                    "en_US": "Dr. Briana Bergstrom DVM"
+                },
+                "summary": {
+                    "en_US": "Hotel Desk Clerk"
+                }
+            },
+            "model": "page",
+            "kind": "ancestor",
+            "position": 0,
+            "depth": 1,
+            "tags": null
+        }
+    ],
+    "first_page_url": "http://127.0.0.1:8000/api/entities?relating=bee7a88a-459c-419a-9b3f-96ad3d3822b5%3Aancestor&page=1",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "http://127.0.0.1:8000/api/entities?relating=bee7a88a-459c-419a-9b3f-96ad3d3822b5%3Aancestor&page=1",
+    "next_page_url": null,
+    "path": "http://127.0.0.1:8000/api/entities",
+    "per_page": 100,
+    "prev_page_url": null,
+    "to": 5,
+    "total": 5
+}
