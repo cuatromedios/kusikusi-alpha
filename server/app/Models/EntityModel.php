@@ -23,16 +23,7 @@ class EntityModel extends Model
     protected $table = 'entities';
     protected $fillable = ['id', 'model', 'properties', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
     protected $guarded = ['id'];
-    protected $casts = [
-        'properties' => 'array',
-        'tags' => 'array',
-        'child_relation_tags' => 'array',
-        'descendant_relation_tags' => 'array',
-        'siblings_relation_tags' => 'array',
-        'media_tags' => 'array',
-        'relation_tags' => 'array',
-        'is_active' => 'boolean'
-    ];
+
     protected $propertiesFields = [
         "title" => [ "multilang" => true ]
     ];

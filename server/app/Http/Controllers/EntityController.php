@@ -16,8 +16,8 @@ class EntityController extends Controller
      *
      * @group Entity
      * @authenticated
-     * @queryParam select
-     * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat content json attributes using a dot syntax. Example: id,model,content.title
+     * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax. Example: id,model,properties.price
+     * @queryParam order-by A comma separated lis of fields to order by. Example: model,price:desc
      * @queryParam of-model (filter) The name of the model the entities should be. Example: page
      * @queryParam is-published (filter) Get only published, not deleted entities, true if not set. Example: true
      * @queryParam child-of (filter) The id or short id of the entity the result entities should be child of. Example: home
@@ -36,7 +36,19 @@ class EntityController extends Controller
         $entities = Entity::query();
         // Add selects
         $entities = $this->addSelects($entities, $request, $request->get('lang'));
-            // Filters
+        // Orders by
+        $entities = $entities->when($request->get('order-by'), function ($q) use ($request) {
+            $orders = explode(",", $request->get('order-by'));
+            foreach ($orders as $order) {
+                $parts = explode(":", last(explode(".", $order)));
+                if (isset($parts[1])) {
+                    return $q->orderBy($parts[0], $parts[1] === 'desc' ? $parts[1] : 'asc');
+                } else {
+                    return $q->orderBy($parts[0]);
+                }
+            }
+        });
+        // Filters
         $entities = $entities->when($request->get('of-model'), function ($q) use ($request) {
                 return $q->ofModel($request->get('of-model'));
             })
@@ -107,12 +119,14 @@ class EntityController extends Controller
      */
     private function addSelects($query, $request, $lang) {
         // Selects
-        $query->when(!$request->exists('select'), function ($q) use ($request) {
+        $query->when(!$request->exists('select') && !$request->exists('order-by'), function ($q) use ($request) {
             return $q->select('entities.*');
         })
-        ->when($request->get('select'), function ($q) use ($request) {
+        ->when($request->get('select') || $request->get('order-by'), function ($q) use ($request) {
             $selects = explode(',', $request->get('select'));
-            foreach ($selects as $select) {
+            $ordersBy = explode(',', $request->get('order-by'));
+            foreach (array_merge($selects, $ordersBy) as $select) {
+                $select = explode(":", $select)[0];
                 $flatProperties = [];
                 if (Str::startsWith( $select, 'properties.')) {
                     $flatProperties[] = Str::after($select, '.');

@@ -27,7 +27,10 @@ class SampleSiteSeeder extends Seeder
             for ($p = 0; $p < $pages_count; $p++) {
                 $page = factory(App\Models\Entity::class)->make([
                     "model" => "page",
-                    "parent_entity_id" => $section->id
+                    "parent_entity_id" => $section->id,
+                    "properties" => [
+                        "price" => rand(10, 100)
+                    ]
                 ]);
                 $page->save();
                 $media = Entity::where('short_id', 'media')->first();
