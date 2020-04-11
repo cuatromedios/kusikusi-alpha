@@ -4,6 +4,9 @@ namespace App\Models;
 
 class Entity extends EntityModel
 {
+    /**
+     * @var array A list of columns from the entities tables and other joins needs to be casted
+     */
     protected $casts = [
         'properties' => 'array',
         'tags' => 'array',
@@ -12,7 +15,6 @@ class Entity extends EntityModel
         'siblings_relation_tags' => 'array',
         'media_tags' => 'array',
         'relation_tags' => 'array',
-        'is_active' => 'boolean',
-        'price' => 'integer'
+        'is_active' => 'boolean'
     ];
 }
