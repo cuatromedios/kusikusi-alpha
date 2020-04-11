@@ -14,8 +14,8 @@
  */
 
 return [
-    "langs" => ["en_US"], // The first lang will be the default each time the entity is loaded
-    "page_size" => 100, // Default page size if not defined in the call
+    "langs" => ["en_US", "es_ES"], // The first lang will be the default each time the entity is loaded
+    "page_size" => 25, // Default page size if not defined in the call
     "token_expiration_in_seconds" => 0, // Seconds to the token to be expired or 0
     "models" => [
         "home" => [

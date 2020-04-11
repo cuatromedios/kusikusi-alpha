@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class EntityController extends Controller
 {
@@ -16,6 +17,7 @@ class EntityController extends Controller
      * @group Entity
      * @authenticated
      * @queryParam select
+     * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat content json attributes using a dot syntax. Example: id,model,content.title
      * @queryParam of-model (filter) The name of the model the entities should be. Example: page
      * @queryParam is-published (filter) Get only published, not deleted entities, true if not set. Example: true
      * @queryParam child-of (filter) The id or short id of the entity the result entities should be child of. Example: home
@@ -31,8 +33,11 @@ class EntityController extends Controller
      */
     public function index(Request $request)
     {
-        $entities = Entity::select('entities.*')
-            ->when($request->get('of-model'), function ($q) use ($request) {
+        $entities = Entity::query();
+        // Add selects
+        $entities = $this->addSelects($entities, $request, $request->get('lang'));
+            // Filters
+        $entities = $entities->when($request->get('of-model'), function ($q) use ($request) {
                 return $q->ofModel($request->get('of-model'));
             })
             ->when(!$request->exists('is-published') || $request->get('is-published') === 'true' || $request->get('is-published') === '', function ($q) use ($request) {
@@ -73,10 +78,9 @@ class EntityController extends Controller
             })
             ->when($request->get('media-of'), function ($q) use ($request) {
                 return $q->mediaOf($request->get('media-of'));
-            })
-            ->orderBy('descendant_relation_depth', 'asc')
-            ->orderBy('descendant_relation_position')
-            ->paginate(Config::get('cms.page_size', 100))
+            });
+
+        $entities = $entities->paginate($request->get('per-page') ? intval($request->get('per-page')) : Config::get('cms.page_size', 100))
             ->withQueryString();
         return $entities;
     }
@@ -92,6 +96,36 @@ class EntityController extends Controller
     public function show($entity_id)
     {
         return Entity::findOrFail($entity_id);
+    }
+
+    /**
+     * Process the request to know for select query parameter and add the corresponding select statments
+     *
+     * @param $query
+     * @param $request
+     * @return mixed
+     */
+    private function addSelects($query, $request, $lang) {
+        // Selects
+        $query->when(!$request->exists('select'), function ($q) use ($request) {
+            return $q->select('entities.*');
+        })
+        ->when($request->get('select'), function ($q) use ($request) {
+            $selects = explode(',', $request->get('select'));
+            foreach ($selects as $select) {
+                $flatContent = [];
+                if (Str::startsWith( $select, 'content.')) {
+                    $flatContent[] = Str::after($select, '.');
+                } else {
+                    $q->addSelect($select);
+                }
+                if ($flatContent) {
+                    $q->flatContents($flatContent);
+                }
+            }
+            return $q;
+        });
+        return $query;
     }
 
 }
