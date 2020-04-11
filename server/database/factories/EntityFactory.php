@@ -28,7 +28,7 @@ $factory->define(Entity::class, function (Faker $faker) {
     return [
         "model" => "entity",
         "parent_entity_id" => null,
-        "content" => [
+        "properties" => [
             "title" => $titles,
             "summary" => $summaries,
             "body" => $bodies,
@@ -44,7 +44,7 @@ $factory->state(Entity::class, 'medium', function (Faker $faker) {
     return [
         "model" => "entity",
         "parent_entity_id" => null,
-        "content" => [
+        "properties" => [
             "title" => [ "en" => $title ],
             "format" => "jpg",
             "slug" => [ "en" => Str::slug($title)],

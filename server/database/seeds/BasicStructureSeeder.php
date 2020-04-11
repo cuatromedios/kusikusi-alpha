@@ -31,7 +31,7 @@ class BasicStructureSeeder extends Seeder
             "model" => "home",
             "short_id" => "home",
             "parent_entity_id" => $root->id,
-            "content" => [
+            "properties" => [
                 "title" => $titles,
                 'welcome' => $welcomes,
                 "slug" => $slugs,

@@ -21,10 +21,10 @@ class EntityModel extends Model
      * PROPERTIES
      **********************/
     protected $table = 'entities';
-    protected $fillable = ['id', 'model', 'content', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
+    protected $fillable = ['id', 'model', 'properties', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
     protected $guarded = ['id'];
     protected $casts = [
-        'content' => 'array',
+        'properties' => 'array',
         'tags' => 'array',
         'child_relation_tags' => 'array',
         'descendant_relation_tags' => 'array',
@@ -33,7 +33,7 @@ class EntityModel extends Model
         'relation_tags' => 'array',
         'is_active' => 'boolean'
     ];
-    protected $contentFields = [
+    protected $propertiesFields = [
         "title" => [ "multilang" => true ]
     ];
 
@@ -248,19 +248,15 @@ class EntityModel extends Model
      * @return Builder
      */
 
-    public function scopeFlatContents($query, $modelOrFields, $lang=null) {
+    public function scopeFlatProperties($query, $modelOrFields, $lang=null) {
         if (is_string($modelOrFields)) {
-            $contentConfig = config("cms.models.$modelOrFields.content", []);
-            [$contentFields, $values] = Arr::divide($contentConfig);
+            $propertiesConfig = config("cms.models.$modelOrFields.properties", []);
+            [$propertiesFields, $values] = Arr::divide($propertiesConfig);
         } else {
-            $contentFields = $modelOrFields;
+            $propertiesFields = $modelOrFields;
         }
-        foreach ($contentFields as $field) {
-            if ($lang) {
-                $query->addSelect("content->".$field."->".$lang." as $field");
-            } else {
-                $query->addSelect("content->$field as $field");
-            }
+        foreach ($propertiesFields as $field) {
+            $query->addSelect("properties->$field as $field");
         }
     }
 
@@ -309,13 +305,13 @@ class EntityModel extends Model
         );
     }
     /**
-     * Get the content fields associated with the model.
+     * Get the properties fields associated with the model.
      *
      * @return array
      */
-    public function getContentFields()
+    public function getPropertiesFields()
     {
-        return $this->content ?? [];
+        return $this->properties ?? [];
     }
 
     /**********************
@@ -436,9 +432,9 @@ class EntityModel extends Model
                 }
             };
             // Create the automatic created routes
-            if (isset($entity->content['slug'])) {
+            if (isset($entity->properties['slug'])) {
                 Route::where('entity_id', $entity->id)->where('default', true)->delete();
-                foreach ($entity->content['slug'] as $lang => $slug) {
+                foreach ($entity->properties['slug'] as $lang => $slug) {
                     if ($parentEntity->routes->count()) {
                         foreach($parentEntity->routes as $route) {
                             if ($route->default && $route->lang === $lang) {

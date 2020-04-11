@@ -113,14 +113,14 @@ class EntityController extends Controller
         ->when($request->get('select'), function ($q) use ($request) {
             $selects = explode(',', $request->get('select'));
             foreach ($selects as $select) {
-                $flatContent = [];
-                if (Str::startsWith( $select, 'content.')) {
-                    $flatContent[] = Str::after($select, '.');
+                $flatProperties = [];
+                if (Str::startsWith( $select, 'properties.')) {
+                    $flatProperties[] = Str::after($select, '.');
                 } else {
                     $q->addSelect($select);
                 }
-                if ($flatContent) {
-                    $q->flatContents($flatContent);
+                if ($flatProperties) {
+                    $q->flatProperties($flatProperties);
                 }
             }
             return $q;

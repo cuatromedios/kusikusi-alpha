@@ -19,14 +19,14 @@ return [
     "token_expiration_in_seconds" => 0, // Seconds to the token to be expired or 0
     "models" => [
         "home" => [
-            "content" => [
+            "properties" => [
                 "title" => [ "multilang" => true ],
                 "welcome" => [ "multilang" => true ],
                 "footer" => [ "multilang" => true ],
             ]
         ],
         "page" => [
-            "content" => [
+            "properties" => [
                 "title" => [ "multilang" => true ],
                 "summary" => [ "multilang" => true ],
                 "body" => [ "multilang" => true ],
@@ -34,7 +34,7 @@ return [
             "allowedChildren" => []
         ],
         "section" => [
-            "content" => [
+            "properties" => [
                 "title" => [ "multilang" => true ],
                 "summary" => [ "multilang" => true ],
                 "body" => []
@@ -42,7 +42,7 @@ return [
             "allowedChildren" => ['page']
         ],
         "medium" => [
-            "content" => [
+            "properties" => [
                 "title" => [ "multilang" => true ],
                 "size"
             ],

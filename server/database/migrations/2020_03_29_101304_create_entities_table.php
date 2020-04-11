@@ -17,7 +17,7 @@ class CreateEntitiesTable extends Migration
             $table->uuid('id')->primary();
             $table->char('short_id', 16)->index()->unique();
             $table->string('model');
-            $table->json('content')->nullable();
+            $table->json('properties')->nullable();
             $table->string('view')->nullable();
             $table->uuid('parent_entity_id')->index('parent')->nullable();
             $table->boolean('is_active')->default(true);

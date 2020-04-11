@@ -43,9 +43,9 @@ class WebController extends Controller
         // TODO: Is there a better way using Laravel Query builder or native
         /* $langs = config('cms.langs', ['en']);
         $searchResult = Entity::select("id", "model")
-            ->orWhere("content->url", $url);
+            ->orWhere("properties->url", $url);
         foreach ($langs as $searchLang) {
-            $searchResult->orWhere("content->url->$searchLang", $url);
+            $searchResult->orWhere("properties->url->$searchLang", $url);
         }
         $searchResult = $searchResult->first();
         */
@@ -56,11 +56,11 @@ class WebController extends Controller
             $controller = new $controllerClassName;
             return ($controller->error($request, 404));
         }
-        // Select an entity with its contents
+        // Select an entity with its properties
         $lang = $searchResult->lang;
         $entity = Entity::select("*")
             ->where("id", $searchResult->entity_id)
-            ->flatContents($searchResult->entity_model, $lang)
+            ->flatProperties($searchResult->entity_model, $lang)
             ->with('entitiesRelated')
             ->with('routes')
             ->first();
