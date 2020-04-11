@@ -76,6 +76,7 @@ $app->configure('app');
 $app->configure('cms');
 $app->configure('media');
 $app->configure('filesystems');
+$app->configure('apidoc');
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +113,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Intervention\Image\ImageServiceProvider::class);
+$app->register(\Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
