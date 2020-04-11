@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 class EntityController extends Controller
 {
     /**
-     * Retrieve the entities.
+     * Retrieve a list of  entities.
      *
-     * @param  uuid  $entity_id
+     * Returns a paginated collection of entities
+     *
+     * @group Entity
+     * @authenticated
      * @return Response
      */
     public function index()
@@ -21,7 +24,9 @@ class EntityController extends Controller
     /**
      * Retrieve the entity for the given ID.
      *
-     * @param  uuid  $entity_id
+     * @group Entity
+     * @authenticated
+     * @urlParam $entity_id string required The id or short id of the entity to be retrieved
      * @return Response
      */
     public function show($entity_id)
