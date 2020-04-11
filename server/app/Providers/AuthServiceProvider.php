@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\User;
+use App\Models\Authtoken;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -35,9 +36,10 @@ class AuthServiceProvider extends ServiceProvider
             if ($request->header('Authorization')) {
                 $token = explode(' ',$request->header('Authorization'))[1];
                 $user = User::whereHas('authtokens', function ($query) use ($token) {
-                    $query->where('token', $token)
-                    ->where('expire_at', '>', Carbon::now());
+                    $query->where('token', $token);
+                    //->where('expire_at', '>', Carbon::now());
                 })->first();
+                return $user;
             }
         });
     }
