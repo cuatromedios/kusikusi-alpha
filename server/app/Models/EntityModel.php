@@ -26,6 +26,11 @@ class EntityModel extends Model
     protected $casts = [
         'content' => 'array',
         'tags' => 'array',
+        'child_relation_tags' => 'array',
+        'descendant_relation_tags' => 'array',
+        'siblings_relation_tags' => 'array',
+        'media_tags' => 'array',
+        'relation_tags' => 'array',
         'is_active' => 'boolean'
     ];
     protected $contentFields = [
@@ -80,8 +85,8 @@ class EntityModel extends Model
                 ->where('relation_children.kind', '=', EntityRelation::RELATION_ANCESTOR)
             ;
         })
-        ->addSelect('relation_children.position as position')
-        ->addSelect('relation_children.tags as tags');
+        ->addSelect('relation_children.position as child_relation_position')
+        ->addSelect('relation_children.tags as child_relation_tags');
     }
 
     /**
@@ -101,7 +106,8 @@ class EntityModel extends Model
                 ->where('relation_parent.depth', '=', 1)
                 ->where('relation_parent.kind', '=', EntityRelation::RELATION_ANCESTOR)
             ;
-        });
+        })
+            ->addSelect('relation_parent.depth as parent_relation_depth');
     }
 
     /**
@@ -112,18 +118,16 @@ class EntityModel extends Model
      * @return Builder
      * @throws \Exception
      */
-    public function scopeAncestorOf($query, $entity_id, $order = 'desc')
+    public function scopeAncestorOf($query, $entity_id)
     {
         $entity_id = $this->entityIdFromIdOrShortId($entity_id);
-        if ($order != 'asc') {
-            $order = 'desc';
-        }
         $query->join('relations as relation_ancestor', function ($join) use ($entity_id) {
             $join->on('relation_ancestor.called_entity_id', '=', 'entities.id')
                 ->where('relation_ancestor.caller_entity_id', '=', $entity_id)
                 ->where('relation_ancestor.kind', '=', EntityRelation::RELATION_ANCESTOR)
             ;
-        })->orderBy('relation_ancestor.depth', $order);
+        })
+            ->addSelect('relation_ancestor.depth as ancestor_relation_depth');
     }
 
     /**
@@ -134,21 +138,42 @@ class EntityModel extends Model
      * @return Builder
      * @throws \Exception
      */
-    public function scopeDescendantOf($query, $entity_id, $order = 'desc', $depth = NULL)
+    public function scopeDescendantOf($query, $entity_id, $depth = 99)
     {
         $entity_id = $this->entityIdFromIdOrShortId($entity_id);
-        if ($order != 'asc') {
-            $order = 'desc';
-        }
-        if ($depth == NULL) {
-            $depth = 9999;
-        }
         $query->join('relations as relation_descendants', function ($join) use ($entity_id, $depth) {
             $join->on('relation_descendants.caller_entity_id', '=', 'entities.id')
                 ->where('relation_descendants.called_entity_id', '=', $entity_id)
                 ->where('relation_descendants.kind', '=', EntityRelation::RELATION_ANCESTOR)
                 ->where('relation_descendants.depth', '<=', $depth);
-        })->orderBy('relation_descendants.depth', $order)->orderBy('relation_descendants.position');
+            })
+            ->addSelect('relation_descendants.position as descendant_relation_position')
+            ->addSelect('relation_descendants.depth as descendant_relation_depth')
+            ->addSelect('relation_descendants.tags as descendant_relation_tags');
+    }
+
+    /**
+     * Scope a query to only include descendants of a given entity id.
+     *
+     * @param Builder $query
+     * @param number $entity_id The id or short_id of the  entity
+     * @return Builder
+     * @throws \Exception
+     */
+    public function scopeSiblingsOf($query, $entity_id)
+    {
+        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
+        $parent_entity = Entity::find($entity_id);
+        $query->join('relations as relation_siblings', function ($join) use ($parent_entity) {
+            $join->on('relation_siblings.caller_entity_id', '=', 'entities.id')
+                ->where('relation_siblings.called_entity_id', '=', $parent_entity->parent_entity_id)
+                ->where('relation_siblings.depth', '=', 1)
+                ->where('relation_siblings.kind', '=', EntityRelation::RELATION_ANCESTOR)
+            ;
+        })
+            ->where('entities.id', '!=', $entity_id)
+            ->addSelect('relation_siblings.position as siblings_relation_position')
+            ->addSelect('relation_siblings.tags as siblings_relation_tags');
     }
 
     /**
@@ -170,7 +195,7 @@ class EntityModel extends Model
                 } else {
                     $join->where('related_by.kind', '=', $kind);
                 }
-        })->addSelect('related_by.kind', 'related_by.position', 'related_by.depth', 'related_by.tags');
+        })->addSelect('related_by.kind as relation_kind', 'related_by.position as relation_position', 'related_by.depth as relation_depth', 'related_by.tags as relation_tags');
     }
 
     /**
@@ -193,7 +218,7 @@ class EntityModel extends Model
             } else {
                 $join->where('relating.kind', '=', $kind);
             }
-        })->addSelect('relating.kind', 'relating.position', 'relating.depth', 'relating.tags');
+        })->addSelect('relating.kind as relation_kind', 'relating.position as relation_position', 'relating.depth as relation_depth', 'relating.tags as relation_tags');
     }
 
     /**
@@ -212,8 +237,7 @@ class EntityModel extends Model
                 ->where('relation_media.caller_entity_id', '=', $entity_id)
                 ->where('relation_media.kind', '=', EntityRelation::RELATION_MEDIA);
             })
-            ->addSelect('relation_media.kind', 'relation_media.position', 'relation_media.depth', 'relation_media.tags')
-            ->orderBy('relation_media.position');
+            ->addSelect( 'relation_media.position as media_position', 'relation_media.depth as media_depth', 'relation_media.tags as media_tags');
     }
     /**
      * Scope a query to flat the languages object.
@@ -306,8 +330,6 @@ class EntityModel extends Model
             ->when($kind, function ($q) use ($kind) {
                 return $q->where('kind', $kind);
             })
-            ->orderBy(EntityRelation::TABLE.'.position')
-            ->orderBy(EntityRelation::TABLE.'.created_at')
             ->withTimestamps();
     }
     public function entitiesRelating($kind = null) {
@@ -318,8 +340,6 @@ class EntityModel extends Model
             ->when($kind, function ($q) use ($kind) {
                 return $q->where('kind', $kind);
             })
-            ->orderBy(EntityRelation::TABLE.'.position')
-            ->orderBy(EntityRelation::TABLE.'.created_at')
             ->withTimestamps();
     }
     public function media() {
@@ -331,8 +351,6 @@ class EntityModel extends Model
             ->as('relation')
             ->withPivot('kind', 'position', 'depth', 'tags')
             ->where('kind', EntityRelation::RELATION_MEDIA)
-            ->orderBy(EntityRelation::TABLE.'.position')
-            ->orderBy(EntityRelation::TABLE.'.created_at')
             ->withTimestamps();
     }
     public function routes() {
@@ -347,7 +365,7 @@ class EntityModel extends Model
      *********************/
 
     private function entityIdFromIdOrShortId ($idOrShortId) {
-        if (strlen($idOrShortId) === 36) {
+        if (strlen($idOrShortId) >= 36) {
             return $idOrShortId;
         } elseif (is_string($idOrShortId)) {
             $entity = Entity::select('id')->where('short_id', $idOrShortId)->first();
@@ -406,7 +424,8 @@ class EntityModel extends Model
                     "depth" => 1
                 ]);
                 $depth = 2;
-                foreach ($parentEntity->entitiesRelated as $ancestor) {
+                $ancestors = Entity::select('id')->ancestorOf($parentEntity->id)->orderBy('ancestor_relation_depth')->get();
+                foreach ($ancestors as $ancestor) {
                     EntityRelation::create([
                         "caller_entity_id" => $entity->id,
                         "called_entity_id" => $ancestor->id,

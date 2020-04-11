@@ -22,6 +22,7 @@ class EntityController extends Controller
      * @queryParam parent-of (filter) The id or short id of the entity the result entities should be parent of (will return only one). Example: 801892f7-8dcb-4fdc-a1fd-5251ceb6af09
      * @queryParam ancestor-of (filter) The id or short id of the entity the result entities should be ancestor of. Example: 701892f7-8dcb-4fdc-a1fd-5251ceb6af08
      * @queryParam descendant-of (filter) The id or short id of the entity the result entities should be descendant of. Example: 601892f7-8dcb-4fdc-a1fd-5251ceb6af07
+     * @queryParam siblings-of (filter) The id or short id of the entity the result entities should be siblings of. Example: 601892f7-8dcb-4fdc-a1fd-5251ceb6af07
      * @queryParam related-by (filter) The id or short id of the entity the result entities should have been called by using a relation. Can be added a filter to a kind of relation for example: theShortId:category. The ancestor kind of relations are discarted unless are explicity specified. Example: 501892f7-8dcb-4fdc-a1fd-5251ceb6af06
      * @queryParam relating (filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
      * @queryParam media-of (filter) The id or short id of the entity the result entities should have a media relation to. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
@@ -30,7 +31,7 @@ class EntityController extends Controller
      */
     public function index(Request $request)
     {
-        $entities = Entity::select('*')
+        $entities = Entity::select('entities.*')
             ->when($request->get('of-model'), function ($q) use ($request) {
                 return $q->ofModel($request->get('of-model'));
             })
@@ -48,6 +49,9 @@ class EntityController extends Controller
             })
             ->when($request->get('descendant-of'), function ($q) use ($request) {
                 return $q->descendantOf($request->get('descendant-of'));
+            })
+            ->when($request->get('siblings-of'), function ($q) use ($request) {
+                return $q->siblingsOf($request->get('siblings-of'));
             })
             ->when($request->get('related-by'), function ($q) use ($request) {
                 $values = explode(":", $request->get('related-by'));
@@ -70,9 +74,10 @@ class EntityController extends Controller
             ->when($request->get('media-of'), function ($q) use ($request) {
                 return $q->mediaOf($request->get('media-of'));
             })
-
-            ->paginate(Config::get('cms.page_size', 100));
-        $entities->withQueryString();
+            ->orderBy('descendant_relation_depth', 'asc')
+            ->orderBy('descendant_relation_position')
+            ->paginate(Config::get('cms.page_size', 100))
+            ->withQueryString();
         return $entities;
     }
 
