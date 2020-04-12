@@ -17,7 +17,8 @@ class HtmlController extends Controller
             "ancestors" => Entity::select('id', 'model')
                 ->ancestorOf($currentEntity->id)
                 ->descendantOf('root')
-                ->flatProperties(['title'], $request->lang)
+                ->flatProperties(['title'])
+                ->flatContents($request->lang, ['title'])
                 ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
                 ->get()
         ];
@@ -26,7 +27,8 @@ class HtmlController extends Controller
     private function children(Request $request, Entity $entity) {
         $children = Entity::select('id', 'model')
             ->childOf($entity->id)
-            ->flatProperties(['title'], $request->lang)
+            ->flatProperties(['title'])
+            ->flatContents($request->lang, ['title'])
             ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
             ->with(['medium' => function ($q) { $q->select('id','model','properties->format as format')->whereJsonContains('tags', 'icon'); }])
             ->orderBy('position')
@@ -50,6 +52,11 @@ class HtmlController extends Controller
     }
 
     public function page(Request $request, Entity $entity, $lang)
+    {
+        $result = $this->common($request, $entity);
+        return view('html.'.$entity->view, $result);
+    }
+    public function product(Request $request, Entity $entity, $lang)
     {
         $result = $this->common($request, $entity);
         return view('html.'.$entity->view, $result);

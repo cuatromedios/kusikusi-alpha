@@ -147,7 +147,7 @@ class EntityController extends Controller
                         $q->flatProperties($flatProperties);
                     }
                     if (count($flatContents) > 0) {
-                        $q->flatContents($flatContents, $lang);
+                        $q->flatContents($lang, $flatContents);
                     }
                     $this->addedSelects[] = $select;
                 }

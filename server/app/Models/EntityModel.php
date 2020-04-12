@@ -28,7 +28,7 @@ class EntityModel extends Model
     protected $guarded = ['id'];
     protected $contentFields = [ "title", 'slug' ];
     protected $propertiesFields = [];
-    protected $storedContents = [];
+    private $storedContents = [];
 
     /**********************
      * SCOPES
@@ -240,9 +240,13 @@ class EntityModel extends Model
      * @return Builder
      */
 
-    public function scopeFlatProperties($query, $modelOrFields, $lang=null) {
+    public function scopeFlatProperties($query, $modelOrFields=null) {
         if (is_string($modelOrFields)) {
-            $propertiesFields = $this->propertiesFields;
+            $modelClassName = "App\\Models\\".Str::studly($modelOrFields);
+            $modelInstance =  new $modelClassName();
+            $propertiesFields = $modelInstance->getPropertiesFields();
+        } else if (is_array($modelOrFields)) {
+            $propertiesFields = $modelOrFields;
         } else {
             $propertiesFields = $modelOrFields;
         }
@@ -259,14 +263,18 @@ class EntityModel extends Model
      * @return Builder
      */
 
-    public function scopeFlatContents($query, $modelOrFields, $lang=null) {
+    public function scopeFlatContents($query, $lang=null, $modelOrFields=null) {
         $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
         if (is_string($modelOrFields)) {
-            $propertiesFields = $this->contentFields;
+            $modelClassName = "App\\Models\\".Str::studly($modelOrFields);
+            $modelInstance =  new $modelClassName();
+            $contentFields = $modelInstance->getContentFields();
+        } else if (is_array($modelOrFields)) {
+            $contentFields = $modelOrFields;
         } else {
-            $propertiesFields = $modelOrFields;
+            $contentFields = $this->contentFields;
         }
-        foreach ($propertiesFields as $field) {
+        foreach ($contentFields as $field) {
             $query->leftJoin("contents as content_{$field}", function ($join) use ($field, $lang) {
                 $join->on("content_{$field}.entity_id", "entities.id")
                     ->where("content_{$field}.field", $field)
@@ -321,14 +329,11 @@ class EntityModel extends Model
             ]
         );
     }
-    /**
-     * Get the properties fields associated with the model.
-     *
-     * @return array
-     */
-    public function getPropertiesFields()
-    {
-        return $this->properties ?? [];
+    public function getContentFields() {
+        return $this->contentFields ?? [];
+    }
+    public function getPropertiesFields() {
+        return $this->propertiesFields ?? [];
     }
 
     /**

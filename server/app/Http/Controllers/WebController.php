@@ -28,7 +28,6 @@ class WebController extends Controller
      */
     public function any(Request $request)
     {
-        $query = ($request->query());
         $path = $request->path() == '/' ? '/' : '/' . $request->path();
         $format = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
@@ -62,7 +61,8 @@ class WebController extends Controller
         App::setLocale($lang);
         $entity = Entity::select("*")
             ->where("id", $searchResult->entity_id)
-            ->flatProperties($searchResult->entity_model, $lang)
+            ->flatProperties($searchResult->entity_model)
+            ->flatContents($lang, $searchResult->entity_model)
             ->with('entitiesRelated')
             ->with('routes')
             ->first();
