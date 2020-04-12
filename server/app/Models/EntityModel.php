@@ -449,10 +449,10 @@ class EntityModel extends Model
             ->withTimestamps();
     }
     public function routes() {
-        return $this->hasMany('App\Models\Route', 'entity_id', 'id');
+        return $this->hasMany('App\Models\Route', 'entity_id', 'route_id');
     }
     public function route($lang = null) {
-        return $this->hasOne('App\Models\Route', 'entity_id', 'id')
+        return $this->hasOne('App\Models\Route', 'entity_id', 'route_id')
             ->where('default', true)
             ->when($lang, function ($q) use ($lang) {
                 return $q->where('lang', $lang);

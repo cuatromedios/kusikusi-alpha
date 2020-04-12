@@ -7,8 +7,18 @@ use App\Models\Traits\UsesUuid;
 
 class Route extends Model
 {
+    /**
+     * To avoid "ambiguous" SQL errors Change the primary key for the model.
+     *
+     * @return string
+     */
+    public function getKeyName()
+    {
+        return 'route_id';
+    }
+
     use UsesUuid;
-    protected $hidden = array('created_at', 'updated_at', 'deleted_at', 'id', 'entity_id', 'entity_model');
+    protected $hidden = array('created_at', 'updated_at', 'deleted_at', 'route_id', 'entity_id', 'entity_model');
     public function entity () {
         return $this->belongsTo('App\Models\Entity');
     }

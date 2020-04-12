@@ -115,12 +115,25 @@ class EntityController extends Controller
      *
      * @group Entity
      * @authenticated
-     * @urlParam $entity_id string required The id or short id of the entity to be retrieved
+     * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax. Example: id,model,properties.price
+     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)
+     * @responseFile responses/entities.get.json
      * @return Response
      */
-    public function show($entity_id)
+    public function show(Request $request, $entity_id)
     {
-        return Entity::findOrFail($entity_id);
+        $entityFound = Entity::select('id', 'model')
+            ->where(Str::length($entity_id) === 36 ? 'id' : 'short_id', $entity_id)
+            ->firstOrFail();
+        $modelClassName = "App\\Models\\".Str::studly(Str::singular($entityFound->model));
+        if(!class_exists('$modelClassName')) {
+            $modelClassName = "App\\Models\\Entity";
+        }
+        $entity = $modelClassName::select('id');
+        $lang = $request->get('lang') ?? Config::get('cms.langs')[0] ?? '';
+        $entity = $this->addSelects($entity, $request, $lang, $modelClassName);
+        $entity = $this->addRelations($entity, $request);
+        return $entity->findOrFail($entityFound->id);;
     }
 
     /**
