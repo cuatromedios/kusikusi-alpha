@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Medium extends EntityModel
 {
-    const MODEL_NAME = 'medium';
     protected $appends = ['icon'];
     protected $contentFields = [ "title", "welcome", "footer" ];
     protected $propertiesFields = [ "size", "lang", "format", "length" ];

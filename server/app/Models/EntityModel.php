@@ -22,7 +22,7 @@ class EntityModel extends Model
     /**********************
      * PROPERTIES
      **********************/
-    const MODEL_NAME = null;
+
     protected $table = 'entities';
     protected $fillable = ['id', 'model', 'properties', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
     protected $guarded = ['id'];
@@ -472,9 +472,10 @@ class EntityModel extends Model
      *********************/
     protected static function boot()
     {
-        if (self::MODEL_NAME) {
-            static::addGlobalScope(self::MODEL_NAME, function (Builder $builder) {
-                $builder->where('model', self::MODEL_NAME);
+        $modelName = Str::camel(Str::afterLast(get_called_class(), '\\'));
+        if ($modelName !== 'entity') {
+            static::addGlobalScope($modelName, function (Builder $builder) use ($modelName) {
+                $builder->where('model', $modelName);
             });
         }
         parent::boot();

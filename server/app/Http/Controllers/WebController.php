@@ -64,8 +64,8 @@ class WebController extends Controller
             ->flatProperties($searchResult->entity_model)
             ->flatContents($lang, $searchResult->entity_model)
             ->with('entitiesRelated')
-            ->with('routes')
-            ->first();
+            ->with('routes');
+        $entity=$entity->first();
         if (!$entity->isPublished()) {
             $controllerClassName = "App\\Http\\Controllers\\HtmlController";
             $controller = new $controllerClassName;

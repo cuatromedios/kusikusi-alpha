@@ -18,6 +18,7 @@ class HtmlController extends Controller
                 ->ancestorOf($currentEntity->id)
                 ->descendantOf('root')
                 ->flatProperties(['title'])
+                ->orderBy('ancestor_relation_depth', 'desc')
                 ->flatContents($request->lang, ['title'])
                 ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
                 ->get()
