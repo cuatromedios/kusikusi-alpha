@@ -31,15 +31,22 @@ class EntityController extends Controller
      * @queryParam relating (filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
      * @queryParam media-of (filter) The id or short id of the entity the result entities should have a media relation to. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
      * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)
+     * @urlParam model_name
      * @responseFile responses/entities.get.json
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $model_name = null)
     {
-        $entities = Entity::query();
+        if ($model_name) {
+            $modelClassName = "App\\Models\\".Str::studly(Str::singular($model_name));
+            $entities = $modelClassName::query();
+        } else {
+            $modelClassName = "App\\Models\\Entity";
+            $entities = Entity::query();
+        }
         $lang = $request->get('lang') ?? Config::get('cms.langs')[0] ?? '';
         // Add selects
-        $entities = $this->addSelects($entities, $request, $lang);
+        $entities = $this->addSelects($entities, $request, $lang, $modelClassName);
         // Add relations
         $entities = $this->addRelations($entities, $request);
         // Orders by
@@ -123,12 +130,12 @@ class EntityController extends Controller
      * @param $request
      * @return mixed
      */
-    private function addSelects($query, $request, $lang) {
+    private function addSelects($query, $request, $lang, $modelClassName) {
         // Selects
         $query->when(!$request->exists('select') && !$request->exists('order-by'), function ($q) use ($request) {
             return $q->select('entities.*');
         })
-        ->when($request->get('select') || $request->get('order-by'), function ($q) use ($request, $lang) {
+        ->when($request->get('select') || $request->get('order-by'), function ($q) use ($request, $lang, $modelClassName) {
             $selects = explode(',', $request->get('select'));
             $ordersBy = explode(',', $request->get('order-by'));
             foreach (array_merge($selects, $ordersBy) as $select) {
@@ -140,6 +147,9 @@ class EntityController extends Controller
                         $flatProperties[] = Str::after($select, '.');
                     } else if (Str::startsWith( $select, 'contents.')) {
                         $flatContents[] = Str::after($select, '.');
+                    } else if ($select === "contents") {
+                        $modelInstance =  new $modelClassName();
+                        $flatContents = array_merge($flatContents, $modelInstance->getContentFields()) ;
                     } else if ($select) {
                         $q->addSelect($select);
                     }
