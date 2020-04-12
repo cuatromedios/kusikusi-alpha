@@ -356,13 +356,28 @@ class EntityModel extends Model
                         "text" => $value
                     ]
                 );
+                if ($key == 'slug') {
+                    Route::where('entity_id', $this->getId())->where('default', true)->where('lang', $lang)->delete();
+                    $parent_route = Route::where('entity_id', $this->parent_entity_id)->where('lang', $lang)->where('default', true)->first();
+                    $parent_route_path = $parent_route ? $parent_route->path === '/' ? '' : $parent_route->path : '';
+                    Route::create([
+                        "entity_id" => $this->getId(),
+                        "entity_model" => $this->model,
+                        "path" => $parent_route_path."/".$value,
+                        "lang" => $lang,
+                        "default" => true
+                    ]);
+                }
             }
         }
     }
 
     /**********************
      * RELATIONS
-     **********************/
+     *********************
+     * @param null $kind
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|mixed
+     */
     public function entitiesRelated($kind = null)
     {
         return $this->belongsToMany('App\Models\Entity', 'relations', 'caller_entity_id', 'called_entity_id')
