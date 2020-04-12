@@ -147,6 +147,8 @@ class EntityController extends Controller
                         $flatProperties[] = Str::after($select, '.');
                     } else if (Str::startsWith( $select, 'contents.')) {
                         $flatContents[] = Str::after($select, '.');
+                    } else if ($select === "route") {
+                        $q->flatRoute($lang);
                     } else if ($select === "contents") {
                         $modelInstance =  new $modelClassName();
                         $flatContents = array_merge($flatContents, $modelInstance->getContentFields()) ;

@@ -298,6 +298,25 @@ class EntityModel extends Model
             $query->addSelect("content_{$field}.text as $field");
         }
     }
+    /**
+     * Scope a query to flat the route.
+     *
+     * @param  Builder $query
+     * @param  string $modelOrFields The id of the model or an array of fields
+     * @param  string $lang The lang to use or null to use the default
+     * @return Builder
+     */
+
+    public function scopeFlatRoute($query, $lang=null) {
+        $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
+        $query->leftJoin("routes", function ($join) use ($lang) {
+            $join->on("routes.entity_id", "entities.id")
+                ->where("routes.default", 1)
+                ->where("routes.lang", $lang)
+            ;
+        });
+        $query->addSelect("routes.path as route");
+    }
 
     /**********************
      * PUBLIC METHODS
