@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Entity;
 use App\Models\Route;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\App;
 
 class WebController extends Controller
 {
@@ -58,6 +59,7 @@ class WebController extends Controller
         }
         // Select an entity with its properties
         $lang = $searchResult->lang;
+        App::setLocale($lang);
         $entity = Entity::select("*")
             ->where("id", $searchResult->entity_id)
             ->flatProperties($searchResult->entity_model, $lang)

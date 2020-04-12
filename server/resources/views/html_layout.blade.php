@@ -13,7 +13,7 @@
     @yield('main')
 </main>
 <footer>
-
+{{ trans("texts.language") }}: {{ trans("texts.$lang") }}
 </footer>
 @include('html.partials.debug')
 </body>
