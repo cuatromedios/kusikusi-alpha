@@ -19,8 +19,10 @@ class CreatePermissionsTable extends Migration
             $table->uuid('entity_id')->index();
             $table->enum('read',     ['none', 'own', 'any']);
             $table->enum('write',    ['none', 'own', 'any']);
-            $table->foreign('entity_id')->references('id')->on('entities');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('entity_id')->references('id')->on('entities')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

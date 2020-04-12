@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 class Medium extends EntityModel
 {
     const MODEL_NAME = 'medium';
+    protected $appends = ['icon'];
+    protected $contentFields = [ "title", "welcome", "footer" ];
+    protected $propertiesFields = [ "size", "lang", "format", "length" ];
 
     /**
      * @param $key
@@ -16,17 +19,5 @@ class Medium extends EntityModel
     {
         return "/media/$this->id/icon/image.jpg";
     }
-    protected $appends = ['icon'];
-    protected $contentFields = [
-        "title" => [ "multilang" => true ],
-        "welcome" => [ "multilang" => true ],
-        "footer" => [ "multilang" => true ],
-    ];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(self::MODEL_NAME, function (Builder $builder) {
-            $builder->where('model', self::MODEL_NAME);
-        });
-    }
 }

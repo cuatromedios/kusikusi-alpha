@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+/**
+ * Class Entity The ready to use model that extends EntityModel.
+ * Use this for general use.
+ * @package App\Models
+ */
 class Entity extends EntityModel
 {
     /**
@@ -17,4 +22,8 @@ class Entity extends EntityModel
         'relation_tags' => 'array',
         'is_active' => 'boolean'
     ];
+
+    public function getContentAttribute($contents) {
+        return "A";
+    }
 }

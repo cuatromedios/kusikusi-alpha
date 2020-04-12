@@ -18,21 +18,22 @@ $factory->define(Entity::class, function (Faker $faker) {
         $companyProviderClass = "\\Faker\\Provider\\{$lang}\\Company";
         $textProviderClass = "\\Faker\\Provider\\{$lang}\\Text";
         $faker->addProvider(new $personProviderClass($faker));
-        $faker->addProvider(new  $companyProviderClass($faker));
-        $faker->addProvider(new  $textProviderClass($faker));
+        $faker->addProvider(new $companyProviderClass($faker));
+        $faker->addProvider(new $textProviderClass($faker));
         $titles[$lang] = $faker->name;
         $summaries[$lang] = $faker->jobTitle;
         $bodies[$lang] = $faker->text(100);
-        $slugs[$lang] = Str::slug($faker->name);
+        $slugs[$lang] = Str::slug($titles[$lang]);
     }
     return [
         "model" => "entity",
         "parent_entity_id" => null,
-        "properties" => [
+        "properties" => [],
+        "contents" => [
             "title" => $titles,
             "summary" => $summaries,
             "body" => $bodies,
-            "slug" => $slugs
+            "slug" => $slugs,
         ]
     ];
 });

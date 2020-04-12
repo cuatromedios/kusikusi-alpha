@@ -31,13 +31,10 @@ class BasicStructureSeeder extends Seeder
             "model" => "home",
             "short_id" => "home",
             "parent_entity_id" => $root->id,
-            "properties" => [
-                "title" => $titles,
-                'welcome' => $welcomes,
-                "slug" => $slugs,
-            ]
+            "properties" => []
         ]);
         $home->save();
+
         $collections = new Entity([
             "model" => "collections",
             "short_id" => "collections",

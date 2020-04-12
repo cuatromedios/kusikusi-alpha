@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 
 class EntityController extends Controller
 {
+    private $calledRelations = [];
+    private $addedSelects = [];
     /**
      * Get a collection of  entities.
      *
@@ -17,7 +19,7 @@ class EntityController extends Controller
      * @group Entity
      * @authenticated
      * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax. Example: id,model,properties.price
-     * @queryParam order-by A comma separated lis of fields to order by. Example: model,price:desc
+     * @queryParam order-by A comma separated lis of fields to order by. Example: model,properties.price:desc,contents.title
      * @queryParam of-model (filter) The name of the model the entities should be. Example: page
      * @queryParam is-published (filter) Get only published, not deleted entities, true if not set. Example: true
      * @queryParam child-of (filter) The id or short id of the entity the result entities should be child of. Example: home
@@ -28,14 +30,18 @@ class EntityController extends Controller
      * @queryParam related-by (filter) The id or short id of the entity the result entities should have been called by using a relation. Can be added a filter to a kind of relation for example: theShortId:category. The ancestor kind of relations are discarted unless are explicity specified. Example: 501892f7-8dcb-4fdc-a1fd-5251ceb6af06
      * @queryParam relating (filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
      * @queryParam media-of (filter) The id or short id of the entity the result entities should have a media relation to. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
+     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents
      * @responseFile responses/entities.get.json
      * @return Response
      */
     public function index(Request $request)
     {
         $entities = Entity::query();
+        $lang = $request->get('lang') ?? Config::get('cms.langs')[0] ?? '';
         // Add selects
-        $entities = $this->addSelects($entities, $request, $request->get('lang'));
+        $entities = $this->addSelects($entities, $request, $lang);
+        // Add relations
+        $entities = $this->addRelations($entities, $request);
         // Orders by
         $entities = $entities->when($request->get('order-by'), function ($q) use ($request) {
             $orders = explode(",", $request->get('order-by'));
@@ -122,23 +128,54 @@ class EntityController extends Controller
         $query->when(!$request->exists('select') && !$request->exists('order-by'), function ($q) use ($request) {
             return $q->select('entities.*');
         })
-        ->when($request->get('select') || $request->get('order-by'), function ($q) use ($request) {
+        ->when($request->get('select') || $request->get('order-by'), function ($q) use ($request, $lang) {
             $selects = explode(',', $request->get('select'));
             $ordersBy = explode(',', $request->get('order-by'));
             foreach (array_merge($selects, $ordersBy) as $select) {
                 $select = explode(":", $select)[0];
-                $flatProperties = [];
-                if (Str::startsWith( $select, 'properties.')) {
-                    $flatProperties[] = Str::after($select, '.');
-                } else {
-                    $q->addSelect($select);
-                }
-                if ($flatProperties) {
-                    $q->flatProperties($flatProperties);
+                if (!in_array($select, $this->addedSelects)) {
+                    $flatProperties = [];
+                    $flatContents = [];
+                    if (Str::startsWith( $select, 'properties.')) {
+                        $flatProperties[] = Str::after($select, '.');
+                    } else if (Str::startsWith( $select, 'contents.')) {
+                        $flatContents[] = Str::after($select, '.');
+                    } else if ($select) {
+                        $q->addSelect($select);
+                    }
+                    if (count($flatProperties) > 0) {
+                        $q->flatProperties($flatProperties);
+                    }
+                    if (count($flatContents) > 0) {
+                        $q->flatContents($flatContents, $lang);
+                    }
+                    $this->addedSelects[] = $select;
                 }
             }
             return $q;
         });
+        return $query;
+    }
+
+    /**
+     * Process the request to know for relations query parameter and add the corresponding select statments
+     *
+     * @param $query
+     * @param $request
+     * @return mixed
+     */
+    private function addRelations($query, $request) {
+        // Selects
+        $query->when($request->get('with'), function ($q) use ($request) {
+                $relations = explode(',', $request->get('with'));
+                foreach ($relations as $relation) {
+                    if (!in_array($relation, $this->calledRelations)) {
+                        $q->with($relation);
+                        $this->calledRelations[] = $relation;
+                    };
+                }
+                return $q;
+            });
         return $query;
     }
 

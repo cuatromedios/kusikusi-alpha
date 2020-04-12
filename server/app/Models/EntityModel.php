@@ -11,6 +11,8 @@ use Ankurk91\Eloquent\BelongsToOne;
 use Illuminate\Support\Str;
 use PUGX\Shortid\Shortid;
 use App\Models\Traits\UsesUuid;
+use App\Models\EntityContent;
+use Illuminate\Support\Facades\Config;
 
 class EntityModel extends Model
 {
@@ -20,13 +22,13 @@ class EntityModel extends Model
     /**********************
      * PROPERTIES
      **********************/
+    const MODEL_NAME = null;
     protected $table = 'entities';
     protected $fillable = ['id', 'model', 'properties', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
     protected $guarded = ['id'];
-
-    protected $propertiesFields = [
-        "title" => [ "multilang" => true ]
-    ];
+    protected $contentFields = [ "title", 'slug' ];
+    protected $propertiesFields = [];
+    protected $storedContents = [];
 
     /**********************
      * SCOPES
@@ -231,7 +233,25 @@ class EntityModel extends Model
             ->addSelect( 'relation_media.position as media_position', 'relation_media.depth as media_depth', 'relation_media.tags as media_tags');
     }
     /**
-     * Scope a query to flat the languages object.
+     * Scope a query to flat the properties json column.
+     *
+     * @param  Builder $query
+     * @param  string $modelOrFields The id of the model or an array of fields
+     * @return Builder
+     */
+
+    public function scopeFlatProperties($query, $modelOrFields, $lang=null) {
+        if (is_string($modelOrFields)) {
+            $propertiesFields = $this->propertiesFields;
+        } else {
+            $propertiesFields = $modelOrFields;
+        }
+        foreach ($propertiesFields as $field) {
+            $query->addSelect("properties->$field as $field");
+        }
+    }
+    /**
+     * Scope a query to flat the contents.
      *
      * @param  Builder $query
      * @param  string $modelOrFields The id of the model or an array of fields
@@ -239,15 +259,21 @@ class EntityModel extends Model
      * @return Builder
      */
 
-    public function scopeFlatProperties($query, $modelOrFields, $lang=null) {
+    public function scopeFlatContents($query, $modelOrFields, $lang=null) {
+        $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
         if (is_string($modelOrFields)) {
-            $propertiesConfig = config("cms.models.$modelOrFields.properties", []);
-            [$propertiesFields, $values] = Arr::divide($propertiesConfig);
+            $propertiesFields = $this->contentFields;
         } else {
             $propertiesFields = $modelOrFields;
         }
         foreach ($propertiesFields as $field) {
-            $query->addSelect("properties->$field as $field");
+            $query->leftJoin("contents as content_{$field}", function ($join) use ($field, $lang) {
+                $join->on("content_{$field}.entity_id", "entities.id")
+                    ->where("content_{$field}.field", $field)
+                    ->where("content_{$field}.lang", $lang)
+                ;
+            });
+            $query->addSelect("content_{$field}.text as $field");
         }
     }
 
@@ -258,7 +284,7 @@ class EntityModel extends Model
 
     public function addRelation($relationData) {
         if (!isset($relationData['caller_entity_id'])) {
-            $relationData['caller_entity_id'] = $this->id;
+            $relationData['caller_entity_id'] = $this->getId();
         }
         self::createRelation($relationData);
     }
@@ -305,6 +331,35 @@ class EntityModel extends Model
         return $this->properties ?? [];
     }
 
+    /**
+     * Adds content rows to an Entity.
+     *
+     * @param  array $contents An array of one or more contents, for example ["title" => ["en" => "The title", "es" => "El título"], "slug" => ["en" => "the-title", "es" => "el-titulo"]] or without language defined if using the default one or explicit set as the second param ["title" => "The title", "slug" => "the-title"]
+     * @param  string $lang optional language code, for example "en" or "es-mx"
+     */
+    public function addContents($contents, $lang = NULL)
+    {
+        $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
+        foreach ($contents as $key=>$value) {
+            if (gettype($value) === 'array') {
+                foreach ($value as $lang => $text) {
+                    $this->addContents([ $key => $text], $lang);
+                }
+            } else if (gettype($value) === 'string') {
+                EntityContent::updateOrCreate(
+                    [
+                        "entity_id" => $this->getId(),
+                        "field" => $key,
+                        "lang" => $lang
+                    ],
+                    [
+                        "text" => $value
+                    ]
+                );
+            }
+        }
+    }
+
     /**********************
      * RELATIONS
      **********************/
@@ -346,6 +401,12 @@ class EntityModel extends Model
     public function route() {
         return $this->hasOne('App\Models\Route')->where('default', true);
     }
+    public function entityContents($lang = null) {
+        return $this->hasMany('App\Models\EntityContent')
+            ->when($lang, function ($q) use ($lang) {
+                return $q->where('lang', $lang);
+            });
+    }
 
     /***********************
      * PRIVATE METHODS
@@ -365,12 +426,37 @@ class EntityModel extends Model
             throw new \Exception('The id should be an uuid or a short_id string');
         }
     }
+    /**
+     * Returns the id of the instance, if none is defined, it creates one
+     */
+    private function getId() {
+        if (!isset($this->id)) {
+            $this->id = Str::uuid();
+        }
+        return $this->id;
+    }
+
+    /**
+     * Set stored contents to be saved once ready
+     * @param $contents
+     */
+    private function setContents($contents) {
+        $this->storedContents = $contents;
+    }
+    private function getContents() {
+        return $this->storedContents;
+    }
 
     /***********************
      * BOOT
      *********************/
     protected static function boot()
     {
+        if (self::MODEL_NAME) {
+            static::addGlobalScope(self::MODEL_NAME, function (Builder $builder) {
+                $builder->where('model', self::MODEL_NAME);
+            });
+        }
         parent::boot();
         static::creating(function (Model $entity) {
             // Set the default id as uuid
@@ -399,10 +485,20 @@ class EntityModel extends Model
                 $entity['published_at'] = Carbon::now();
             }
         });
+        self::saving(function ($entity) {
+            if (isset($entity['contents'])) {
+                $entity->setContents($entity['contents']);
+                unset($entity['contents']);
+            }
+        });
         self::saved(function ($entity) {
+            // Saving contents
+            if ($entity->getContents() && count($entity->getContents()) > 0) {
+                $entity->addContents($entity->getContents());
+            }
             $parentEntity = Entity::with('routes')->find($entity['parent_entity_id']);
             // Create the ancestors relations
-            if (isset($entity['parent_entity_id']) && $entity['parent_entity_id'] != NULL && $entity->isDirty('parent_entity_id')) {
+            if ($parentEntity && isset($entity['parent_entity_id']) && $entity['parent_entity_id'] != NULL && $entity->isDirty('parent_entity_id')) {
                 EntityRelation::where("caller_entity_id", $entity->id)->where('kind', EntityRelation::RELATION_ANCESTOR)->delete();
                 EntityRelation::create([
                     "caller_entity_id" => $entity->id,

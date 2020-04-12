@@ -15,6 +15,7 @@ class SampleSiteSeeder extends Seeder
     {
         $sections_count = 2;
         $pages_count = 2;
+        $products_count = 2;
         $media_count = 0;
 
         $home = Entity::where('short_id', 'home')->first();
@@ -28,9 +29,7 @@ class SampleSiteSeeder extends Seeder
                 $page = factory(App\Models\Entity::class)->make([
                     "model" => "page",
                     "parent_entity_id" => $section->id,
-                    "properties" => [
-                        "price" => rand(10, 100)
-                    ]
+                    "properties" => []
                 ]);
                 $page->save();
                 $media = Entity::where('short_id', 'media')->first();
@@ -49,6 +48,22 @@ class SampleSiteSeeder extends Seeder
                     ]);
                 }
             }
+        }
+        $catalog = factory(App\Models\Entity::class)->make([
+            "model" => "section",
+            "short_id" => "catalog",
+            "parent_entity_id" => $home->id
+        ]);
+        $catalog->save();
+        for ($p = 0; $p < $pages_count; $p++) {
+            $product = factory(App\Models\Entity::class)->make([
+                "model" => "product",
+                "parent_entity_id" => $catalog->id,
+                "properties" => [
+                    "price" => rand(10, 100)
+                ]
+            ]);
+            $product->save();
         }
     }
 }

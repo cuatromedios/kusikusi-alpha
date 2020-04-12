@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRoutesTable extends Migration
+class CreateContentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateRoutesTable extends Migration
      */
     public function up()
     {
-        Schema::create('routes', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('entity_id')->index()->nullable();
-            $table->string('path')->index()->nullable();
-            $table->string('entity_model');
-            $table->char('lang', 5)->index()->nullable();
-            $table->boolean('default')->default(false);
-            $table->timestampsTz();
+        Schema::create('contents', function (Blueprint $table) {
+            $table->uuid('content_id');
+            $table->uuid('entity_id')->index();
+            $table->char('lang', 5)->index();
+            $table->string('field', 25)->index();
+            $table->text('text', 25);
+            $table->timestamps();
+            $table->index('entity_id', 'lang');
             $table->foreign('entity_id')->references('id')->on('entities')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
@@ -33,6 +33,6 @@ class CreateRoutesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('routes');
+        Schema::dropIfExists('contents');
     }
 }
