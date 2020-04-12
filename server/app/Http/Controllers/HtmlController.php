@@ -29,7 +29,7 @@ class HtmlController extends Controller
             ->childOf($entity->id)
             ->flatProperties(['title'])
             ->flatContents($request->lang, ['title'])
-            ->route(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
+            ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
             ->with(['medium' => function ($q) { $q->select('id','model','properties->format as format')->whereJsonContains('tags', 'icon'); }])
             ->orderBy('position')
             ->orderBy('title')

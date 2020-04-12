@@ -418,8 +418,12 @@ class EntityModel extends Model
     public function routes() {
         return $this->hasMany('App\Models\Route');
     }
-    public function route() {
-        return $this->hasOne('App\Models\Route')->where('default', true);
+    public function route($lang = null) {
+        return $this->hasOne('App\Models\Route')
+            ->where('default', true)
+            ->when($lang, function ($q) use ($lang) {
+                return $q->where('lang', $lang);
+            });
     }
     public function entityContents($lang = null) {
         return $this->hasMany('App\Models\EntityContent')
