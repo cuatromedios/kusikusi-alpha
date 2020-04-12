@@ -430,18 +430,18 @@ class EntityModel extends Model
             ->withTimestamps();
     }
     public function routes() {
-        return $this->hasMany('App\Models\Route');
+        return $this->hasMany('App\Models\Route', 'entity_id', 'id');
     }
     public function route($lang = null) {
-        return $this->hasOne('App\Models\Route')
+        return $this->hasOne('App\Models\Route', 'entity_id', 'id')
             ->where('default', true)
             ->when($lang, function ($q) use ($lang) {
                 return $q->where('lang', $lang);
             });
     }
     public function entityContents($lang = null) {
-        return $this->hasMany('App\Models\EntityContent')
-            ->when($lang, function ($q) use ($lang) {
+        return $this->hasMany('App\Models\EntityContent', 'entity_id', 'id')
+            ->when($lang !== null, function ($q) use ($lang) {
                 return $q->where('lang', $lang);
             });
     }

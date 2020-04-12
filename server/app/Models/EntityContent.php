@@ -25,6 +25,6 @@ class EntityContent extends Pivot
     protected $hidden = array('created_at', 'updated_at', 'entity_id', 'content_id');
 
     public function entity($lang = null) {
-        return $this->belongsTo('App\Models\Entity');
+        return $this->belongsTo('App\Models\Entity', 'entity_id', 'id');
     }
 }
