@@ -254,7 +254,7 @@ class EntityModel extends Model
      * @return Builder
      */
 
-    public function scopeFlatProperties($query, $modelOrFields=null) {
+    public function scopeAppendProperties($query, $modelOrFields=null) {
         if (is_string($modelOrFields)) {
             $modelClassName = "App\\Models\\".Str::studly($modelOrFields);
             $modelInstance =  new $modelClassName();
@@ -277,7 +277,7 @@ class EntityModel extends Model
      * @return Builder
      */
 
-    public function scopeFlatContents($query, $lang=null, $modelOrFields=null) {
+    public function scopeAppendContents($query, $lang=null, $modelOrFields=null) {
         $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
         if (is_string($modelOrFields)) {
             $modelClassName = "App\\Models\\".Str::studly($modelOrFields);
@@ -307,7 +307,7 @@ class EntityModel extends Model
      * @return Builder
      */
 
-    public function scopeFlatRoute($query, $lang=null) {
+    public function scopeAppendRoute($query, $lang=null) {
         $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
         $query->leftJoin("routes", function ($join) use ($lang) {
             $join->on("routes.entity_id", "entities.id")
@@ -449,14 +449,11 @@ class EntityModel extends Model
             ->withTimestamps();
     }
     public function routes() {
-        return $this->hasMany('App\Models\Route', 'entity_id', 'route_id');
+        return $this->hasMany('App\Models\Route', 'entity_id', 'id');
     }
-    public function route($lang = null) {
-        return $this->hasOne('App\Models\Route', 'entity_id', 'route_id')
-            ->where('default', true)
-            ->when($lang, function ($q) use ($lang) {
-                return $q->where('lang', $lang);
-            });
+    public function route() {
+        return $this->hasOne('App\Models\Route', 'entity_id', 'id')
+            ->where('default', true);
     }
     public function entityContents($lang = null) {
         return $this->hasMany('App\Models\EntityContent', 'entity_id', 'id')

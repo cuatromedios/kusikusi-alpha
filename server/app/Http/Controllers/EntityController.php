@@ -154,25 +154,25 @@ class EntityController extends Controller
             foreach (array_merge($selects, $ordersBy) as $select) {
                 $select = explode(":", $select)[0];
                 if (!in_array($select, $this->addedSelects)) {
-                    $flatProperties = [];
-                    $flatContents = [];
+                    $appendProperties = [];
+                    $appendContents = [];
                     if (Str::startsWith( $select, 'properties.')) {
-                        $flatProperties[] = Str::after($select, '.');
+                        $appendProperties[] = Str::after($select, '.');
                     } else if (Str::startsWith( $select, 'contents.')) {
-                        $flatContents[] = Str::after($select, '.');
+                        $appendContents[] = Str::after($select, '.');
                     } else if ($select === "route") {
-                        $q->flatRoute($lang);
+                        $q->appendRoute($lang);
                     } else if ($select === "contents") {
                         $modelInstance =  new $modelClassName();
-                        $flatContents = array_merge($flatContents, $modelInstance->getContentFields()) ;
+                        $appendContents = array_merge($appendContents, $modelInstance->getContentFields()) ;
                     } else if ($select) {
                         $q->addSelect($select);
                     }
-                    if (count($flatProperties) > 0) {
-                        $q->flatProperties($flatProperties);
+                    if (count($appendProperties) > 0) {
+                        $q->appendProperties($appendProperties);
                     }
-                    if (count($flatContents) > 0) {
-                        $q->flatContents($lang, $flatContents);
+                    if (count($appendContents) > 0) {
+                        $q->appendContents($lang, $appendContents);
                     }
                     $this->addedSelects[] = $select;
                 }

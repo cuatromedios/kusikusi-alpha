@@ -61,8 +61,8 @@ class WebController extends Controller
         App::setLocale($lang);
         $entity = Entity::select("*")
             ->where("id", $searchResult->entity_id)
-            ->flatProperties($searchResult->entity_model)
-            ->flatContents($lang, $searchResult->entity_model)
+            ->appendProperties($searchResult->entity_model)
+            ->appendContents($lang, $searchResult->entity_model)
             ->with('entitiesRelated')
             ->with('routes');
         $entity=$entity->first();

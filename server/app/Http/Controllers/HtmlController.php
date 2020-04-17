@@ -18,8 +18,8 @@ class HtmlController extends Controller
                 ->ancestorOf($currentEntity->id)
                 ->descendantOf('root')
                 ->orderBy('ancestor_relation_depth', 'desc')
-                ->flatContents($request->lang, ['title'])
-                ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
+                ->appendContents($request->lang, ['title'])
+                ->appendRoute($request->lang)
                 ->get()
         ];
         return $result;
@@ -27,9 +27,9 @@ class HtmlController extends Controller
     private function children(Request $request, Entity $entity) {
         $children = Entity::select('id', 'model')
             ->childOf($entity->id)
-            ->flatProperties(['title'])
-            ->flatContents($request->lang, ['title'])
-            ->with(['route' => function($q) use ($request) {$q->where('lang', $request->lang);} ])
+            ->appendProperties(['title'])
+            ->appendContents($request->lang, ['title'])
+            ->appendRoute($request->lang)
             ->with(['medium' => function ($q) { $q->select('id','model','properties->format as format')->whereJsonContains('tags', 'icon'); }])
             ->orderBy('position')
             ->orderBy('title')
