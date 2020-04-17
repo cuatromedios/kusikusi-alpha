@@ -24,7 +24,7 @@ class EntityModel extends Model
      **********************/
 
     protected $table = 'entities';
-    protected $fillable = ['id', 'model', 'properties', 'parent_entity', 'published', 'created_by', 'updated_by', 'published_at', 'unpublished_at'];
+    protected $fillable = ['id', 'short_id', 'model', 'properties', 'view', 'parent_entity_id', 'is_active', 'published_at', 'unpublished_at'];
     protected $guarded = ['id'];
     protected $contentFields = [ "title", 'slug' ];
     protected $propertiesFields = [];

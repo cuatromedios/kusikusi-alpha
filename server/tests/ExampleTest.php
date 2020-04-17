@@ -2,9 +2,12 @@
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use App\Models\Entity;
 
 class ExampleTest extends TestCase
 {
+    // use DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -12,10 +15,13 @@ class ExampleTest extends TestCase
      */
     public function testExample()
     {
-        $this->get('/');
-
-        $this->assertEquals(
-            $this->app->version(), $this->response->getContent()
-        );
+        $root = new Entity([
+           "model" => "root",
+           "short_id" => "root"
+        ]);
+        $root->save();
+        $this->seeInDatabase('entities', [
+            "short_id" => "root"
+        ]);
     }
 }
