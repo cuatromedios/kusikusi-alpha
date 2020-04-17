@@ -29,6 +29,11 @@ Kusikusi boilerplate is based in [Lumen Framework](https://lumen.laravel.com/), 
 php artisan apidoc:generate
 ```
 
+## Testings
+``` shell script
+./vendor/bin/phpunit
+```
+
 ## License
 
 The Kusikusi framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
