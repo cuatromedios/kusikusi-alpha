@@ -2,23 +2,102 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "1bf1bf08-2646-4ac6-93c5-0c534e073d74",
+        "_postman_id": "704f9d7e-8474-4a3f-a688-ae2a0e898cce",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
     "item": [
         {
-            "name": "general",
+            "name": "Entity",
             "description": "",
             "item": [
                 {
-                    "name": "Retrieve the entities.",
+                    "name": "Get a collection of  entities.",
                     "request": {
                         "url": {
                             "protocol": "http",
                             "host": "127.0.0.1:8000",
-                            "path": "api\/entity",
-                            "query": []
+                            "path": "api\/entities",
+                            "query": [
+                                {
+                                    "key": "select",
+                                    "value": "id%2Cmodel%2Cproperties.price",
+                                    "description": "A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "order-by",
+                                    "value": "model%2Cproperties.price%3Adesc%2Ccontents.title",
+                                    "description": "A comma separated lis of fields to order by.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "of-model",
+                                    "value": "page",
+                                    "description": "(filter) The name of the model the entities should be.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "is-published",
+                                    "value": "true",
+                                    "description": "(filter) Get only published, not deleted entities, true if not set.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "child-of",
+                                    "value": "home",
+                                    "description": "(filter) The id or short id of the entity the result entities should be child of.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "parent-of",
+                                    "value": "801892f7-8dcb-4fdc-a1fd-5251ceb6af09",
+                                    "description": "(filter) The id or short id of the entity the result entities should be parent of (will return only one).",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "ancestor-of",
+                                    "value": "701892f7-8dcb-4fdc-a1fd-5251ceb6af08",
+                                    "description": "(filter) The id or short id of the entity the result entities should be ancestor of.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "descendant-of",
+                                    "value": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07",
+                                    "description": "(filter) The id or short id of the entity the result entities should be descendant of.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "siblings-of",
+                                    "value": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07",
+                                    "description": "(filter) The id or short id of the entity the result entities should be siblings of.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "related-by",
+                                    "value": "501892f7-8dcb-4fdc-a1fd-5251ceb6af06",
+                                    "description": "(filter) The id or short id of the entity the result entities should have been called by using a relation. Can be added a filter to a kind of relation for example: theShortId:category. The ancestor kind of relations are discarted unless are explicity specified.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "relating",
+                                    "value": "401892f7-8dcb-4fdc-a1fd-5251ceb6af05",
+                                    "description": "(filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "media-of",
+                                    "value": "401892f7-8dcb-4fdc-a1fd-5251ceb6af05",
+                                    "description": "(filter) The id or short id of the entity the result entities should have a media relation to.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "with",
+                                    "value": "media%2CentityContents%2CentitiesRelated%3Ashort_id+%28just+that+field%29%2C+entitiesRelated.entityContents+%28nested+relations%29",
+                                    "description": "A comma separated list of relationships should be included in the result.",
+                                    "disabled": false
+                                }
+                            ]
                         },
                         "method": "GET",
                         "header": [
@@ -35,7 +114,122 @@
                             "mode": "raw",
                             "raw": "[]"
                         },
-                        "description": "",
+                        "description": "Returns a paginated collection of entities, filtered by all set conditions.",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Get a collection of  entities.",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/entities\/:model_name",
+                            "query": [
+                                {
+                                    "key": "select",
+                                    "value": "id%2Cmodel%2Cproperties.price",
+                                    "description": "A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "order-by",
+                                    "value": "model%2Cproperties.price%3Adesc%2Ccontents.title",
+                                    "description": "A comma separated lis of fields to order by.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "of-model",
+                                    "value": "page",
+                                    "description": "(filter) The name of the model the entities should be.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "is-published",
+                                    "value": "true",
+                                    "description": "(filter) Get only published, not deleted entities, true if not set.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "child-of",
+                                    "value": "home",
+                                    "description": "(filter) The id or short id of the entity the result entities should be child of.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "parent-of",
+                                    "value": "801892f7-8dcb-4fdc-a1fd-5251ceb6af09",
+                                    "description": "(filter) The id or short id of the entity the result entities should be parent of (will return only one).",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "ancestor-of",
+                                    "value": "701892f7-8dcb-4fdc-a1fd-5251ceb6af08",
+                                    "description": "(filter) The id or short id of the entity the result entities should be ancestor of.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "descendant-of",
+                                    "value": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07",
+                                    "description": "(filter) The id or short id of the entity the result entities should be descendant of.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "siblings-of",
+                                    "value": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07",
+                                    "description": "(filter) The id or short id of the entity the result entities should be siblings of.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "related-by",
+                                    "value": "501892f7-8dcb-4fdc-a1fd-5251ceb6af06",
+                                    "description": "(filter) The id or short id of the entity the result entities should have been called by using a relation. Can be added a filter to a kind of relation for example: theShortId:category. The ancestor kind of relations are discarted unless are explicity specified.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "relating",
+                                    "value": "401892f7-8dcb-4fdc-a1fd-5251ceb6af05",
+                                    "description": "(filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "media-of",
+                                    "value": "401892f7-8dcb-4fdc-a1fd-5251ceb6af05",
+                                    "description": "(filter) The id or short id of the entity the result entities should have a media relation to.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "with",
+                                    "value": "media%2CentityContents%2CentitiesRelated%3Ashort_id+%28just+that+field%29%2C+entitiesRelated.entityContents+%28nested+relations%29",
+                                    "description": "A comma separated list of relationships should be included in the result.",
+                                    "disabled": false
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "id": "model_name",
+                                    "key": "model_name",
+                                    "value": "laudantium",
+                                    "description": ""
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Returns a paginated collection of entities, filtered by all set conditions.",
                         "response": []
                     }
                 },
@@ -46,7 +240,20 @@
                             "protocol": "http",
                             "host": "127.0.0.1:8000",
                             "path": "api\/entity\/:entity_id",
-                            "query": []
+                            "query": [
+                                {
+                                    "key": "select",
+                                    "value": "id%2Cmodel%2Cproperties.price",
+                                    "description": "A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "with",
+                                    "value": "media%2CentityContents%2CentitiesRelated%3Ashort_id+%28just+that+field%29%2C+entitiesRelated.entityContents+%28nested+relations%29",
+                                    "description": "A comma separated list of relationships should be included in the result.",
+                                    "disabled": false
+                                }
+                            ]
                         },
                         "method": "GET",
                         "header": [
@@ -66,17 +273,23 @@
                         "description": "",
                         "response": []
                     }
-                },
+                }
+            ]
+        },
+        {
+            "name": "general",
+            "description": "",
+            "item": [
                 {
-                    "name": "Retrieve the children entities for the given ID.",
+                    "name": "Authenticate a user.",
                     "request": {
                         "url": {
                             "protocol": "http",
                             "host": "127.0.0.1:8000",
-                            "path": "api\/entity\/:entity_id\/children",
+                            "path": "api\/user\/login",
                             "query": []
                         },
-                        "method": "GET",
+                        "method": "POST",
                         "header": [
                             {
                                 "key": "Content-Type",
@@ -89,7 +302,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "[]"
+                            "raw": "{\n    \"email\": \"itaque\",\n    \"password\": \"pariatur\"\n}"
                         },
                         "description": "",
                         "response": []

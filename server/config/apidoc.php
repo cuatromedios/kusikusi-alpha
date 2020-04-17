@@ -12,7 +12,7 @@ return [
     /*
      * Static output folder: Uncomment and change it if you need the documentation to be generated in a different folder
      */
-    // 'output_folder' => 'public/docs',
+    'output_folder' => '../docs/api',
 
     /*
      * Settings for `laravel` type output.

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e4adb5ee730545b4c8b7c27b4e16d76",
+    "content-hash": "d834485438fabb163d4f4f1ff69eb104",
     "packages": [
         {
             "name": "ankurk91/laravel-eloquent-relationships",
@@ -5030,16 +5030,16 @@
         },
         {
             "name": "mpociot/laravel-apidoc-generator",
-            "version": "4.6.0",
+            "version": "4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mpociot/laravel-apidoc-generator.git",
-                "reference": "181a3af0e814480607274971d360dce442124635"
+                "reference": "4082fb401bc8212aaef75b48f0e17cd3072e7b10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mpociot/laravel-apidoc-generator/zipball/181a3af0e814480607274971d360dce442124635",
-                "reference": "181a3af0e814480607274971d360dce442124635",
+                "url": "https://api.github.com/repos/mpociot/laravel-apidoc-generator/zipball/4082fb401bc8212aaef75b48f0e17cd3072e7b10",
+                "reference": "4082fb401bc8212aaef75b48f0e17cd3072e7b10",
                 "shasum": ""
             },
             "require": {
@@ -5100,7 +5100,7 @@
                 "documentation",
                 "laravel"
             ],
-            "time": "2020-04-08T18:50:34+00:00"
+            "time": "2020-04-12T12:26:56+00:00"
         },
         {
             "name": "mpociot/reflection-docblock",
