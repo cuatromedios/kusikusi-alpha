@@ -21,8 +21,9 @@ class WebController extends Controller
     }
 
     /**
-     * Search an entity based on the url.
+     * Locates an entity based on the url, and returns the HTML view of that entity as a webpage
      *
+     * @group Web
      * @param $request \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */

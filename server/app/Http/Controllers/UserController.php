@@ -23,6 +23,7 @@ class UserController extends Controller
     /**
      * Authenticate a user.
      *
+     *@group User
      * @bodyParam email string required
      * @bodyParam password string required
      * @return \Illuminate\Http\JsonResponse

@@ -22,8 +22,9 @@ class MediaController extends Controller
     }
 
     /**
-     * Gets a medium processed if its an image.
+     * Gets a medium: Optimized using a preset if it is an image or the original one if not.
      *
+     * @group Media
      * @param $id
      * @param $preset
      * @return Response

@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "92932355-45c3-4d1a-ad3f-145a0d8eaad3",
+        "_postman_id": "ca858c0d-d502-4f95-b6d0-e9e785032568",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -102,7 +102,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "praesentium",
+                                    "value": "velit",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -170,39 +170,11 @@
             ]
         },
         {
-            "name": "general",
+            "name": "Media",
             "description": "",
             "item": [
                 {
-                    "name": "Authenticate a user.",
-                    "request": {
-                        "url": {
-                            "protocol": "http",
-                            "host": "127.0.0.1:8000",
-                            "path": "api\/user\/login",
-                            "query": []
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"email\": \"mollitia\",\n    \"password\": \"sed\"\n}"
-                        },
-                        "description": "",
-                        "response": []
-                    }
-                },
-                {
-                    "name": "Gets a medium processed if its an image.",
+                    "name": "Gets a medium: Optimized using a preset if it is an image or the original one if not.",
                     "request": {
                         "url": {
                             "protocol": "http",
@@ -228,9 +200,49 @@
                         "description": "",
                         "response": []
                     }
-                },
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "description": "",
+            "item": [
                 {
-                    "name": "Search an entity based on the url.",
+                    "name": "Authenticate a user.",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/user\/login",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"consequatur\",\n    \"password\": \"rem\"\n}"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Web",
+            "description": "",
+            "item": [
+                {
+                    "name": "Locates an entity based on the url, and returns the HTML view of that entity as a webpage",
                     "request": {
                         "url": {
                             "protocol": "http",
