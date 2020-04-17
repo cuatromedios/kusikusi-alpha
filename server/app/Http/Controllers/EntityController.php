@@ -31,7 +31,7 @@ class EntityController extends Controller
      * @queryParam relating (filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
      * @queryParam media-of (filter) The id or short id of the entity the result entities should have a media relation to. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
      * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)
-     * @urlParam model_name
+     * @urlParam model_name If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available.
      * @responseFile responses/entities.get.json
      * @return Response
      */

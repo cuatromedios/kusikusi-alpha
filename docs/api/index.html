@@ -50,7 +50,7 @@
 <a href="http://127.0.0.1:8000/docs/collection.json">Get Postman Collection</a></p>
 <!-- END_INFO -->
 <h1>Entity</h1>
-<!-- START_9f95886e06d102b53523fe7acd45620b -->
+<!-- START_e361c4dd3cbd2391c19b5f4811a2b853 -->
 <h2>Get a collection of  entities.</h2>
 <p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
 Returns a paginated collection of entities, filtered by all set conditions.</p>
@@ -58,7 +58,7 @@ Returns a paginated collection of entities, filtered by all set conditions.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entities"
+    "http://127.0.0.1:8000/api/entities[/praesentium]"
 );
 
 let params = {
@@ -93,7 +93,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entities',
+    'http://127.0.0.1:8000/api/entities[/praesentium]',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -119,7 +119,7 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=801892f7-8dcb-4fdc-a1fd-5251ceb6af09&amp;ancestor-of=701892f7-8dcb-4fdc-a1fd-5251ceb6af08&amp;descendant-of=601892f7-8dcb-4fdc-a1fd-5251ceb6af07&amp;siblings-of=601892f7-8dcb-4fdc-a1fd-5251ceb6af07&amp;related-by=501892f7-8dcb-4fdc-a1fd-5251ceb6af06&amp;relating=401892f7-8dcb-4fdc-a1fd-5251ceb6af05&amp;media-of=401892f7-8dcb-4fdc-a1fd-5251ceb6af05&amp;with=media%2CentityContents%2CentitiesRelated%3Ashort_id+%28just+that+field%29%2C+entitiesRelated.entityContents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entities[/praesentium]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=801892f7-8dcb-4fdc-a1fd-5251ceb6af09&amp;ancestor-of=701892f7-8dcb-4fdc-a1fd-5251ceb6af08&amp;descendant-of=601892f7-8dcb-4fdc-a1fd-5251ceb6af07&amp;siblings-of=601892f7-8dcb-4fdc-a1fd-5251ceb6af07&amp;related-by=501892f7-8dcb-4fdc-a1fd-5251ceb6af06&amp;relating=401892f7-8dcb-4fdc-a1fd-5251ceb6af05&amp;media-of=401892f7-8dcb-4fdc-a1fd-5251ceb6af05&amp;with=media%2CentityContents%2CentitiesRelated%3Ashort_id+%28just+that+field%29%2C+entitiesRelated.entityContents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -251,7 +251,7 @@ print_r(json_decode((string) $body));</code></pre>
     "total": 5
 }</code></pre>
 <h3>HTTP Request</h3>
-<p><code>GET api/entities</code></p>
+<p><code>GET api/entities[/{model_name}]</code></p>
 <h4>URL Parameters</h4>
 <table>
 <thead>
@@ -265,6 +265,7 @@ print_r(json_decode((string) $body));</code></pre>
 <tr>
 <td><code>model_name</code></td>
 <td>optional</td>
+<td>If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available.</td>
 </tr>
 </tbody>
 </table>
@@ -345,303 +346,7 @@ print_r(json_decode((string) $body));</code></pre>
 </tr>
 </tbody>
 </table>
-<!-- END_9f95886e06d102b53523fe7acd45620b -->
-<!-- START_06ec57d56b1877af9fe3b48cf7b7b1d6 -->
-<h2>Get a collection of  entities.</h2>
-<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-Returns a paginated collection of entities, filtered by all set conditions.</p>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entities/laudantium"
-);
-
-let params = {
-    "select": "id,model,properties.price",
-    "order-by": "model,properties.price:desc,contents.title",
-    "of-model": "page",
-    "is-published": "true",
-    "child-of": "home",
-    "parent-of": "801892f7-8dcb-4fdc-a1fd-5251ceb6af09",
-    "ancestor-of": "701892f7-8dcb-4fdc-a1fd-5251ceb6af08",
-    "descendant-of": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07",
-    "siblings-of": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07",
-    "related-by": "501892f7-8dcb-4fdc-a1fd-5251ceb6af06",
-    "relating": "401892f7-8dcb-4fdc-a1fd-5251ceb6af05",
-    "media-of": "401892f7-8dcb-4fdc-a1fd-5251ceb6af05",
-    "with": "media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)",
-};
-Object.keys(params)
-    .forEach(key =&gt; url.searchParams.append(key, params[key]));
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<pre><code class="language-php">
-$client = new \GuzzleHttp\Client();
-$response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entities/laudantium',
-    [
-        'headers' =&gt; [
-            'Content-Type' =&gt; 'application/json',
-            'Accept' =&gt; 'application/json',
-        ],
-        'query' =&gt; [
-            'select'=&gt; 'id,model,properties.price',
-            'order-by'=&gt; 'model,properties.price:desc,contents.title',
-            'of-model'=&gt; 'page',
-            'is-published'=&gt; 'true',
-            'child-of'=&gt; 'home',
-            'parent-of'=&gt; '801892f7-8dcb-4fdc-a1fd-5251ceb6af09',
-            'ancestor-of'=&gt; '701892f7-8dcb-4fdc-a1fd-5251ceb6af08',
-            'descendant-of'=&gt; '601892f7-8dcb-4fdc-a1fd-5251ceb6af07',
-            'siblings-of'=&gt; '601892f7-8dcb-4fdc-a1fd-5251ceb6af07',
-            'related-by'=&gt; '501892f7-8dcb-4fdc-a1fd-5251ceb6af06',
-            'relating'=&gt; '401892f7-8dcb-4fdc-a1fd-5251ceb6af05',
-            'media-of'=&gt; '401892f7-8dcb-4fdc-a1fd-5251ceb6af05',
-            'with'=&gt; 'media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre>
-<pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities/laudantium?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=801892f7-8dcb-4fdc-a1fd-5251ceb6af09&amp;ancestor-of=701892f7-8dcb-4fdc-a1fd-5251ceb6af08&amp;descendant-of=601892f7-8dcb-4fdc-a1fd-5251ceb6af07&amp;siblings-of=601892f7-8dcb-4fdc-a1fd-5251ceb6af07&amp;related-by=501892f7-8dcb-4fdc-a1fd-5251ceb6af06&amp;relating=401892f7-8dcb-4fdc-a1fd-5251ceb6af05&amp;media-of=401892f7-8dcb-4fdc-a1fd-5251ceb6af05&amp;with=media%2CentityContents%2CentitiesRelated%3Ashort_id+%28just+that+field%29%2C+entitiesRelated.entityContents+%28nested+relations%29" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"</code></pre>
-<blockquote>
-<p>Example response (200):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "current_page": 1,
-    "data": [
-        {
-            "id": "35337182-7a0c-44c4-a11f-68cd9da930b2",
-            "content": {
-                "body": {
-                    "en_US": "Consequatur tempora deleniti ea cum totam. Qui quidem quis eius expedita atque officia incidunt."
-                },
-                "slug": {
-                    "en_US": "mrs-karlie-torp"
-                },
-                "title": {
-                    "en_US": "Felipa Haley PhD"
-                },
-                "summary": {
-                    "en_US": "Railroad Inspector"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "4cbbd1cd-3708-4ac2-8ff7-7261cd6fbe81",
-            "content": {
-                "body": {
-                    "en_US": "Voluptatem sed autem voluptas eum fuga amet neque. Odit accusantium nemo et architecto."
-                },
-                "slug": {
-                    "en_US": "amely-koepp"
-                },
-                "title": {
-                    "en_US": "Ashley D'Amore"
-                },
-                "summary": {
-                    "en_US": "Homeland Security"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "6d776ddf-b416-42c7-86cf-c665770c96ff",
-            "content": {
-                "body": {
-                    "en_US": "Error animi autem sunt et. Qui quia eos sunt sint dicta eligendi quasi. Ut quae aut facilis vel."
-                },
-                "slug": {
-                    "en_US": "janis-jenkins-jr"
-                },
-                "title": {
-                    "en_US": "Mr. Reagan Deckow I"
-                },
-                "summary": {
-                    "en_US": "Pesticide Sprayer"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "7d504be2-ca0f-4836-b6d2-f00c2dff209c",
-            "content": {
-                "body": {
-                    "en_US": "Consequatur deserunt non quo sint. Voluptas sint et aliquam qui."
-                },
-                "slug": {
-                    "en_US": "mr-xavier-yundt-iv"
-                },
-                "title": {
-                    "en_US": "Joyce Kohler MD"
-                },
-                "summary": {
-                    "en_US": "Transportation Equipment Maintenance"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "801892f7-8dcb-4fdc-a1fd-5251ceb6af09",
-            "content": {
-                "body": {
-                    "en_US": "Assumenda quaerat ipsam dolores ducimus itaque earum sit. Aut dolorem nisi et harum sunt molestiae."
-                },
-                "slug": {
-                    "en_US": "ms-lauretta-rohan"
-                },
-                "title": {
-                    "en_US": "Dr. Briana Bergstrom DVM"
-                },
-                "summary": {
-                    "en_US": "Hotel Desk Clerk"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        }
-    ],
-    "first_page_url": "http:\/\/127.0.0.1:8000\/api\/entities?relating=bee7a88a-459c-419a-9b3f-96ad3d3822b5%3Aancestor&amp;page=1",
-    "from": 1,
-    "last_page": 1,
-    "last_page_url": "http:\/\/127.0.0.1:8000\/api\/entities?relating=bee7a88a-459c-419a-9b3f-96ad3d3822b5%3Aancestor&amp;page=1",
-    "next_page_url": null,
-    "path": "http:\/\/127.0.0.1:8000\/api\/entities",
-    "per_page": 100,
-    "prev_page_url": null,
-    "to": 5,
-    "total": 5
-}</code></pre>
-<h3>HTTP Request</h3>
-<p><code>GET api/entities/{model_name}</code></p>
-<h4>URL Parameters</h4>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Status</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>model_name</code></td>
-<td>optional</td>
-</tr>
-</tbody>
-</table>
-<h4>Query Parameters</h4>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Status</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>select</code></td>
-<td>optional</td>
-<td>A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax.</td>
-</tr>
-<tr>
-<td><code>order-by</code></td>
-<td>optional</td>
-<td>A comma separated lis of fields to order by.</td>
-</tr>
-<tr>
-<td><code>of-model</code></td>
-<td>optional</td>
-<td>(filter) The name of the model the entities should be.</td>
-</tr>
-<tr>
-<td><code>is-published</code></td>
-<td>optional</td>
-<td>(filter) Get only published, not deleted entities, true if not set.</td>
-</tr>
-<tr>
-<td><code>child-of</code></td>
-<td>optional</td>
-<td>(filter) The id or short id of the entity the result entities should be child of.</td>
-</tr>
-<tr>
-<td><code>parent-of</code></td>
-<td>optional</td>
-<td>(filter) The id or short id of the entity the result entities should be parent of (will return only one).</td>
-</tr>
-<tr>
-<td><code>ancestor-of</code></td>
-<td>optional</td>
-<td>(filter) The id or short id of the entity the result entities should be ancestor of.</td>
-</tr>
-<tr>
-<td><code>descendant-of</code></td>
-<td>optional</td>
-<td>(filter) The id or short id of the entity the result entities should be descendant of.</td>
-</tr>
-<tr>
-<td><code>siblings-of</code></td>
-<td>optional</td>
-<td>(filter) The id or short id of the entity the result entities should be siblings of.</td>
-</tr>
-<tr>
-<td><code>related-by</code></td>
-<td>optional</td>
-<td>(filter) The id or short id of the entity the result entities should have been called by using a relation. Can be added a filter to a kind of relation for example: theShortId:category. The ancestor kind of relations are discarted unless are explicity specified.</td>
-</tr>
-<tr>
-<td><code>relating</code></td>
-<td>optional</td>
-<td>(filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified.</td>
-</tr>
-<tr>
-<td><code>media-of</code></td>
-<td>optional</td>
-<td>(filter) The id or short id of the entity the result entities should have a media relation to.</td>
-</tr>
-<tr>
-<td><code>with</code></td>
-<td>optional</td>
-<td>A comma separated list of relationships should be included in the result.</td>
-</tr>
-</tbody>
-</table>
-<!-- END_06ec57d56b1877af9fe3b48cf7b7b1d6 -->
+<!-- END_e361c4dd3cbd2391c19b5f4811a2b853 -->
 <!-- START_452b2ebcc9c1afb7cfdc2a7e8a3caf40 -->
 <h2>Retrieve the entity for the given ID.</h2>
 <p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small></p>
@@ -860,8 +565,8 @@ let headers = {
 };
 
 let body = {
-    "email": "itaque",
-    "password": "pariatur"
+    "email": "mollitia",
+    "password": "sed"
 }
 
 fetch(url, {
@@ -881,8 +586,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'email' =&gt; 'itaque',
-            'password' =&gt; 'pariatur',
+            'email' =&gt; 'mollitia',
+            'password' =&gt; 'sed',
         ],
     ]
 );
@@ -892,7 +597,7 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"itaque","password":"pariatur"}'
+    -d '{"email":"mollitia","password":"sed"}'
 </code></pre>
 <h3>HTTP Request</h3>
 <p><code>POST api/user/login</code></p>
