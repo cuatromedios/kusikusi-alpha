@@ -473,6 +473,9 @@ class EntityModel extends Model
      *********************/
 
     private function entityIdFromIdOrShortId ($idOrShortId) {
+        self::getRealId($idOrShortId);
+    }
+    private static function getRealId ($idOrShortId) {
         if (strlen($idOrShortId) >= 36) {
             return $idOrShortId;
         } elseif (is_string($idOrShortId)) {
@@ -586,6 +589,7 @@ class EntityModel extends Model
             }
         });
         self::saving(function ($entity) {
+            $entity['parent_entity_id'] = self::getRealId($entity['parent_entity_id']);
             if (isset($entity['contents'])) {
                 $entity->setContents($entity['contents']);
                 unset($entity['contents']);
