@@ -15,7 +15,7 @@ class SampleSiteSeeder extends Seeder
     {
         $sections_count = 2;
         $pages_count = 2;
-        $media_count = 0;
+        $media_count = 2;
 
         $home = Entity::where('short_id', 'home')->first();
         for ($s = 0; $s < $sections_count; $s++) {
@@ -38,7 +38,7 @@ class SampleSiteSeeder extends Seeder
                         "parent_entity_id" => $media->id
                     ]);
                     $medium->save();
-                    rename("storage/media/".$medium->properties['path'], "storage/media/".$medium->id.".jpg");
+                    copy($medium->properties['path'], "storage/media/".$medium->id.".jpg");
                     $page->addRelation([
                         "called_entity_id" => $medium->id,
                         "kind" => \App\models\EntityRelation::RELATION_MEDIA,

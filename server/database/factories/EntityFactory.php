@@ -40,7 +40,7 @@ $factory->define(Entity::class, function (Faker $faker) {
 $factory->state(Entity::class, 'medium', function (Faker $faker) {
     $title = $faker->lastName;
     echo "Downloading image...";
-    $image = $faker->image('storage/media', rand(320,640),rand(320,640), 'nature', false);
+    $image = resource_path('sampleImages/colibri.jpg');
     echo " done.\n";
     return [
         "model" => "entity",

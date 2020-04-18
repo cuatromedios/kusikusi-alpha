@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Ankurk91\Eloquent\BelongsToOne;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PUGX\Shortid\Shortid;
 use App\Models\Traits\UsesUuid;
@@ -361,6 +362,8 @@ class EntityModel extends Model
                 "tags" => $relationData['tags']
             ]
         );
+        self::incrementEntityVersion($relationData['caller_entity_id']);
+        self::incrementRelationsVersion($relationData['called_entity_id']);
     }
     public function getContentFields() {
         return $this->contentFields ?? [];
@@ -501,6 +504,45 @@ class EntityModel extends Model
         return $this->storedContents;
     }
 
+    private static function incrementEntityVersion($entity_id) {
+        $e = DB::table('entities')
+            ->where('id', $entity_id);
+        $e->increment('version');
+        $e->increment('version_full');
+        self::incrementTreeVersion($entity_id);
+        self::incrementRelationsVersion($entity_id);
+    }
+    private static function incrementTreeVersion($entity_id) {
+        $ancestors = Entity::select('id')->ancestorOf($entity_id)->get();
+        if (!empty($ancestors)) {
+            foreach ($ancestors as $ancestor) {
+                $e = DB::table('entities')
+                    ->where('id', $ancestor['id']);
+                $e->increment('version_tree');
+                $e->increment('version_full');
+            }
+        }
+    }
+    private static function incrementRelationsVersion($entity_id) {
+        $relating = Entity::select('id')->relating($entity_id)->get();
+        if (!empty($relating)) {
+            foreach ($relating as $entityRelating) {
+                $e = DB::table('entities')
+                    ->where('id', $entityRelating['id']);
+                $e->increment('version_relations');
+                $e->increment('version_full');
+                $ancestors = Entity::select('id')->ancestorOf($entityRelating->id)->get();
+                if (!empty($ancestors)) {
+                    foreach ($ancestors as $ancestor) {
+                        $e = DB::table('entities')
+                            ->where('id', $ancestor['id']);
+                        $e->increment('version_full');
+                    }
+                }
+            }
+        }
+    }
+
     /***********************
      * BOOT
      *********************/
@@ -604,6 +646,8 @@ class EntityModel extends Model
                     }
                 }
             }
+            // Update versions
+            self::incrementEntityVersion($entity->id);
         });
     }
 }
