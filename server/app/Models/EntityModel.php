@@ -476,7 +476,9 @@ class EntityModel extends Model
         self::getRealId($idOrShortId);
     }
     private static function getRealId ($idOrShortId) {
-        if (strlen($idOrShortId) >= 36) {
+        if ($idOrShortId === null) {
+            return null;
+        } elseif (strlen($idOrShortId) >= 36) {
             return $idOrShortId;
         } elseif (is_string($idOrShortId)) {
             $entity = Entity::select('id')->where('short_id', $idOrShortId)->first();
