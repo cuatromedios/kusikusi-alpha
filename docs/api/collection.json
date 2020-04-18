@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "ca858c0d-d502-4f95-b6d0-e9e785032568",
+        "_postman_id": "e328cc19-35d1-4540-bd58-2fb17109b0bf",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -102,7 +102,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "velit",
+                                    "value": "et",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -162,6 +162,34 @@
                         "body": {
                             "mode": "raw",
                             "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Creates a new entity.",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/entity",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"model\": \"page.\",\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"short_id\": \"home.\",\n    \"id\": \"601892f7-8dcb-4fdc-a1fd-5251ceb6af07\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -229,7 +257,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"consequatur\",\n    \"password\": \"rem\"\n}"
+                            "raw": "{\n    \"email\": \"repellendus\",\n    \"password\": \"nihil\"\n}"
                         },
                         "description": "",
                         "response": []
