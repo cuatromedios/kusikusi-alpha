@@ -464,6 +464,9 @@ class EntityModel extends Model
                 return $q->where('lang', $lang);
             });
     }
+    public function archives() {
+        return $this->hasMany('App\Models\EntityArchive', 'entity_id', 'id');
+    }
 
     /***********************
      * PRIVATE METHODS
@@ -511,6 +514,7 @@ class EntityModel extends Model
         $e->increment('version_full');
         self::incrementTreeVersion($entity_id);
         self::incrementRelationsVersion($entity_id);
+        EntityArchive::archive($entity_id);
     }
     private static function incrementTreeVersion($entity_id) {
         $ancestors = Entity::select('id')->ancestorOf($entity_id)->get();
