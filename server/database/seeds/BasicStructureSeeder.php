@@ -20,7 +20,7 @@ class BasicStructureSeeder extends Seeder
         foreach ($langs as $lang) {
             $titles[$lang] = "Kusikusi Website in " . $lang;
             $welcomes[$lang] = "Welcome in " . $lang;
-            $slugs[$lang] = $lang === $langs[0] ? "" : $lang;
+            $slugs[$lang] = $lang === $langs[0] ? "" : str_replace('_', '-', strtolower($lang));
         }
         $home = new Entity([
             "model" => "home",
