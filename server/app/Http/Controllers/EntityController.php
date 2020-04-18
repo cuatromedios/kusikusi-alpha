@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 
 class EntityController extends Controller
 {
+    const SHORT_ID_RULE = 'string|min:1|max:16|regex:/^[A-Za-z0-9_-]+$/';
+    const MODEL_RULE = 'string|min:1|max:32|regex:/^[a-z0-9-]+$/';
     private $calledRelations = [];
     private $addedSelects = [];
     /**
@@ -37,6 +39,7 @@ class EntityController extends Controller
      */
     public function index(Request $request, $model_name = null)
     {
+        $this->validate($request, $this->queryParamsValidation());
         if ($model_name) {
             $modelClassName = "App\\Models\\".Str::studly(Str::singular($model_name));
             $entities = $modelClassName::query();
@@ -152,9 +155,33 @@ class EntityController extends Controller
      */
     public function create(Request $request)
     {
-        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'short_id', 'published_at', 'unpublished_at', 'properties');
+        $this->validate($request, [
+            'model' => 'required|string|max:50',
+            'view' => 'string|max:50',
+            'short_id' => 'string|max:16|unique:entities,short_id',
+            'published_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
+            'unpublished_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
+            'id' => 'uuid'
+        ]);
+        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'short_id', 'published_at', 'unpublished_at', 'properties', 'contents');
         $entityCreated = Entity::create($payload);
         return($entityCreated);
+    }
+
+    private function queryParamsValidation() {
+        return [
+            'child-of' => self::SHORT_ID_RULE,
+            'parent-of' => self::SHORT_ID_RULE,
+            'ancestor-of' => self::SHORT_ID_RULE,
+            'descendant-of' => self::SHORT_ID_RULE,
+            'siblings-of' => self::SHORT_ID_RULE,
+            'related-by' => self::SHORT_ID_RULE,
+            'relating' => self::SHORT_ID_RULE,
+            'media-of' => self::SHORT_ID_RULE,
+            'of-model' => self::MODEL_RULE,
+            'model_name' => self::MODEL_RULE,
+            'is-published' => 'in:true,false',
+        ];
     }
 
     /**

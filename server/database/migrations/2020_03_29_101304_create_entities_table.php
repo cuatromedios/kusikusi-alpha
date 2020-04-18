@@ -16,9 +16,9 @@ class CreateEntitiesTable extends Migration
         Schema::create('entities', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->char('short_id', 16)->index()->unique();
-            $table->string('model');
+            $table->string('model', 50);
             $table->json('properties')->nullable();
-            $table->string('view')->nullable();
+            $table->string('view', 50)->nullable();
             $table->uuid('parent_entity_id')->index('parent')->nullable();
             $table->boolean('is_active')->default(true);
             $table->uuid('created_by')->nullable();
