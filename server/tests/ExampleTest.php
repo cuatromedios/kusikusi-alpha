@@ -6,7 +6,7 @@ use App\Models\Entity;
 
 class ExampleTest extends TestCase
 {
-    // use DatabaseMigrations;
+    use DatabaseMigrations;
 
     /**
      * A basic test example.
@@ -15,13 +15,13 @@ class ExampleTest extends TestCase
      */
     public function testExample()
     {
-        $root = new Entity([
-           "model" => "root",
-           "short_id" => "root"
-        ]);
+        $testEntity = [
+            "model" => "root",
+            "short_id" => "root",
+            "view" => "root"
+        ];
+        $root = new Entity($testEntity);
         $root->save();
-        $this->seeInDatabase('entities', [
-            "short_id" => "root"
-        ]);
+        $this->seeInDatabase('entities', $testEntity);
     }
 }
