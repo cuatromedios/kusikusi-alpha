@@ -473,7 +473,7 @@ class EntityModel extends Model
      *********************/
 
     private function entityIdFromIdOrShortId ($idOrShortId) {
-        self::getRealId($idOrShortId);
+        return self::getRealId($idOrShortId);
     }
     private static function getRealId ($idOrShortId) {
         if ($idOrShortId === null) {
