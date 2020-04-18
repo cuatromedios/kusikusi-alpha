@@ -480,7 +480,7 @@ class EntityModel extends Model
             if ($entity) {
                 return $entity->id;
             } else {
-                throw new \Exception('Entity not found by short_id');
+                throw new \Exception("Entity not found by short_id '$idOrShortId'");
             }
         } else {
             throw new \Exception('The id should be an uuid or a short_id string');
