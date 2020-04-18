@@ -514,7 +514,6 @@ class EntityModel extends Model
         $e->increment('version_full');
         self::incrementTreeVersion($entity_id);
         self::incrementRelationsVersion($entity_id);
-        EntityArchive::archive($entity_id);
     }
     private static function incrementTreeVersion($entity_id) {
         $ancestors = Entity::select('id')->ancestorOf($entity_id)->get();

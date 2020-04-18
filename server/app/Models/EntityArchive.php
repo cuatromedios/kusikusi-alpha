@@ -10,6 +10,7 @@ class EntityArchive extends Model
     use UsesUuid;
 
     protected $table = 'archive';
+    protected $fillable = ["entity_id", "version", "payload"];
 
     public function entity () {
         return $this->belongsTo('App\Models\Entity');
