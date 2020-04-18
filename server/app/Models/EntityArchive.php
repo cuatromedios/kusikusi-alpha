@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\UsesUuid;
+use App\Models\Traits\UsesShortId;
 
 class EntityArchive extends Model
 {
-    use UsesUuid;
+    use UsesShortId;
 
     protected $table = 'archive';
     protected $fillable = ["entity_id", "version", "payload"];

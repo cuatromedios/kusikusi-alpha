@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Traits\UsesUuid;
+use App\Models\Traits\UsesShortId;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 const TABLE = 'relations';
 
 class EntityRelation extends Pivot
 {
-    use UsesUuid;
+    use UsesShortId;
 
     const RELATION_ANCESTOR = 'ancestor';
     const RELATION_MEDIA = 'medium';

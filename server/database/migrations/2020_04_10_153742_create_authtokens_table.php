@@ -15,11 +15,11 @@ class CreateAuthtokensTable extends Migration
     {
         Schema::create('authtokens', function (Blueprint $table) {
             $table->char('token', 128)->primary();
-            $table->uuid('user_id')->index();
+            $table->string('user_id', 16)->index();
             $table->char('created_ip', 45)->nullable();
             $table->char('updated_ip', 45)->nullable();
             $table->dateTime('expire_at')->nullable();
-            $table->timestampsTz();
+            $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });

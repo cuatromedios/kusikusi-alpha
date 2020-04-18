@@ -16,8 +16,8 @@ class ExampleTest extends TestCase
     public function testExample()
     {
         $testEntity = [
+            "id" => "root",
             "model" => "root",
-            "short_id" => "root",
             "view" => "root"
         ];
         $root = new Entity($testEntity);

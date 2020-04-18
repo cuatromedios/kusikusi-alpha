@@ -23,8 +23,8 @@ class BasicStructureSeeder extends Seeder
             $slugs[$lang] = $lang === $langs[0] ? "" : str_replace('_', '-', strtolower($lang));
         }
         $home = new Entity([
+            "id" => "home",
             "model" => "home",
-            "short_id" => "home",
             "properties" => [],
             "contents"=> [
                 "title" => $titles,
@@ -35,13 +35,13 @@ class BasicStructureSeeder extends Seeder
         $home->save();
 
         $collections = new Entity([
+            "id" => "collections",
             "model" => "collections",
-            "short_id" => "collections",
         ]);
         $collections->save();
         $media = new Entity([
+            "id" => "media",
             "model" => "media",
-            "short_id" => "media",
         ]);
         $media->save();
 

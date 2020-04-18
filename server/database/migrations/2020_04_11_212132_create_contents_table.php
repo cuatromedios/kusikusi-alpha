@@ -14,11 +14,11 @@ class CreateContentsTable extends Migration
     public function up()
     {
         Schema::create('contents', function (Blueprint $table) {
-            $table->uuid('content_id');
-            $table->uuid('entity_id')->index();
+            $table->string('content_id', 16);
+            $table->string('entity_id', 16)->index();
             $table->char('lang', 5)->index();
             $table->string('field', 25)->index();
-            $table->text('text', 25);
+            $table->text('text');
             $table->timestamps();
             $table->index('entity_id', 'lang');
             $table->foreign('entity_id')->references('id')->on('entities')

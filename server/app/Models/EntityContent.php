@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Traits\UsesUuid;
+use App\Models\Traits\UsesShortId;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class EntityContent extends Pivot
 {
-    use UsesUuid;
+    use UsesShortId;
 
 
     protected $table = 'contents';

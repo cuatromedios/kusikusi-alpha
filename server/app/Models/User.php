@@ -6,14 +6,16 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Support\Str;
-use App\Models\Traits\UsesUuid;
+use App\Models\Traits\UsesShortId;
+use PUGX\Shortid\Shortid;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, UsesUuid;
+    use Authenticatable, Authorizable, UsesShortId;
 
     const PROFILE_ADMIN = 'admin';
     const PROFILE_EDITOR = 'editor';
@@ -65,7 +67,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         parent::boot();
         static::creating(function (Model $entity) {
             if (!isset($entity[$entity->getKeyName()])) {
-                $entity->setAttribute($entity->getKeyName(), Str::uuid());
+                $entity->setAttribute($entity->getKeyName(), Shortid::generate(Config::get('cms.shortIdLength', 10)));
             }
         });
         self::saving(function ($user) {

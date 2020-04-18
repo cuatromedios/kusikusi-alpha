@@ -14,13 +14,13 @@ class CreateRoutesTable extends Migration
     public function up()
     {
         Schema::create('routes', function (Blueprint $table) {
-            $table->uuid('route_id')->primary();
-            $table->uuid('entity_id')->index()->nullable();
+            $table->string('route_id', 16)->primary();
+            $table->string('entity_id', 16)->index()->nullable();
             $table->string('path')->index()->nullable();
-            $table->string('entity_model');
+            $table->string('entity_model', 16);
             $table->char('lang', 5)->index()->nullable();
             $table->boolean('default')->default(false);
-            $table->timestampsTz();
+            $table->timestamps();
             $table->foreign('entity_id')->references('id')->on('entities')
                 ->onDelete('cascade')->onUpdate('cascade');
         });

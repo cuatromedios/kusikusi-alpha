@@ -14,12 +14,11 @@ class CreateEntitiesTable extends Migration
     public function up()
     {
         Schema::create('entities', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->char('short_id', 16)->index()->unique();
-            $table->string('model', 50);
+            $table->string('id', 16)->primary();
+            $table->string('model', 32);
             $table->json('properties')->nullable();
-            $table->string('view', 50)->nullable();
-            $table->uuid('parent_entity_id')->index('parent')->nullable();
+            $table->string('view', 32)->nullable();
+            $table->string('parent_entity_id', 16)->index('parent')->nullable();
             $table->boolean('is_active')->default(true);
             $table->uuid('created_by')->nullable();
             $table->uuid('updated_by')->nullable();
@@ -29,8 +28,8 @@ class CreateEntitiesTable extends Migration
             $table->integer('version_tree')->unsigned()->default(0);
             $table->integer('version_relations')->unsigned()->default(0);
             $table->integer('version_full')->unsigned()->default(0);
-            $table->timestampsTz();
-            $table->softDeletesTz();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

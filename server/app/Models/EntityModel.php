@@ -11,21 +11,21 @@ use Ankurk91\Eloquent\BelongsToOne;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PUGX\Shortid\Shortid;
-use App\Models\Traits\UsesUuid;
+use App\Models\Traits\UsesShortId;
 use App\Models\EntityContent;
 use Illuminate\Support\Facades\Config;
 
 class EntityModel extends Model
 {
     use BelongsToOne;
-    use UsesUuid;
+    use UsesShortId;
 
     /**********************
      * PROPERTIES
      **********************/
 
     protected $table = 'entities';
-    protected $fillable = ['id', 'short_id', 'model', 'properties', 'view', 'parent_entity_id', 'is_active', 'published_at', 'unpublished_at'];
+    protected $fillable = ['id', 'model', 'properties', 'view', 'parent_entity_id', 'is_active', 'published_at', 'unpublished_at'];
     protected $guarded = ['id'];
     protected $contentFields = [ "title", 'slug' ];
     protected $propertiesFields = [];
@@ -79,13 +79,12 @@ class EntityModel extends Model
      * Scope a query to only include children of a given parent id.
      *
      * @param Builder $query
-     * @param integer $entity_id The id of the parent entity or the short_id
+     * @param integer $entity_id The id of the parent entity
      * @return Builder
      * @throws \Exception
      */
     public function scopeChildOf($query, $entity_id)
     {
-        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as relation_children', function ($join) use ($entity_id) {
             $join->on('relation_children.caller_entity_id', '=', 'entities.id')
                 ->where('relation_children.called_entity_id', '=', $entity_id)
@@ -101,13 +100,12 @@ class EntityModel extends Model
      * Scope a query to only include the parent of the given id.
      *
      * @param Builder $query
-     * @param number $entity_id The id or short_id of the parent entity
+     * @param number $entity_id The id of the parent entity
      * @return Builder
      * @throws \Exception
      */
     public function scopeParentOf($query, $entity_id)
     {
-        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as relation_parent', function ($join) use ($entity_id) {
             $join->on('relation_parent.called_entity_id', '=', 'entities.id')
                 ->where('relation_parent.caller_entity_id', '=', $entity_id)
@@ -122,13 +120,12 @@ class EntityModel extends Model
      * Scope a query to only include ancestors of a given entity.
      *
      * @param Builder $query
-     * @param number $entity_id The id or short_id of the parent entity
+     * @param number $entity_id The id of the parent entity
      * @return Builder
      * @throws \Exception
      */
     public function scopeAncestorOf($query, $entity_id)
     {
-        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as relation_ancestor', function ($join) use ($entity_id) {
             $join->on('relation_ancestor.called_entity_id', '=', 'entities.id')
                 ->where('relation_ancestor.caller_entity_id', '=', $entity_id)
@@ -142,13 +139,12 @@ class EntityModel extends Model
      * Scope a query to only include descendants of a given entity id.
      *
      * @param Builder $query
-     * @param number $entity_id The id or short_id of the  entity
+     * @param number $entity_id The id of the  entity
      * @return Builder
      * @throws \Exception
      */
     public function scopeDescendantOf($query, $entity_id, $depth = 99)
     {
-        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as relation_descendants', function ($join) use ($entity_id, $depth) {
             $join->on('relation_descendants.caller_entity_id', '=', 'entities.id')
                 ->where('relation_descendants.called_entity_id', '=', $entity_id)
@@ -164,13 +160,12 @@ class EntityModel extends Model
      * Scope a query to only include descendants of a given entity id.
      *
      * @param Builder $query
-     * @param number $entity_id The id or short_id of the  entity
+     * @param number $entity_id The id of the  entity
      * @return Builder
      * @throws \Exception
      */
     public function scopeSiblingsOf($query, $entity_id)
     {
-        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $parent_entity = Entity::find($entity_id);
         $query->join('relations as relation_siblings', function ($join) use ($parent_entity) {
             $join->on('relation_siblings.caller_entity_id', '=', 'entities.id')
@@ -194,7 +189,6 @@ class EntityModel extends Model
      */
     public function scopeRelatedBy($query, $entity_id, $kind = null)
     {
-        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as related_by', function ($join) use ($entity_id, $kind) {
             $join->on('related_by.called_entity_id', '=', 'entities.id')
                 ->where('related_by.caller_entity_id', '=', $entity_id);
@@ -217,7 +211,6 @@ class EntityModel extends Model
      */
     public function scopeRelating($query, $entity_id, $kind = null)
     {
-        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as relating', function ($join) use ($entity_id, $kind) {
             $join->on('relating.caller_entity_id', '=', 'entities.id')
                 ->where('relating.called_entity_id', '=', $entity_id);
@@ -233,13 +226,12 @@ class EntityModel extends Model
      * Scope a query to only get entities being called by another of type medium.
      *
      * @param Builder $query
-     * @param number $entity_id The id or short_id of the entity calling the media
+     * @param number $entity_id The id of the entity calling the media
      * @return Builder
      * @throws \Exception
      */
     public function scopeMediaOf($query, $entity_id)
     {
-        $entity_id = $this->entityIdFromIdOrShortId($entity_id);
         $query->join('relations as relation_media', function ($join) use ($entity_id) {
             $join->on('relation_media.called_entity_id', '=', 'entities.id')
                 ->where('relation_media.caller_entity_id', '=', $entity_id)
@@ -472,25 +464,6 @@ class EntityModel extends Model
      * PRIVATE METHODS
      *********************/
 
-    private function entityIdFromIdOrShortId ($idOrShortId) {
-        return self::getRealId($idOrShortId);
-    }
-    private static function getRealId ($idOrShortId) {
-        if ($idOrShortId === null) {
-            return null;
-        } elseif (strlen($idOrShortId) >= 36) {
-            return $idOrShortId;
-        } elseif (is_string($idOrShortId)) {
-            $entity = Entity::select('id')->where('short_id', $idOrShortId)->first();
-            if ($entity) {
-                return $entity->id;
-            } else {
-                throw new \Exception("Entity not found by short_id '$idOrShortId'");
-            }
-        } else {
-            throw new \Exception('The id should be an uuid or a short_id string');
-        }
-    }
     /**
      * Returns the id of the instance, if none is defined, it creates one
      */
@@ -566,16 +539,13 @@ class EntityModel extends Model
         static::creating(function (Model $entity) {
             // Set the default id as uuid
             if (!isset($entity[$entity->getKeyName()])) {
-                $entity->setAttribute($entity->getKeyName(), Str::uuid());
-            }
-            if (!isset($entity['short_id'])) {
                 do {
-                    $short_id = Shortid::generate(10);
-                    $found_duplicate = Entity::where('short_id', $short_id)->first();
+                    $id = Shortid::generate(Config::get('cms.shortIdLength', 10));
+                    $found_duplicate = Entity::where($entity->getKeyName(), $id)->first();
                 } while (!!$found_duplicate);
-                $entity->setAttribute('short_id', $short_id);
+                $entity->setAttribute($entity->getKeyName(), $id);
             } else {
-                $entity->setAttribute('short_id', substr($entity['short_id'], 0, 16));
+                $entity->setAttribute($entity->getKeyName(), substr($entity[$entity->getKeyName()], 0, 16));
             }
             //Throw an error if not model is defined on create
             if (!isset($entity['model'])) {
@@ -591,7 +561,6 @@ class EntityModel extends Model
             }
         });
         self::saving(function ($entity) {
-            $entity['parent_entity_id'] = self::getRealId($entity['parent_entity_id']);
             if (isset($entity['contents'])) {
                 $entity->setContents($entity['contents']);
                 unset($entity['contents']);

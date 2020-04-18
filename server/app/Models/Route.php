@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\UsesUuid;
+use App\Models\Traits\UsesShortId;
 
 class Route extends Model
 {
@@ -17,7 +17,7 @@ class Route extends Model
         return 'route_id';
     }
 
-    use UsesUuid;
+    use UsesShortId;
     protected $hidden = array('created_at', 'updated_at', 'deleted_at', 'route_id', 'entity_id', 'entity_model');
     public function entity () {
         return $this->belongsTo('App\Models\Entity');

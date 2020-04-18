@@ -14,9 +14,9 @@ class CreatePermissionsTable extends Migration
     public function up()
     {
         Schema::create('permissions', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('user_id')->index();
-            $table->uuid('entity_id')->index();
+            $table->string('id', 16)->primary();
+            $table->string('user_id', 16)->index();
+            $table->string('entity_id', 16)->index();
             $table->enum('read',     ['none', 'own', 'any']);
             $table->enum('write',    ['none', 'own', 'any']);
             $table->foreign('entity_id')->references('id')->on('entities')

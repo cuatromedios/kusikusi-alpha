@@ -2,9 +2,10 @@
 
 namespace App\Models\Traits;
 
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Config;
+use PUGX\Shortid\Shortid;
 
-trait UsesUuid
+trait UsesShortId
 {
 
     /**
@@ -15,8 +16,16 @@ trait UsesUuid
     public static function boot()
     {
         parent::boot();
-        self::creating(function ($entity) {
-            $entity->setAttribute($entity->getKeyName(), Str::uuid());
+        self::creating(function ($model) {
+            if (!isset($model[$model->getKeyName()])) {
+                do {
+                    $id = Shortid::generate(Config::get('cms.shortIdLength', 10));
+                    $found_duplicate = self::where($model->getKeyName(), $id)->first();
+                } while (!!$found_duplicate);
+                $model->setAttribute($model->getKeyName(), $id);
+            } else {
+                $model->setAttribute($model->getKeyName(), substr($model[$model->getKeyName()], 0, 16));
+            }
         });
     }
 

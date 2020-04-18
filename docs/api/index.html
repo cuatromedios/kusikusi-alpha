@@ -58,7 +58,7 @@ Returns a paginated collection of entities, filtered by all set conditions.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/et]"
+    "http://127.0.0.1:8000/api/entities[/odit]"
 );
 
 let params = {
@@ -67,14 +67,14 @@ let params = {
     "of-model": "page",
     "is-published": "true",
     "child-of": "home",
-    "parent-of": "801892f7-8dcb-4fdc-a1fd-5251ceb6af09",
-    "ancestor-of": "701892f7-8dcb-4fdc-a1fd-5251ceb6af08",
-    "descendant-of": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07",
-    "siblings-of": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07",
-    "related-by": "501892f7-8dcb-4fdc-a1fd-5251ceb6af06",
-    "relating": "401892f7-8dcb-4fdc-a1fd-5251ceb6af05",
-    "media-of": "401892f7-8dcb-4fdc-a1fd-5251ceb6af05",
-    "with": "media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)",
+    "parent-of": "8fguTpt5SB",
+    "ancestor-of": "enKSUfUcZN",
+    "descendant-of": "xAaqz2RPyf",
+    "siblings-of": "_tuKwVy8Aa",
+    "related-by": "ElFYpgEvWS",
+    "relating": "enKSUfUcZN",
+    "media-of": "enKSUfUcZN",
+    "with": "media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -93,7 +93,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entities[/et]',
+    'http://127.0.0.1:8000/api/entities[/odit]',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -105,21 +105,21 @@ $response = $client-&gt;get(
             'of-model'=&gt; 'page',
             'is-published'=&gt; 'true',
             'child-of'=&gt; 'home',
-            'parent-of'=&gt; '801892f7-8dcb-4fdc-a1fd-5251ceb6af09',
-            'ancestor-of'=&gt; '701892f7-8dcb-4fdc-a1fd-5251ceb6af08',
-            'descendant-of'=&gt; '601892f7-8dcb-4fdc-a1fd-5251ceb6af07',
-            'siblings-of'=&gt; '601892f7-8dcb-4fdc-a1fd-5251ceb6af07',
-            'related-by'=&gt; '501892f7-8dcb-4fdc-a1fd-5251ceb6af06',
-            'relating'=&gt; '401892f7-8dcb-4fdc-a1fd-5251ceb6af05',
-            'media-of'=&gt; '401892f7-8dcb-4fdc-a1fd-5251ceb6af05',
-            'with'=&gt; 'media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)',
+            'parent-of'=&gt; '8fguTpt5SB',
+            'ancestor-of'=&gt; 'enKSUfUcZN',
+            'descendant-of'=&gt; 'xAaqz2RPyf',
+            'siblings-of'=&gt; '_tuKwVy8Aa',
+            'related-by'=&gt; 'ElFYpgEvWS',
+            'relating'=&gt; 'enKSUfUcZN',
+            'media-of'=&gt; 'enKSUfUcZN',
+            'with'=&gt; 'media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)',
         ],
     ]
 );
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/et]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=801892f7-8dcb-4fdc-a1fd-5251ceb6af09&amp;ancestor-of=701892f7-8dcb-4fdc-a1fd-5251ceb6af08&amp;descendant-of=601892f7-8dcb-4fdc-a1fd-5251ceb6af07&amp;siblings-of=601892f7-8dcb-4fdc-a1fd-5251ceb6af07&amp;related-by=501892f7-8dcb-4fdc-a1fd-5251ceb6af06&amp;relating=401892f7-8dcb-4fdc-a1fd-5251ceb6af05&amp;media-of=401892f7-8dcb-4fdc-a1fd-5251ceb6af05&amp;with=media%2CentityContents%2CentitiesRelated%3Ashort_id+%28just+that+field%29%2C+entitiesRelated.entityContents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entities[/odit]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -359,7 +359,7 @@ print_r(json_decode((string) $body));</code></pre>
 
 let params = {
     "select": "id,model,properties.price",
-    "with": "media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)",
+    "with": "media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -386,14 +386,14 @@ $response = $client-&gt;get(
         ],
         'query' =&gt; [
             'select'=&gt; 'id,model,properties.price',
-            'with'=&gt; 'media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)',
+            'with'=&gt; 'media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)',
         ],
     ]
 );
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/1?select=id%2Cmodel%2Cproperties.price&amp;with=media%2CentityContents%2CentitiesRelated%3Ashort_id+%28just+that+field%29%2C+entitiesRelated.entityContents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/1?select=id%2Cmodel%2Cproperties.price&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -569,8 +569,7 @@ let body = {
     "view": "page",
     "published_at": "2020-02-02 12:00:00.",
     "unpublished_at": "2020-02-02 12:00:00.",
-    "short_id": "home.",
-    "id": "601892f7-8dcb-4fdc-a1fd-5251ceb6af07"
+    "id": "home"
 }
 
 fetch(url, {
@@ -594,8 +593,7 @@ $response = $client-&gt;post(
             'view' =&gt; 'page',
             'published_at' =&gt; '2020-02-02 12:00:00.',
             'unpublished_at' =&gt; '2020-02-02 12:00:00.',
-            'short_id' =&gt; 'home.',
-            'id' =&gt; '601892f7-8dcb-4fdc-a1fd-5251ceb6af07',
+            'id' =&gt; 'home',
         ],
     ]
 );
@@ -605,7 +603,7 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/entity" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"model":"page.","view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","short_id":"home.","id":"601892f7-8dcb-4fdc-a1fd-5251ceb6af07"}'
+    -d '{"model":"page.","view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","id":"home"}'
 </code></pre>
 <blockquote>
 <p>Example response (200):</p>
@@ -773,16 +771,10 @@ print_r(json_decode((string) $body));</code></pre>
 <td>A date time the entity should be published. Default: 9999-12-31 23:59:59.</td>
 </tr>
 <tr>
-<td><code>short_id</code></td>
+<td><code>id</code></td>
 <td>string</td>
 <td>optional</td>
-<td>A readable identificator for the entity. Default: autogenerated.</td>
-</tr>
-<tr>
-<td><code>id</code></td>
-<td>uuid</td>
-<td>optional</td>
-<td>you can set your own uuid. Default: autogenerated.</td>
+<td>You can set your own ID, a maximum of 16, safe characters: A-Z, a-z, 0-9, _ and -. Default: autogenerated.</td>
 </tr>
 </tbody>
 </table>
@@ -848,8 +840,8 @@ let headers = {
 };
 
 let body = {
-    "email": "repellendus",
-    "password": "nihil"
+    "email": "quia",
+    "password": "vero"
 }
 
 fetch(url, {
@@ -869,8 +861,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'email' =&gt; 'repellendus',
-            'password' =&gt; 'nihil',
+            'email' =&gt; 'quia',
+            'password' =&gt; 'vero',
         ],
     ]
 );
@@ -880,7 +872,7 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"repellendus","password":"nihil"}'
+    -d '{"email":"quia","password":"vero"}'
 </code></pre>
 <h3>HTTP Request</h3>
 <p><code>POST api/user/login</code></p>

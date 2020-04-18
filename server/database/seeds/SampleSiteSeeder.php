@@ -17,7 +17,7 @@ class SampleSiteSeeder extends Seeder
         $pages_count = 2;
         $media_count = 2;
 
-        $home = Entity::where('short_id', 'home')->first();
+        $home = Entity::where('id', 'home')->first();
         for ($s = 0; $s < $sections_count; $s++) {
             $section = factory(App\Models\Entity::class)->make([
                 "model" => "section",
@@ -31,7 +31,7 @@ class SampleSiteSeeder extends Seeder
                     "properties" => []
                 ]);
                 $page->save();
-                $media = Entity::where('short_id', 'media')->first();
+                $media = Entity::where('id', 'media')->first();
                 for ($m = 0; $m < $media_count; $m++) {
                     $medium = factory(App\Models\Entity::class)->states('medium')->make([
                         "model" => "medium",

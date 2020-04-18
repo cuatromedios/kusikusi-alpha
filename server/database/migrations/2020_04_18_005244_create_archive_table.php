@@ -14,11 +14,13 @@ class CreateArchiveTable extends Migration
     public function up()
     {
         Schema::create('archive', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('entity_id');
+            $table->string('id', 16)->primary();
+            $table->string('entity_id', 16);
             $table->integer('version');
             $table->json('payload');
             $table->timestamps();
+            $table->foreign('entity_id')->references('id')->on('entities')
+                ->onDelete('restrict')->onUpdate('cascade');
         });
     }
 

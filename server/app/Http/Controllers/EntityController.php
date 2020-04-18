@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class EntityController extends Controller
 {
-    const SHORT_ID_RULE = 'string|min:1|max:16|regex:/^[A-Za-z0-9_-]+$/';
+    const ID_RULE = 'string|min:1|max:16|regex:/^[A-Za-z0-9_-]+$/';
     const MODEL_RULE = 'string|min:1|max:32|regex:/^[a-z0-9-]+$/';
     private $calledRelations = [];
     private $addedSelects = [];
@@ -25,14 +25,14 @@ class EntityController extends Controller
      * @queryParam of-model (filter) The name of the model the entities should be. Example: page
      * @queryParam is-published (filter) Get only published, not deleted entities, true if not set. Example: true
      * @queryParam child-of (filter) The id or short id of the entity the result entities should be child of. Example: home
-     * @queryParam parent-of (filter) The id or short id of the entity the result entities should be parent of (will return only one). Example: 801892f7-8dcb-4fdc-a1fd-5251ceb6af09
-     * @queryParam ancestor-of (filter) The id or short id of the entity the result entities should be ancestor of. Example: 701892f7-8dcb-4fdc-a1fd-5251ceb6af08
-     * @queryParam descendant-of (filter) The id or short id of the entity the result entities should be descendant of. Example: 601892f7-8dcb-4fdc-a1fd-5251ceb6af07
-     * @queryParam siblings-of (filter) The id or short id of the entity the result entities should be siblings of. Example: 601892f7-8dcb-4fdc-a1fd-5251ceb6af07
-     * @queryParam related-by (filter) The id or short id of the entity the result entities should have been called by using a relation. Can be added a filter to a kind of relation for example: theShortId:category. The ancestor kind of relations are discarted unless are explicity specified. Example: 501892f7-8dcb-4fdc-a1fd-5251ceb6af06
-     * @queryParam relating (filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
-     * @queryParam media-of (filter) The id or short id of the entity the result entities should have a media relation to. Example: 401892f7-8dcb-4fdc-a1fd-5251ceb6af05
-     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)
+     * @queryParam parent-of (filter) The id or short id of the entity the result entities should be parent of (will return only one). Example: 8fguTpt5SB
+     * @queryParam ancestor-of (filter) The id or short id of the entity the result entities should be ancestor of. Example: enKSUfUcZN
+     * @queryParam descendant-of (filter) The id or short id of the entity the result entities should be descendant of. Example: xAaqz2RPyf
+     * @queryParam siblings-of (filter) The id or short id of the entity the result entities should be siblings of. Example: _tuKwVy8Aa
+     * @queryParam related-by (filter) The id or short id of the entity the result entities should have been called by using a relation. Can be added a filter to a kind of relation for example: theShortId:category. The ancestor kind of relations are discarted unless are explicity specified. Example: ElFYpgEvWS
+     * @queryParam relating (filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified. Example: enKSUfUcZN
+     * @queryParam media-of (filter) The id or short id of the entity the result entities should have a media relation to. Example: enKSUfUcZN
+     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)
      * @urlParam model_name If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available.
      * @responseFile responses/entities.get.json
      * @return Response
@@ -119,14 +119,14 @@ class EntityController extends Controller
      * @group Entity
      * @authenticated
      * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax. Example: id,model,properties.price
-     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated:short_id (just that field), entitiesRelated.entityContents (nested relations)
+     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)
      * @responseFile responses/entities.get.json
      * @return Response
      */
     public function show(Request $request, $entity_id)
     {
         $entityFound = Entity::select('id', 'model')
-            ->where(Str::length($entity_id) === 36 ? 'id' : 'short_id', $entity_id)
+            ->where('id', $entity_id)
             ->firstOrFail();
         $modelClassName = "App\\Models\\".Str::studly(Str::singular($entityFound->model));
         if(!class_exists('$modelClassName')) {
@@ -148,36 +148,35 @@ class EntityController extends Controller
      * @bodyParam view string The name of the view to use. Default: the same name of the model. Example: page
      * @bodyParam published_at date A date time the entity should be published. Default: current date time. Example: 2020-02-02 12:00:00.
      * @bodyParam unpublished_at date A date time the entity should be published. Default: 9999-12-31 23:59:59. Example: 2020-02-02 12:00:00.
-     * @bodyParam short_id string A readable identificator for the entity. Default: autogenerated. Example: home.
-     * @bodyParam id uuid you can set your own uuid. Default: autogenerated. Example: 601892f7-8dcb-4fdc-a1fd-5251ceb6af07
+     * @bodyParam id string You can set your own ID, a maximum of 16, safe characters: A-Z, a-z, 0-9, _ and -. Default: autogenerated. Example: home
      * @responseFile responses/entities.get.json
      * @return Response
      */
     public function create(Request $request)
     {
         $this->validate($request, [
-            'model' => 'required|string|max:50',
-            'view' => 'string|max:50',
-            'short_id' => 'string|max:16|unique:entities,short_id',
+            'model' => 'required|string|max:32',
+            'view' => 'string|max:32',
+            'id' => self::ID_RULE,
             'published_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
             'unpublished_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
             'id' => 'uuid'
         ]);
-        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'short_id', 'published_at', 'unpublished_at', 'properties', 'contents');
+        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents');
         $entityCreated = Entity::create($payload);
         return($entityCreated);
     }
 
     private function queryParamsValidation() {
         return [
-            'child-of' => self::SHORT_ID_RULE,
-            'parent-of' => self::SHORT_ID_RULE,
-            'ancestor-of' => self::SHORT_ID_RULE,
-            'descendant-of' => self::SHORT_ID_RULE,
-            'siblings-of' => self::SHORT_ID_RULE,
-            'related-by' => self::SHORT_ID_RULE,
-            'relating' => self::SHORT_ID_RULE,
-            'media-of' => self::SHORT_ID_RULE,
+            'child-of' => self::ID_RULE,
+            'parent-of' => self::ID_RULE,
+            'ancestor-of' => self::ID_RULE,
+            'descendant-of' => self::ID_RULE,
+            'siblings-of' => self::ID_RULE,
+            'related-by' => self::ID_RULE,
+            'relating' => self::ID_RULE,
+            'media-of' => self::ID_RULE,
             'of-model' => self::MODEL_RULE,
             'model_name' => self::MODEL_RULE,
             'is-published' => 'in:true,false',
