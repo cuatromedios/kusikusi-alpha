@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "9d1d46d4-575c-4957-810f-d40c190ca74f",
+        "_postman_id": "4a370ac7-2ba6-44be-b25d-65b2811da9da",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -102,7 +102,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "odit",
+                                    "value": "consequatur",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -257,7 +257,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"quia\",\n    \"password\": \"vero\"\n}"
+                            "raw": "{\n    \"email\": \"quas\",\n    \"password\": \"dolorem\"\n}"
                         },
                         "description": "",
                         "response": []

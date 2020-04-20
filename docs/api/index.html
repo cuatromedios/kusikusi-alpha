@@ -58,7 +58,7 @@ Returns a paginated collection of entities, filtered by all set conditions.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/odit]"
+    "http://127.0.0.1:8000/api/entities[/consequatur]"
 );
 
 let params = {
@@ -93,7 +93,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entities[/odit]',
+    'http://127.0.0.1:8000/api/entities[/consequatur]',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -119,7 +119,7 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/odit]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entities[/consequatur]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -840,8 +840,8 @@ let headers = {
 };
 
 let body = {
-    "email": "quia",
-    "password": "vero"
+    "email": "quas",
+    "password": "dolorem"
 }
 
 fetch(url, {
@@ -861,8 +861,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'email' =&gt; 'quia',
-            'password' =&gt; 'vero',
+            'email' =&gt; 'quas',
+            'password' =&gt; 'dolorem',
         ],
     ]
 );
@@ -872,7 +872,7 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"quia","password":"vero"}'
+    -d '{"email":"quas","password":"dolorem"}'
 </code></pre>
 <h3>HTTP Request</h3>
 <p><code>POST api/user/login</code></p>
