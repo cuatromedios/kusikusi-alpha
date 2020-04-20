@@ -5,6 +5,7 @@ namespace App\Models;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Ankurk91\Eloquent\BelongsToOne;
@@ -19,6 +20,7 @@ class EntityModel extends Model
 {
     use BelongsToOne;
     use UsesShortId;
+    use SoftDeletes;
 
     /**********************
      * PROPERTIES

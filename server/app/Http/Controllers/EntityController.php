@@ -118,6 +118,7 @@ class EntityController extends Controller
      *
      * @group Entity
      * @authenticated
+     * @urlParam entity_id The id of the entity to show.
      * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax. Example: id,model,properties.price
      * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)
      * @responseFile responses/entities.show.json
@@ -174,6 +175,7 @@ class EntityController extends Controller
      *
      * @group Entity
      * @authenticated
+     * @urlParam entity_id The id of the entity to update
      * @bodyParam view string The name of the view to use. Default: the same name of the model. Example: page
      * @bodyParam published_at date A date time the entity should be published. Default: current date time. Example: 2020-02-02 12:00:00.
      * @bodyParam unpublished_at date A date time the entity should be published. Default: 9999-12-31 23:59:59. Example: 2020-02-02 12:00:00.
@@ -195,6 +197,26 @@ class EntityController extends Controller
         $entity = Entity::find($entity_id);
         $entity->fill($payload);
         $entity->save();
+        return($entity);
+    }
+
+    /**
+     * Deletes an entity.
+     *
+     * @group Entity
+     * @authenticated
+     * @urlParam entity_id The id of the entity to delete
+     * @responseFile responses/entities.delete.json
+     * @return Response
+     */
+    public function delete(Request $request, $entity_id)
+    {
+        $this->validate($request, [
+            'entity_id' => self::ID_RULE
+        ]);
+        Entity::where('id', $entity_id)->delete();
+        $entity = Entity::select('id', 'deleted_at')->withTrashed()->find($entity_id);
+        $entity->makeVisible('deleted_at');
         return($entity);
     }
 
