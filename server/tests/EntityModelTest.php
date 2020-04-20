@@ -6,7 +6,9 @@ use App\Models\Entity;
 
 class EntityModelTest extends TestCase
 {
-    //use DatabaseMigrations;
+    use DatabaseMigrations;
+
+    
     /**
      * A basic test example.
      *
@@ -15,27 +17,50 @@ class EntityModelTest extends TestCase
     public function testCreateEntity()
     {
         $root = new Entity([
+           "id" => "root",
            "model" => "root",
-           "id" => "root"
+           "view" => "root",
+           "parent_entity_id" => "root"
         ]);
         $root->save();
         $this->seeInDatabase('entities', [
-            "id" => "root"
+            "id" => "root",
+            "model" => "root",
+           "view" => "root",
+           "parent_entity_id" => "root"
         ]);
     }  
 
     public function testEditEntity()
     {
-        $edit = Entity::where('id',"root")->update(["id" => "home"]);
-        $this->assertTrue(true);
+        $ent = new Entity([
+            "id" => "root",
+            "model" => "root",
+            "view" => "root",
+         ]);
+        $ent->save();
+        $edit = Entity::where('id',"root")->update([
+            "id" => "home",
+            "model" => "home",
+            "view" => "home"]);
         $this->seeInDatabase('entities', [
-            "id" => "home"
+            "id" => "home",
+            "model" => "home",
+            "view" => "home"
         ]);
     } 
 
      public function testDeleteEntity()
     {
+        $en1 = new Entity([
+            "model" => "home",
+            "id" => "home",
+            "view" => "home"
+         ]);
+        $en1->save();
         $delete = Entity::where('id', 'home')->delete();
-        $this->assertTrue(true);
+        $this->notSeeInDatabase('entities',[
+            'id' => 'home'
+        ]);
     } 
 }
