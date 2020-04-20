@@ -1,0 +1,22 @@
+{
+    "id": "DkESBOv-wT",
+    "model": "page-m",
+    "properties": {
+        "prop1": "Z",
+        "prop2": "Z"
+    },
+    "view": "yuyxo",
+    "parent_entity_id": "home",
+    "is_active": true,
+    "created_by": null,
+    "updated_by": null,
+    "published_at": "2020-08-27 14:55:30",
+    "unpublished_at": "9999-12-31 23:59:59",
+    "version": 18,
+    "version_tree": 0,
+    "version_relations": 9,
+    "version_full": 27,
+    "created_at": "2020-04-20T19:36:58.000000Z",
+    "updated_at": "2020-04-20T20:25:19.000000Z",
+    "deleted_at": null
+}

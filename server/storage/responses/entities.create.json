@@ -1,0 +1,13 @@
+{
+    "model": "page-m",
+    "view": "page",
+    "parent_entity_id": "home",
+    "published_at": "2020-08-27T14:55:30",
+    "properties": {
+        "prop1": "b",
+        "prop2": 1
+    },
+    "id": "DkESBOv-wT",
+    "updated_at": "2020-04-20T19:36:58.000000Z",
+    "created_at": "2020-04-20T19:36:58.000000Z"
+}
