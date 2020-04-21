@@ -3,64 +3,48 @@
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use App\Models\Entity;
-
 class EntityModelTest extends TestCase
 {
     use DatabaseMigrations;
 
+    private $data = [ 
+        'data' => ['id' =>'root','model' =>'root','view' =>'root'],
+        'edit_data' =>['id' => 'home','model' => 'home','view' => 'home'],
+        'without_model' =>['id' => 'root','view' => 'root']
+    ];
     
-    /**
+    /* *
      * A basic test example.
      *
      * @return void
      */
     public function testCreateEntity()
     {
-        $root = new Entity([
-           "id" => "root",
-           "model" => "root",
-           "view" => "root",
-           "parent_entity_id" => "root"
-        ]);
+        $root = new Entity($this->data['data']);
         $root->save();
-        $this->seeInDatabase('entities', [
-            "id" => "root",
-            "model" => "root",
-           "view" => "root",
-           "parent_entity_id" => "root"
-        ]);
-    }  
-
+        $this->seeInDatabase('entities',$this->data['data']);
+    } 
+   
     public function testEditEntity()
     {
-        $ent = new Entity([
-            "id" => "root",
-            "model" => "root",
-            "view" => "root",
-         ]);
-        $ent->save();
-        $edit = Entity::where('id',"root")->update([
-            "id" => "home",
-            "model" => "home",
-            "view" => "home"]);
-        $this->seeInDatabase('entities', [
-            "id" => "home",
-            "model" => "home",
-            "view" => "home"
-        ]);
+        $root = new Entity($this->data['data']);
+        $root->save();
+        $root = Entity::where('id',"root")->update($this->data['edit_data']);
+        $this->seeInDatabase('entities',$this->data['edit_data']);
     } 
 
      public function testDeleteEntity()
     {
-        $en1 = new Entity([
-            "model" => "home",
-            "id" => "home",
-            "view" => "home"
-         ]);
-        $en1->save();
+        $root = new Entity($this->data['data']);
+        $root->save();
         $delete = Entity::where('id', 'home')->delete();
-        $this->notSeeInDatabase('entities',[
-            'id' => 'home'
-        ]);
+        $this->notSeeInDatabase('entities',['id' => 'home']);
+    } 
+
+    public function testCreateEntityWithoutModel()
+    {
+        $this->expectExceptionMessage('A model name is requiered to create a new entity');
+        $root = new Entity($this->data['without_model']);
+        $root->save();
     } 
 }
