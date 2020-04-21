@@ -3,6 +3,9 @@
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use App\Models\Entity;
+use App\Models\EntityContent;
+
+
 class EntityModelTest extends TestCase
 {
     use DatabaseMigrations;
@@ -10,7 +13,8 @@ class EntityModelTest extends TestCase
     private $data = [ 
         'data' => ['id' =>'root','model' =>'root','view' =>'root'],
         'edit_data' =>['id' => 'home','model' => 'home','view' => 'home'],
-        'without_model' =>['id' => 'root','view' => 'root']
+        'without_model' =>['id' => 'root','view' => 'root'],
+        'with_parent_entity_id' => ['id' =>'root','model' =>'root','view' =>'root','parent_entity_id'=>'root'],
     ];
     
     /* *
@@ -47,4 +51,25 @@ class EntityModelTest extends TestCase
         $root = new Entity($this->data['without_model']);
         $root->save();
     } 
+
+    public function testAncestorsParentEntityId()
+    {
+        $root = new Entity($this->data['with_parent_entity_id']);
+        $root->save();
+        $this->seeInDatabase('entities',['id'=>'root']);
+        $this->seeInDatabase('relations',['caller_entity_id'=>'root','kind'=>'ancestor']);
+    }
+
+
+    /* public function testCreateEntityContent()
+    {
+        factory(Entity::class)->create([
+            'id' =>'root',
+            'model' =>'root',
+            'view' =>'root',
+            'parent_entity_id' =>'root'
+        ]);
+        
+        $this->assertTrue(true);
+    }  */
 }
