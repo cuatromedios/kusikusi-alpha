@@ -58,7 +58,7 @@ Returns a paginated collection of entities, filtered by all set conditions.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/odit]"
+    "http://127.0.0.1:8000/api/entities[/et]"
 );
 
 let params = {
@@ -93,7 +93,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entities[/odit]',
+    'http://127.0.0.1:8000/api/entities[/et]',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -119,7 +119,7 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/odit]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entities[/et]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -354,7 +354,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/1"
+    "http://127.0.0.1:8000/api/entity/ut"
 );
 
 let params = {
@@ -378,7 +378,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entity/1',
+    'http://127.0.0.1:8000/api/entity/ut',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -393,139 +393,53 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/1?select=id%2Cmodel%2Cproperties.price&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/ut?select=id%2Cmodel%2Cproperties.price&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
 <p>Example response (200):</p>
 </blockquote>
 <pre><code class="language-json">{
-    "current_page": 1,
-    "data": [
-        {
-            "id": "35337182-7a0c-44c4-a11f-68cd9da930b2",
-            "content": {
-                "body": {
-                    "en_US": "Consequatur tempora deleniti ea cum totam. Qui quidem quis eius expedita atque officia incidunt."
-                },
-                "slug": {
-                    "en_US": "mrs-karlie-torp"
-                },
-                "title": {
-                    "en_US": "Felipa Haley PhD"
-                },
-                "summary": {
-                    "en_US": "Railroad Inspector"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "4cbbd1cd-3708-4ac2-8ff7-7261cd6fbe81",
-            "content": {
-                "body": {
-                    "en_US": "Voluptatem sed autem voluptas eum fuga amet neque. Odit accusantium nemo et architecto."
-                },
-                "slug": {
-                    "en_US": "amely-koepp"
-                },
-                "title": {
-                    "en_US": "Ashley D'Amore"
-                },
-                "summary": {
-                    "en_US": "Homeland Security"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "6d776ddf-b416-42c7-86cf-c665770c96ff",
-            "content": {
-                "body": {
-                    "en_US": "Error animi autem sunt et. Qui quia eos sunt sint dicta eligendi quasi. Ut quae aut facilis vel."
-                },
-                "slug": {
-                    "en_US": "janis-jenkins-jr"
-                },
-                "title": {
-                    "en_US": "Mr. Reagan Deckow I"
-                },
-                "summary": {
-                    "en_US": "Pesticide Sprayer"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "7d504be2-ca0f-4836-b6d2-f00c2dff209c",
-            "content": {
-                "body": {
-                    "en_US": "Consequatur deserunt non quo sint. Voluptas sint et aliquam qui."
-                },
-                "slug": {
-                    "en_US": "mr-xavier-yundt-iv"
-                },
-                "title": {
-                    "en_US": "Joyce Kohler MD"
-                },
-                "summary": {
-                    "en_US": "Transportation Equipment Maintenance"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "801892f7-8dcb-4fdc-a1fd-5251ceb6af09",
-            "content": {
-                "body": {
-                    "en_US": "Assumenda quaerat ipsam dolores ducimus itaque earum sit. Aut dolorem nisi et harum sunt molestiae."
-                },
-                "slug": {
-                    "en_US": "ms-lauretta-rohan"
-                },
-                "title": {
-                    "en_US": "Dr. Briana Bergstrom DVM"
-                },
-                "summary": {
-                    "en_US": "Hotel Desk Clerk"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        }
-    ],
-    "first_page_url": "http:\/\/127.0.0.1:8000\/api\/entities?relating=bee7a88a-459c-419a-9b3f-96ad3d3822b5%3Aancestor&amp;page=1",
-    "from": 1,
-    "last_page": 1,
-    "last_page_url": "http:\/\/127.0.0.1:8000\/api\/entities?relating=bee7a88a-459c-419a-9b3f-96ad3d3822b5%3Aancestor&amp;page=1",
-    "next_page_url": null,
-    "path": "http:\/\/127.0.0.1:8000\/api\/entities",
-    "per_page": 100,
-    "prev_page_url": null,
-    "to": 5,
-    "total": 5
+    "id": "DkESBOv-wT",
+    "model": "page-m",
+    "properties": {
+        "prop1": "Z",
+        "prop2": "Z"
+    },
+    "view": "yuyxo",
+    "parent_entity_id": "home",
+    "is_active": true,
+    "created_by": null,
+    "updated_by": null,
+    "published_at": "2020-08-27 14:55:30",
+    "unpublished_at": "9999-12-31 23:59:59",
+    "version": 18,
+    "version_tree": 0,
+    "version_relations": 9,
+    "version_full": 27,
+    "created_at": "2020-04-20T19:36:58.000000Z",
+    "updated_at": "2020-04-20T20:25:19.000000Z",
+    "deleted_at": null
 }</code></pre>
 <h3>HTTP Request</h3>
 <p><code>GET api/entity/{entity_id}</code></p>
+<h4>URL Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entity_id</code></td>
+<td>optional</td>
+<td>The id of the entity to show.</td>
+</tr>
+</tbody>
+</table>
 <h4>Query Parameters</h4>
 <table>
 <thead>
@@ -569,7 +483,9 @@ let body = {
     "view": "page",
     "published_at": "2020-02-02 12:00:00.",
     "unpublished_at": "2020-02-02 12:00:00.",
-    "id": "home"
+    "id": "home",
+    "contents": "{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}",
+    "relations": "\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"
 }
 
 fetch(url, {
@@ -594,6 +510,8 @@ $response = $client-&gt;post(
             'published_at' =&gt; '2020-02-02 12:00:00.',
             'unpublished_at' =&gt; '2020-02-02 12:00:00.',
             'id' =&gt; 'home',
+            'contents' =&gt; '{ "title": {"en_US": "The page M", "es_ES": "La página M"}, "slug": {"en_US": "page-m", "es_ES": "pagina-m"}}',
+            'relations' =&gt; '"relations": [{"called_entity_id": "mf4gWE45pm","kind": "category","position": 2, "tags":["main"]}]',
         ],
     ]
 );
@@ -603,135 +521,23 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/entity" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"model":"page.","view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","id":"home"}'
+    -d '{"model":"page.","view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
 </code></pre>
 <blockquote>
 <p>Example response (200):</p>
 </blockquote>
 <pre><code class="language-json">{
-    "current_page": 1,
-    "data": [
-        {
-            "id": "35337182-7a0c-44c4-a11f-68cd9da930b2",
-            "content": {
-                "body": {
-                    "en_US": "Consequatur tempora deleniti ea cum totam. Qui quidem quis eius expedita atque officia incidunt."
-                },
-                "slug": {
-                    "en_US": "mrs-karlie-torp"
-                },
-                "title": {
-                    "en_US": "Felipa Haley PhD"
-                },
-                "summary": {
-                    "en_US": "Railroad Inspector"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "4cbbd1cd-3708-4ac2-8ff7-7261cd6fbe81",
-            "content": {
-                "body": {
-                    "en_US": "Voluptatem sed autem voluptas eum fuga amet neque. Odit accusantium nemo et architecto."
-                },
-                "slug": {
-                    "en_US": "amely-koepp"
-                },
-                "title": {
-                    "en_US": "Ashley D'Amore"
-                },
-                "summary": {
-                    "en_US": "Homeland Security"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "6d776ddf-b416-42c7-86cf-c665770c96ff",
-            "content": {
-                "body": {
-                    "en_US": "Error animi autem sunt et. Qui quia eos sunt sint dicta eligendi quasi. Ut quae aut facilis vel."
-                },
-                "slug": {
-                    "en_US": "janis-jenkins-jr"
-                },
-                "title": {
-                    "en_US": "Mr. Reagan Deckow I"
-                },
-                "summary": {
-                    "en_US": "Pesticide Sprayer"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "7d504be2-ca0f-4836-b6d2-f00c2dff209c",
-            "content": {
-                "body": {
-                    "en_US": "Consequatur deserunt non quo sint. Voluptas sint et aliquam qui."
-                },
-                "slug": {
-                    "en_US": "mr-xavier-yundt-iv"
-                },
-                "title": {
-                    "en_US": "Joyce Kohler MD"
-                },
-                "summary": {
-                    "en_US": "Transportation Equipment Maintenance"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        },
-        {
-            "id": "801892f7-8dcb-4fdc-a1fd-5251ceb6af09",
-            "content": {
-                "body": {
-                    "en_US": "Assumenda quaerat ipsam dolores ducimus itaque earum sit. Aut dolorem nisi et harum sunt molestiae."
-                },
-                "slug": {
-                    "en_US": "ms-lauretta-rohan"
-                },
-                "title": {
-                    "en_US": "Dr. Briana Bergstrom DVM"
-                },
-                "summary": {
-                    "en_US": "Hotel Desk Clerk"
-                }
-            },
-            "model": "page",
-            "kind": "ancestor",
-            "position": 0,
-            "depth": 1,
-            "tags": null
-        }
-    ],
-    "first_page_url": "http:\/\/127.0.0.1:8000\/api\/entities?relating=bee7a88a-459c-419a-9b3f-96ad3d3822b5%3Aancestor&amp;page=1",
-    "from": 1,
-    "last_page": 1,
-    "last_page_url": "http:\/\/127.0.0.1:8000\/api\/entities?relating=bee7a88a-459c-419a-9b3f-96ad3d3822b5%3Aancestor&amp;page=1",
-    "next_page_url": null,
-    "path": "http:\/\/127.0.0.1:8000\/api\/entities",
-    "per_page": 100,
-    "prev_page_url": null,
-    "to": 5,
-    "total": 5
+    "model": "page-m",
+    "view": "page",
+    "parent_entity_id": "home",
+    "published_at": "2020-08-27T14:55:30",
+    "properties": {
+        "prop1": "b",
+        "prop2": 1
+    },
+    "id": "DkESBOv-wT",
+    "updated_at": "2020-04-20T19:36:58.000000Z",
+    "created_at": "2020-04-20T19:36:58.000000Z"
 }</code></pre>
 <h3>HTTP Request</h3>
 <p><code>POST api/entity</code></p>
@@ -776,9 +582,229 @@ print_r(json_decode((string) $body));</code></pre>
 <td>optional</td>
 <td>You can set your own ID, a maximum of 16, safe characters: A-Z, a-z, 0-9, _ and -. Default: autogenerated.</td>
 </tr>
+<tr>
+<td><code>contents</code></td>
+<td>array</td>
+<td>optional</td>
+<td>An array of contents to be created for the entity.</td>
+</tr>
+<tr>
+<td><code>relations</code></td>
+<td>arrya</td>
+<td>optional</td>
+<td>An array of relations to be created for the entity.</td>
+</tr>
 </tbody>
 </table>
 <!-- END_af9c0c62a0bddef37647abebdc3538da -->
+<!-- START_ec8e08b9a5493ca2f4077a1528c5fc8d -->
+<h2>Updates n entity.</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/entity/nulla"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "view": "page",
+    "published_at": "2020-02-02 12:00:00.",
+    "unpublished_at": "2020-02-02 12:00:00.",
+    "id": "home",
+    "contents": "{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}",
+    "relations": "\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"
+}
+
+fetch(url, {
+    method: "PATCH",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;patch(
+    'http://127.0.0.1:8000/api/entity/nulla',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'view' =&gt; 'page',
+            'published_at' =&gt; '2020-02-02 12:00:00.',
+            'unpublished_at' =&gt; '2020-02-02 12:00:00.',
+            'id' =&gt; 'home',
+            'contents' =&gt; '{ "title": {"en_US": "The page M", "es_ES": "La página M"}, "slug": {"en_US": "page-m", "es_ES": "pagina-m"}}',
+            'relations' =&gt; '"relations": [{"called_entity_id": "mf4gWE45pm","kind": "category","position": 2, "tags":["main"]}]',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-bash">curl -X PATCH \
+    "http://127.0.0.1:8000/api/entity/nulla" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
+</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "model": "page-m",
+    "view": "page",
+    "parent_entity_id": "home",
+    "published_at": "2020-08-27T14:55:30",
+    "properties": {
+        "prop1": "b",
+        "prop2": 1
+    },
+    "id": "DkESBOv-wT",
+    "updated_at": "2020-04-20T19:36:58.000000Z",
+    "created_at": "2020-04-20T19:36:58.000000Z"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PATCH api/entity/{entity_id}</code></p>
+<h4>URL Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entity_id</code></td>
+<td>optional</td>
+<td>The id of the entity to update</td>
+</tr>
+</tbody>
+</table>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>view</code></td>
+<td>string</td>
+<td>optional</td>
+<td>The name of the view to use. Default: the same name of the model.</td>
+</tr>
+<tr>
+<td><code>published_at</code></td>
+<td>date</td>
+<td>optional</td>
+<td>A date time the entity should be published. Default: current date time.</td>
+</tr>
+<tr>
+<td><code>unpublished_at</code></td>
+<td>date</td>
+<td>optional</td>
+<td>A date time the entity should be published. Default: 9999-12-31 23:59:59.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>optional</td>
+<td>You can set your own ID, a maximum of 16, safe characters: A-Z, a-z, 0-9, _ and -. Default: autogenerated.</td>
+</tr>
+<tr>
+<td><code>contents</code></td>
+<td>array</td>
+<td>optional</td>
+<td>An array of contents to be created for the entity.</td>
+</tr>
+<tr>
+<td><code>relations</code></td>
+<td>arrya</td>
+<td>optional</td>
+<td>An array of relations to be created for the entity.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_ec8e08b9a5493ca2f4077a1528c5fc8d -->
+<!-- START_df16605fe65733c4ef3009e2320cd8ea -->
+<h2>Deletes an entity.</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/entity/quia"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;delete(
+    'http://127.0.0.1:8000/api/entity/quia',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-bash">curl -X DELETE \
+    "http://127.0.0.1:8000/api/entity/quia" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "id": "NiCJ5xKaIy",
+    "deleted_at": "2020-04-20T21:19:27.000000Z"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/entity/{entity_id}</code></p>
+<h4>URL Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entity_id</code></td>
+<td>optional</td>
+<td>The id of the entity to delete</td>
+</tr>
+</tbody>
+</table>
+<!-- END_df16605fe65733c4ef3009e2320cd8ea -->
 <h1>Media</h1>
 <!-- START_20a921575609e2dc57fa6a20488e7c18 -->
 <h2>Gets a medium: Optimized using a preset if it is an image or the original one if not.</h2>
@@ -840,8 +866,8 @@ let headers = {
 };
 
 let body = {
-    "email": "quia",
-    "password": "vero"
+    "email": "quod",
+    "password": "blanditiis"
 }
 
 fetch(url, {
@@ -861,8 +887,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'email' =&gt; 'quia',
-            'password' =&gt; 'vero',
+            'email' =&gt; 'quod',
+            'password' =&gt; 'blanditiis',
         ],
     ]
 );
@@ -872,7 +898,7 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"quia","password":"vero"}'
+    -d '{"email":"quod","password":"blanditiis"}'
 </code></pre>
 <h3>HTTP Request</h3>
 <p><code>POST api/user/login</code></p>

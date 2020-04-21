@@ -5,6 +5,7 @@ namespace App\Models;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Ankurk91\Eloquent\BelongsToOne;
@@ -19,17 +20,19 @@ class EntityModel extends Model
 {
     use BelongsToOne;
     use UsesShortId;
+    use SoftDeletes;
 
     /**********************
      * PROPERTIES
      **********************/
 
     protected $table = 'entities';
-    protected $fillable = ['id', 'model', 'properties', 'view', 'parent_entity_id', 'is_active', 'published_at', 'unpublished_at'];
+    protected $fillable = ['id', 'model', 'properties', 'view', 'parent_entity_id', 'is_active', 'published_at', 'unpublished_at', 'contents', 'relations'];
     protected $guarded = ['id'];
     protected $contentFields = [ "title", 'slug' ];
     protected $propertiesFields = [];
     private $storedContents = [];
+    private $storedRelations = [];
 
     /**
      * @var array A list of columns from the entities tables and other joins needs to be casted
@@ -318,7 +321,7 @@ class EntityModel extends Model
 
     public function addRelation($relationData) {
         if (!isset($relationData['caller_entity_id'])) {
-            $relationData['caller_entity_id'] = $this->getId();
+            $relationData["caller_entity_id"] = $this->getId();
         }
         self::createRelation($relationData);
     }
@@ -365,7 +368,7 @@ class EntityModel extends Model
     }
 
     /**
-     * Adds content rows to an Entity.
+     * Adds content rows related to an Entity.
      *
      * @param  array $contents An array of one or more contents, for example ["title" => ["en" => "The title", "es" => "El título"], "slug" => ["en" => "the-title", "es" => "el-titulo"]] or without language defined if using the default one or explicit set as the second param ["title" => "The title", "slug" => "the-title"]
      * @param  string $lang optional language code, for example "en" or "es-mx"
@@ -402,6 +405,21 @@ class EntityModel extends Model
                     ]);
                 }
             }
+        }
+    }
+
+    /**
+     * Adds relation rows related to an Entity.
+     *
+     * @param  array $relations An array of one or more relations, for example ["entity_called_id" => "theShortId", "kind" => "medium", "depth": 0, "position" => 0]
+     */
+    public function replaceRelations($relations)
+    {
+        EntityRelation::where('caller_entity_id', $this->getId())
+            ->where('kind', "!=", 'ancestor')
+            ->delete();
+        foreach ($relations as $relation) {
+            $this->addRelation($relation);
         }
     }
 
@@ -485,6 +503,17 @@ class EntityModel extends Model
         return $this->storedContents;
     }
 
+    /**
+     * Set stored relations to be saved once ready
+     * @param $contents
+     */
+    private function setStoredRelations($contents) {
+        $this->storedRelations = $contents;
+    }
+    private function getStoredRelations() {
+        return $this->storedRelations;
+    }
+
     private static function incrementEntityVersion($entity_id) {
         $e = DB::table('entities')
             ->where('id', $entity_id);
@@ -565,11 +594,19 @@ class EntityModel extends Model
                 $entity->setContents($entity['contents']);
                 unset($entity['contents']);
             }
+            if (isset($entity['relations'])) {
+                $entity->setStoredRelations($entity['relations']);
+                unset($entity['relations']);
+            }
         });
         self::saved(function ($entity) {
             // Saving contents
             if ($entity->getContents() && count($entity->getContents()) > 0) {
                 $entity->addContents($entity->getContents());
+            }
+            // Saving relations
+            if ($entity->getStoredRelations() && count($entity->getStoredRelations()) > 0) {
+                $entity->replaceRelations($entity->getStoredRelations());
             }
             $parentEntity = Entity::with('routes')->find($entity['parent_entity_id']);
             // Create the ancestors relations

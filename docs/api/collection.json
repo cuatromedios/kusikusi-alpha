@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "9d1d46d4-575c-4957-810f-d40c190ca74f",
+        "_postman_id": "a079c2fe-667f-460f-be8e-30e0c743a84c",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -102,7 +102,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "odit",
+                                    "value": "et",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -145,6 +145,14 @@
                                     "value": "media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29",
                                     "description": "A comma separated list of relationships should be included in the result.",
                                     "disabled": false
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "id": "entity_id",
+                                    "key": "entity_id",
+                                    "value": "ut",
+                                    "description": "The id of the entity to show."
                                 }
                             ]
                         },
@@ -189,7 +197,79 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"model\": \"page.\",\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"id\": \"home\"\n}"
+                            "raw": "{\n    \"model\": \"page.\",\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Updates n entity.",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/entity\/:entity_id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "id": "entity_id",
+                                    "key": "entity_id",
+                                    "value": "nulla",
+                                    "description": "The id of the entity to update"
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Deletes an entity.",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/entity\/:entity_id",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "id": "entity_id",
+                                    "key": "entity_id",
+                                    "value": "quia",
+                                    "description": "The id of the entity to delete"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
                         },
                         "description": "",
                         "response": []
@@ -257,7 +337,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"quia\",\n    \"password\": \"vero\"\n}"
+                            "raw": "{\n    \"email\": \"quod\",\n    \"password\": \"blanditiis\"\n}"
                         },
                         "description": "",
                         "response": []
