@@ -15,6 +15,7 @@ class EntityModelTest extends TestCase
         'edit_data' =>['id' => 'home','model' => 'home','view' => 'home'],
         'without_model' =>['id' => 'root','view' => 'root'],
         'with_parent_entity_id' => ['id' =>'root','model' =>'root','view' =>'root','parent_entity_id'=>'root'],
+        'content_data' =>['entity_id'=>'root','field'=>'title','field'=>'summary','field'=>'body', 'field'=>'slug']
     ];
     
     /* *
@@ -60,16 +61,19 @@ class EntityModelTest extends TestCase
         $this->seeInDatabase('relations',['caller_entity_id'=>'root','kind'=>'ancestor']);
     }
 
-
-    /* public function testCreateEntityContent()
+    public function testCreateEntityContent()
     {
-        factory(Entity::class)->create([
-            'id' =>'root',
-            'model' =>'root',
-            'view' =>'root',
-            'parent_entity_id' =>'root'
-        ]);
-        
-        $this->assertTrue(true);
-    }  */
+        factory(Entity::class)->create($this->data['with_parent_entity_id']);
+        $this->seeInDatabase('contents',$this->data['content_data']);
+    } 
+
+  /*   public function testEntityContentRoutes()
+    {
+        factory(Entity::class)->create($this->data['with_parent_entity_id']);
+        $this->seeInDatabase('entities',['id'=>'root']);
+        $this->seeInDatabase('contents',$this->data['content_data']);
+
+        $this->assertTrue($modelOne->is($modelTwo));
+
+    } */
 }
