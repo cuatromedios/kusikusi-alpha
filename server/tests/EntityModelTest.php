@@ -10,14 +10,14 @@ class EntityModelTest extends TestCase
 {
     use DatabaseMigrations;
 
-    private $data = [ 
-        'data' => ['id' =>'root','model' =>'root','view' =>'root'],
-        'edit_data' =>['id' => 'home','model' => 'home','view' => 'home'],
-        'without_model' =>['id' => 'root','view' => 'root'],
-        'with_parent_entity_id' => ['id' =>'root','model' =>'root','view' =>'root','parent_entity_id'=>'root'],
-        'content_data' =>['entity_id'=>'root','field'=>'title','field'=>'summary','field'=>'body', 'field'=>'slug']
+    private $data = [
+        'root' => ['id'=>'root', 'model'=>'root', 'view' =>'root'],
+        'home' =>['id'=>'home', 'model'=>'home', 'view'=>'home', 'parent_entity_id'=>'root'],
+        'root_without_model'=>['id'=>'root', 'view'=>'root'],
+        'page' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home'],
+        'page_with_content' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'content'=>['title'=>['en'=>"The page", 'es'=>'La página']]],
     ];
-    
+
     /* *
      * A basic test example.
      *
@@ -25,51 +25,61 @@ class EntityModelTest extends TestCase
      */
     public function testCreateEntity()
     {
-        $root = new Entity($this->data['data']);
+        $root = new Entity($this->data['root']);
         $root->save();
-        $this->seeInDatabase('entities',$this->data['data']);
-    } 
-   
+        $this->seeInDatabase('entities',$this->data['root']);
+    }
+
     public function testEditEntity()
     {
-        $root = new Entity($this->data['data']);
+        $root = new Entity($this->data['root']);
         $root->save();
-        $root = Entity::where('id',"root")->update($this->data['edit_data']);
-        $this->seeInDatabase('entities',$this->data['edit_data']);
-    } 
+        $root = Entity::where('id',"root")->update($this->data['home']);
+        $this->seeInDatabase('entities',$this->data['home']);
+    }
 
      public function testDeleteEntity()
     {
-        $root = new Entity($this->data['data']);
+        $root = new Entity($this->data['root']);
         $root->save();
         $delete = Entity::where('id', 'home')->delete();
         $this->notSeeInDatabase('entities',['id' => 'home']);
-    } 
+    }
 
     public function testCreateEntityWithoutModel()
     {
         $this->expectExceptionMessage('A model name is requiered to create a new entity');
-        $root = new Entity($this->data['without_model']);
+        $root = new Entity($this->data['root_without_model']);
         $root->save();
-    } 
+    }
 
     public function testAncestorsParentEntityId()
     {
-        $root = new Entity($this->data['with_parent_entity_id']);
+        $root = new Entity($this->data['root']);
+        $home = new Entity($this->data['home']);
+        $page = new Entity($this->data['page']);
         $root->save();
-        $this->seeInDatabase('entities',['id'=>'root']);
-        $this->seeInDatabase('relations',['caller_entity_id'=>'root','kind'=>'ancestor']);
+        $home->save();
+        $page->save();
+        $this->seeInDatabase('entities', $this->data['page']);
+        $this->seeInDatabase('relations', ['caller_entity_id'=>'page', 'kind'=>'ancestor', 'called_entity_id'=>'home', 'depth'=>1]);
+        $this->seeInDatabase('relations', ['caller_entity_id'=>'page', 'kind'=>'ancestor', 'called_entity_id'=>'root', 'depth'=>2]);
+        $ancestors = Entity::select('id')->ancestorOf('page')->orderBy('ancestor_relation_depth')->get()->toArray();
+        $this->assertEquals(count($ancestors), 2);
+        $this->assertEquals($ancestors[0]['id'], 'home');
+        $this->assertEquals($ancestors[1]['id'], 'root');
     }
 
     public function testCreateEntityContent()
     {
-        factory(Entity::class)->create($this->data['with_parent_entity_id']);
-        $this->seeInDatabase('contents',$this->data['content_data']);
-    } 
+        $page = new Entity($this->data['page_with_content']);
+        $page->save();
+        $this->seeInDatabase('entities', $this->data['page']);
+    }
 
   /*   public function testEntityContentRoutes()
     {
-        factory(Entity::class)->create($this->data['with_parent_entity_id']);
+        factory(Entity::class)->create($this->data['page']);
         $this->seeInDatabase('entities',['id'=>'root']);
         $this->seeInDatabase('contents',$this->data['content_data']);
 
