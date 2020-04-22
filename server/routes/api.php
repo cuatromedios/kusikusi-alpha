@@ -23,6 +23,8 @@ $router->group(["prefix" => "api"], function () use ($router) {
         $router->post('/entity', ['uses' => 'EntityController@create']);
         $router->patch('/entity/{entity_id}', ['uses' => 'EntityController@update']);
         $router->delete('/entity/{entity_id}', ['uses' => 'EntityController@delete']);
+        $router->post('/entity/{entity_caller_id}/relation', ['uses' => 'EntityController@createRelation']);
+        $router->delete('/entity/{entity_caller_id}/relation/{entity_called_id}/{kind}', ['uses' => 'EntityController@deleteRelation']);
     });
 });
 

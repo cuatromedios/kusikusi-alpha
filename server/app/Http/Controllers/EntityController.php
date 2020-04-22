@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Entity;
+use App\Models\EntityRelation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
@@ -218,6 +219,61 @@ class EntityController extends Controller
         $entity = Entity::select('id', 'deleted_at')->withTrashed()->find($entity_id);
         $entity->makeVisible('deleted_at');
         return($entity);
+    }
+
+    /**
+     * Creates or updates a relation.
+     *
+     * @group Entity
+     * @authenticated
+     * @urlParam entity_caller_id required The id of the entity to create or update a relation
+     * @bodyParam entity_called_id string required The id of the entity to relate. Example: s4FG56mkdRT5
+     * @bodyParam kind string required The kind of relation to create or update. Example: medium | category
+     * @bodyParam tags array An array of tags to add to the relation. Defaults to an empty array. Example ["icon", 'gallery"].
+     * @bodyParam position integer The position of the relation. Example: 3.
+     * @bodyParam depth integer Yet another number value to use freely for the relation, used in ancestor type of relation to define the distance between an entity and other in the tree. Example 1.
+     * @responseFile responses/entities.create.json
+     * @return Response
+     */
+    public function createRelation(Request $request, $entity_caller_id)
+    {
+        $this->validate($request, [
+            'entity_caller_id' => 'required'.self::ID_RULE,
+            'entity_called_id' => 'required'.self::ID_RULE,
+            'kind' => 'string|max:25',
+            'position' => 'integer',
+            'depth' => 'integer'
+        ]);
+        $payload = $request->only('entity_caller_id', 'entity_called_id', 'kind', 'position', 'depth', 'tags');
+        $relation = Entity::createRelation($payload);
+        $relation->save();
+        return($relation);
+    }
+
+    /**
+     * Creates or updates a relation.
+     *
+     * @group Entity
+     * @authenticated
+     * @urlParam entity_caller_id required The id of the entity to create or update a relation
+     * @urlParam entity_called_id string required The id of the entity to relate. Example: s4FG56mkdRT5
+     * @urlParam kind string required The kind of relation to create or update. Example: medium | category
+     * @responseFile responses/entities.create.json
+     * @return Response
+     */
+    public function deleteRelation(Request $request, $entity_caller_id, $entity_called_id, $kind)
+    {
+        $this->validate($request, [
+            'entity_caller_id' => 'required'.self::ID_RULE,
+            'entity_called_id' => 'required'.self::ID_RULE,
+            'kind' => 'string|max:25',
+            'position' => 'integer',
+            'depth' => 'integer'
+        ]);
+        $payload = $request->only('entity_caller_id', 'entity_called_id', 'kind', 'position', 'depth', 'tags');
+        $relation = Entity::createRelation($payload);
+        $relation->save();
+        return($relation);
     }
 
     private function queryParamsValidation() {
