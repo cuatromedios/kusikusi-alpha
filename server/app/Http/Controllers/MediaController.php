@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Entity;
+use App\Models\Medium;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
@@ -100,5 +103,57 @@ class MediaController extends Controller
                 'Content-Length' => Storage::disk('media_processed')->size($publicFilePath)
             ]
         );
+    }
+
+    /**
+     * Uploads a medium
+     *
+     * @group Media
+     * @urlParam $entity_id The id of the entity to upload a medium or file
+     * @bodyParam file required The file to be uploaded
+     * @bodyParam thumb optional An optional file to represent the media, for example a thumb of a video
+     * @return Response
+     */
+    public function upload(Request $request, $entity_id)
+    {
+        $entity = Entity::findOrFail($entity_id);
+        function processFile($id, $function, UploadedFile $file)
+        {
+            $format = $file->getClientOriginalExtension() ? $file->getClientOriginalExtension() : $file->guessClientExtension();
+            $format = $format == 'jpeg' ? 'jpg': $format;
+            $properties = [
+                'format' => $format,
+                'mimeType' => $file->getClientMimeType(),
+                'originalName' => $file->getClientOriginalName(),
+                'size' => $file->getSize(),
+                'isImage' => array_search(strtolower($format), ['jpeg', 'jpg', 'png', 'gif']) !== false
+            ];
+            if ($properties['isImage']) {
+                $properties['exif'] = Image::make($file->getRealPath())->exif();
+                if (isset($properties['exif']['COMPUTED']['Width'])) {
+                    $properties['width'] = $properties['exif']['COMPUTED']['Width'];
+                    $properties['height'] = $properties['exif']['COMPUTED']['Height'];
+                }
+            } else {
+                $properties['exif'] = null;
+                $properties['width'] = null;
+                $properties['height'] = null;
+            }
+            $storageFileName = $function . '.' . $properties['format'];
+            Storage::disk('media_original')->putFileAs($id, $file, $storageFileName);
+            Storage::disk('media_processed')->deleteDirectory($id);
+            return $properties;
+        }
+
+        $properties = NULL;
+        if ($request->hasFile('thumb') && $request->file('thumb')->isValid()) {
+            $properties = processFile($entity_id, 'thumb', $request->file('thumb'));
+        }
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $properties = processFile($entity_id, 'file', $request->file('file'));
+            $entity['properties'] = array_merge($entity['properties'], $properties);
+            $entity->save();
+        }
+        return ($properties);
     }
 }

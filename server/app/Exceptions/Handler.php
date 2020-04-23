@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
+use Illuminate\Support\Str;
 
 class Handler extends ExceptionHandler
 {
@@ -50,7 +51,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         $rendered = parent::render($request, $exception);
-        if ($request->header('content-type') === 'application/json') {
+        if (Str::of($request->getPathInfo())->startsWith('/api')) {
             $response = [
                 'error' => [
                     'status' => $rendered->getStatusCode(),
