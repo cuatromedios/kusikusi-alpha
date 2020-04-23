@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "a079c2fe-667f-460f-be8e-30e0c743a84c",
+        "_postman_id": "33d2072a-b604-4a7b-8495-ab0e5e395be8",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -102,7 +102,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "et",
+                                    "value": "enim",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -151,7 +151,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "ut",
+                                    "value": "sit",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -204,7 +204,7 @@
                     }
                 },
                 {
-                    "name": "Updates n entity.",
+                    "name": "Updates an entity.",
                     "request": {
                         "url": {
                             "protocol": "http",
@@ -215,7 +215,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "nulla",
+                                    "value": "maxime",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -251,8 +251,72 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "quia",
+                                    "value": "architecto",
                                     "description": "The id of the entity to delete"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Creates or updates a relation.",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/entity\/:caller_entity_id\/relation",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 10\n}"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Creates or updates a relation.",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/entity\/:caller_entity_id\/relation\/:called_entity_id\/:kind",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "id": "kind",
+                                    "key": "kind",
+                                    "value": "medium+%7C+category",
+                                    "description": "string required The kind of relation to create or update."
                                 }
                             ]
                         },
@@ -337,7 +401,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"quod\",\n    \"password\": \"blanditiis\"\n}"
+                            "raw": "{\n    \"email\": \"qui\",\n    \"password\": \"et\"\n}"
                         },
                         "description": "",
                         "response": []

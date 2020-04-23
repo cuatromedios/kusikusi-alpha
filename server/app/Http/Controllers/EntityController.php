@@ -36,7 +36,7 @@ class EntityController extends Controller
      * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)
      * @urlParam model_name If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available.
      * @responseFile responses/entities.index.json
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request, $model_name = null)
     {
@@ -123,7 +123,7 @@ class EntityController extends Controller
      * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax. Example: id,model,properties.price
      * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)
      * @responseFile responses/entities.show.json
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $entity_id)
     {
@@ -154,7 +154,7 @@ class EntityController extends Controller
      * @bodyParam contents array An array of contents to be created for the entity. Example: { "title": {"en_US": "The page M", "es_ES": "La página M"}, "slug": {"en_US": "page-m", "es_ES": "pagina-m"}}
      * @bodyParam relations arrya An array of relations to be created for the entity. Example: "relations": [{"called_entity_id": "mf4gWE45pm","kind": "category","position": 2, "tags":["main"]}]
      * @responseFile responses/entities.create.json
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create(Request $request)
     {
@@ -172,7 +172,7 @@ class EntityController extends Controller
     }
 
     /**
-     * Updates n entity.
+     * Updates an entity.
      *
      * @group Entity
      * @authenticated
@@ -184,7 +184,7 @@ class EntityController extends Controller
      * @bodyParam contents array An array of contents to be created for the entity. Example: { "title": {"en_US": "The page M", "es_ES": "La página M"}, "slug": {"en_US": "page-m", "es_ES": "pagina-m"}}
      * @bodyParam relations arrya An array of relations to be created for the entity. Example: "relations": [{"called_entity_id": "mf4gWE45pm","kind": "category","position": 2, "tags":["main"]}]
      * @responseFile responses/entities.update.json
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $entity_id)
     {
@@ -208,7 +208,7 @@ class EntityController extends Controller
      * @authenticated
      * @urlParam entity_id The id of the entity to delete
      * @responseFile responses/entities.delete.json
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request, $entity_id)
     {
@@ -232,8 +232,8 @@ class EntityController extends Controller
      * @bodyParam tags array An array of tags to add to the relation. Defaults to an empty array. Example ["icon", 'gallery"].
      * @bodyParam position integer The position of the relation. Example: 3.
      * @bodyParam depth integer Yet another number value to use freely for the relation, used in ancestor type of relation to define the distance between an entity and other in the tree. Example 1.
-     * @responseFile responses/entities.create.json
-     * @return Response
+     * @responseFile responses/entities.createRelation.json
+     * @return \Illuminate\Http\JsonResponse
      */
     public function createRelation(Request $request, $caller_entity_id)
     {
@@ -250,7 +250,8 @@ class EntityController extends Controller
         $relation = EntityRelation::where('caller_entity_id', $payload['caller_entity_id'])
             ->where('called_entity_id', $payload['called_entity_id'])
             ->where('kind', $payload['kind'])
-            ->firstOrFail();
+            ->firstOrFail()
+            ->makeVisible('caller_entity_id', 'called_entity_id', 'created_at', 'updated_at');
         return($relation);
     }
 
@@ -262,22 +263,22 @@ class EntityController extends Controller
      * @urlParam entity_caller_id required The id of the entity to create or update a relation
      * @urlParam entity_called_id string required The id of the entity to relate. Example: s4FG56mkdRT5
      * @urlParam kind string required The kind of relation to create or update. Example: medium | category
-     * @responseFile responses/entities.create.json
-     * @return Response
+     * @responseFile responses/entities.deleteRelation.json
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteRelation(Request $request, $entity_caller_id, $entity_called_id, $kind)
+    public function deleteRelation(Request $request, $caller_entity_id, $called_entity_id, $kind)
     {
         $this->validate($request, [
             'entity_caller_id' => 'required'.self::ID_RULE,
             'entity_called_id' => 'required'.self::ID_RULE,
-            'kind' => 'string|max:25',
-            'position' => 'integer',
-            'depth' => 'integer'
+            'kind' => 'required|string|max:25'
         ]);
-        $payload = $request->only('entity_caller_id', 'entity_called_id', 'kind', 'position', 'depth', 'tags');
-        $relation = Entity::createRelation($payload);
-        $relation->save();
-        return($relation);
+        $payload = $request->only( 'called_entity_id', 'kind', 'position', 'depth', 'tags');
+        $deletes = EntityRelation::where('caller_entity_id', $request['caller_entity_id'])
+            ->where('called_entity_id', $request['called_entity_id'])
+            ->where('kind', $request['kind'])
+            ->delete();
+        return(["deleted" => $deletes]);
     }
 
     private function queryParamsValidation() {

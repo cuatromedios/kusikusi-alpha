@@ -58,7 +58,7 @@ Returns a paginated collection of entities, filtered by all set conditions.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/et]"
+    "http://127.0.0.1:8000/api/entities[/enim]"
 );
 
 let params = {
@@ -93,7 +93,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entities[/et]',
+    'http://127.0.0.1:8000/api/entities[/enim]',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -119,7 +119,7 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/et]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entities[/enim]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;is-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -354,7 +354,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/ut"
+    "http://127.0.0.1:8000/api/entity/sit"
 );
 
 let params = {
@@ -378,7 +378,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entity/ut',
+    'http://127.0.0.1:8000/api/entity/sit',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -393,7 +393,7 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/ut?select=id%2Cmodel%2Cproperties.price&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/sit?select=id%2Cmodel%2Cproperties.price&amp;with=media%2CentityContents%2CentitiesRelated%2C+entitiesRelated.entityContents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -598,13 +598,13 @@ print_r(json_decode((string) $body));</code></pre>
 </table>
 <!-- END_af9c0c62a0bddef37647abebdc3538da -->
 <!-- START_ec8e08b9a5493ca2f4077a1528c5fc8d -->
-<h2>Updates n entity.</h2>
+<h2>Updates an entity.</h2>
 <p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small></p>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/nulla"
+    "http://127.0.0.1:8000/api/entity/maxime"
 );
 
 let headers = {
@@ -631,7 +631,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;patch(
-    'http://127.0.0.1:8000/api/entity/nulla',
+    'http://127.0.0.1:8000/api/entity/maxime',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -650,7 +650,7 @@ $response = $client-&gt;patch(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X PATCH \
-    "http://127.0.0.1:8000/api/entity/nulla" \
+    "http://127.0.0.1:8000/api/entity/maxime" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
@@ -747,7 +747,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/quia"
+    "http://127.0.0.1:8000/api/entity/architecto"
 );
 
 let headers = {
@@ -764,7 +764,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;delete(
-    'http://127.0.0.1:8000/api/entity/quia',
+    'http://127.0.0.1:8000/api/entity/architecto',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -775,7 +775,7 @@ $response = $client-&gt;delete(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X DELETE \
-    "http://127.0.0.1:8000/api/entity/quia" \
+    "http://127.0.0.1:8000/api/entity/architecto" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -805,6 +805,215 @@ print_r(json_decode((string) $body));</code></pre>
 </tbody>
 </table>
 <!-- END_df16605fe65733c4ef3009e2320cd8ea -->
+<!-- START_7e4e246e270a0e3f971f7e4b399224bc -->
+<h2>Creates or updates a relation.</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/entity/1/relation"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "entity_called_id": "s4FG56mkdRT5",
+    "kind": "medium | category",
+    "tags": [],
+    "position": 3,
+    "depth": 10
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;post(
+    'http://127.0.0.1:8000/api/entity/1/relation',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'entity_called_id' =&gt; 's4FG56mkdRT5',
+            'kind' =&gt; 'medium | category',
+            'tags' =&gt; [],
+            'position' =&gt; 3,
+            'depth' =&gt; 10,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-bash">curl -X POST \
+    "http://127.0.0.1:8000/api/entity/1/relation" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":10}'
+</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "relation_id": "WZ3PnzvNP4",
+    "caller_entity_id": "Z4bdjFSzn5",
+    "called_entity_id": "DtPatk4FNG",
+    "kind": "reltest",
+    "position": 2,
+    "depth": 3,
+    "tags": [
+        "icon"
+    ],
+    "created_at": "2020-04-23T15:01:32.000000Z",
+    "updated_at": "2020-04-23T15:10:14.000000Z"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/entity/{caller_entity_id}/relation</code></p>
+<h4>URL Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entity_caller_id</code></td>
+<td>required</td>
+<td>The id of the entity to create or update a relation</td>
+</tr>
+</tbody>
+</table>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entity_called_id</code></td>
+<td>string</td>
+<td>required</td>
+<td>The id of the entity to relate.</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>string</td>
+<td>required</td>
+<td>The kind of relation to create or update.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>array</td>
+<td>optional</td>
+<td>An array of tags to add to the relation. Defaults to an empty array. Example [&quot;icon&quot;, 'gallery&quot;].</td>
+</tr>
+<tr>
+<td><code>position</code></td>
+<td>integer</td>
+<td>optional</td>
+<td>The position of the relation.</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>integer</td>
+<td>optional</td>
+<td>Yet another number value to use freely for the relation, used in ancestor type of relation to define the distance between an entity and other in the tree. Example 1.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_7e4e246e270a0e3f971f7e4b399224bc -->
+<!-- START_50b6dbb4b64779ad76feb6520602228c -->
+<h2>Creates or updates a relation.</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/entity/1/relation/1/medium | category"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;delete(
+    'http://127.0.0.1:8000/api/entity/1/relation/1/medium | category',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-bash">curl -X DELETE \
+    "http://127.0.0.1:8000/api/entity/1/relation/1/medium | category" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "deleted": 1
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/entity/{caller_entity_id}/relation/{called_entity_id}/{kind}</code></p>
+<h4>URL Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entity_caller_id</code></td>
+<td>required</td>
+<td>The id of the entity to create or update a relation</td>
+</tr>
+<tr>
+<td><code>entity_called_id</code></td>
+<td>optional</td>
+<td>string required The id of the entity to relate.</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>optional</td>
+<td>string required The kind of relation to create or update.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_50b6dbb4b64779ad76feb6520602228c -->
 <h1>Media</h1>
 <!-- START_20a921575609e2dc57fa6a20488e7c18 -->
 <h2>Gets a medium: Optimized using a preset if it is an image or the original one if not.</h2>
@@ -866,8 +1075,8 @@ let headers = {
 };
 
 let body = {
-    "email": "quod",
-    "password": "blanditiis"
+    "email": "qui",
+    "password": "et"
 }
 
 fetch(url, {
@@ -887,8 +1096,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'email' =&gt; 'quod',
-            'password' =&gt; 'blanditiis',
+            'email' =&gt; 'qui',
+            'password' =&gt; 'et',
         ],
     ]
 );
@@ -898,8 +1107,20 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"quod","password":"blanditiis"}'
+    -d '{"email":"qui","password":"et"}'
 </code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "token": "JDJ5JDEwJEcwRlFrQmxEM04uQnNXMTNjWE5wME9QYncuZ2ZnUGZlQzJ3SUpsZFhIMUl6MXZ0TVprb2RD",
+    "user": {
+        "id": "8M1KRk1kLe",
+        "email": "admin@example.com",
+        "name": "Administrator",
+        "profile": "admin"
+    }
+}</code></pre>
 <h3>HTTP Request</h3>
 <p><code>POST api/user/login</code></p>
 <h4>Body Parameters</h4>

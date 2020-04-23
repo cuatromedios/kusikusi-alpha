@@ -26,6 +26,7 @@ class UserController extends Controller
      *@group User
      * @bodyParam email string required
      * @bodyParam password string required
+     * @responseFile responses/user.authenticate.json
      * @return \Illuminate\Http\JsonResponse
      */
     public function authenticate(Request $request)
