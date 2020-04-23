@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "322ea37b-9ad0-4d26-a67c-9af7ca8b8b87",
+        "_postman_id": "360bda27-3ee6-446b-ae54-f76705d65de6",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -102,7 +102,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "ut",
+                                    "value": "et",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -151,7 +151,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "explicabo",
+                                    "value": "cum",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -197,7 +197,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"model\": \"page.\",\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
+                            "raw": "{\n    \"model\": \"page.\",\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"properties\": \"{\\\"price\\\": 200, \\\"format\\\": \\\"jpg\\\"}\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -215,7 +215,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "et",
+                                    "value": "aut",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -233,7 +233,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
+                            "raw": "{\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"properties\": \"{\\\"price\\\": 200, \\\"format\\\": \\\"jpg\\\"}\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -251,7 +251,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "delectus",
+                                    "value": "dolore",
                                     "description": "The id of the entity to delete"
                                 }
                             ]
@@ -297,7 +297,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 1\n}"
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 7\n}"
                         },
                         "description": "",
                         "response": []
@@ -401,7 +401,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"quo\",\n    \"password\": \"magni\"\n}"
+                            "raw": "{\n    \"email\": \"officia\",\n    \"password\": \"animi\"\n}"
                         },
                         "description": "",
                         "response": []
