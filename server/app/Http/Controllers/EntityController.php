@@ -235,7 +235,7 @@ class EntityController extends Controller
      * @responseFile responses/entities.create.json
      * @return Response
      */
-    public function createRelation(Request $request, $entity_caller_id)
+    public function createRelation(Request $request, $caller_entity_id)
     {
         $this->validate($request, [
             'entity_caller_id' => 'required'.self::ID_RULE,
@@ -244,9 +244,13 @@ class EntityController extends Controller
             'position' => 'integer',
             'depth' => 'integer'
         ]);
-        $payload = $request->only('entity_caller_id', 'entity_called_id', 'kind', 'position', 'depth', 'tags');
-        $relation = Entity::createRelation($payload);
-        $relation->save();
+        $payload = $request->only( 'called_entity_id', 'kind', 'position', 'depth', 'tags');
+        $payload['caller_entity_id'] = $caller_entity_id;
+        Entity::createRelation($payload);
+        $relation = EntityRelation::where('caller_entity_id', $payload['caller_entity_id'])
+            ->where('called_entity_id', $payload['called_entity_id'])
+            ->where('kind', $payload['kind'])
+            ->firstOrFail();
         return($relation);
     }
 
