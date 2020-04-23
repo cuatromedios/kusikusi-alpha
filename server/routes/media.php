@@ -5,5 +5,5 @@
 | Api Routes
 |--------------------------------------------------------------------------
 */
-$router->get('/media/{id}/{preset}[/{friendly}]', ['uses' => 'MediaController@get']);
+$router->get('/media/{entity_id}/{preset}[/{friendly}]', ['uses' => 'MediaController@get']);
 

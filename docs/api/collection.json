@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "322ea37b-9ad0-4d26-a67c-9af7ca8b8b87",
+        "_postman_id": "412948c7-bf1b-4595-89a4-67c2e1a20685",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -102,7 +102,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "ut",
+                                    "value": "et",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -151,7 +151,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "explicabo",
+                                    "value": "aut",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -197,7 +197,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"model\": \"page.\",\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
+                            "raw": "{\n    \"model\": \"page.\",\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"properties\": \"{\\\"price\\\": 200, \\\"format\\\": \\\"jpg\\\"}\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -215,7 +215,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "et",
+                                    "value": "dicta",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -233,7 +233,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
+                            "raw": "{\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"properties\": \"{\\\"price\\\": 200, \\\"format\\\": \\\"jpg\\\"}\",\n    \"id\": \"home\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -251,7 +251,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "delectus",
+                                    "value": "praesentium",
                                     "description": "The id of the entity to delete"
                                 }
                             ]
@@ -297,7 +297,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 1\n}"
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 16\n}"
                         },
                         "description": "",
                         "response": []
@@ -346,13 +346,63 @@
             "description": "",
             "item": [
                 {
+                    "name": "Uploads a medium",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/medium\/:entity_id\/upload",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "id": "entity_id",
+                                    "key": "entity_id",
+                                    "value": "fugiat",
+                                    "description": "The id of the entity to upload a medium or file"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"file\": \"et\",\n    \"thumb\": \"ut\"\n}"
+                        },
+                        "description": "",
+                        "response": []
+                    }
+                },
+                {
                     "name": "Gets a medium: Optimized using a preset if it is an image or the original one if not.",
                     "request": {
                         "url": {
                             "protocol": "http",
                             "host": "127.0.0.1:8000",
-                            "path": "media\/:id\/{preset}[\/{friendly}]",
-                            "query": []
+                            "path": "media\/:entity_id\/{preset}[\/{friendly}]",
+                            "query": [],
+                            "variable": [
+                                {
+                                    "id": "entity_id",
+                                    "key": "entity_id",
+                                    "value": "djr4sd7Gmd",
+                                    "description": "The id of the entity of type medium to get."
+                                },
+                                {
+                                    "id": "preset",
+                                    "key": "preset",
+                                    "value": "icon.",
+                                    "description": "A preset configured in config\/media.php to process the image."
+                                }
+                            ]
                         },
                         "method": "GET",
                         "header": [
@@ -401,7 +451,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"quo\",\n    \"password\": \"magni\"\n}"
+                            "raw": "{\n    \"email\": \"et\",\n    \"password\": \"omnis\"\n}"
                         },
                         "description": "",
                         "response": []

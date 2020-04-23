@@ -1,0 +1,23 @@
+{
+    "format": "JPG",
+    "mimeType": "image/jpeg",
+    "originalName": "IMG_0095.JPG",
+    "size": 177536,
+    "isImage": true,
+    "exif": {
+        "FileName": "phpZ0P6Zv",
+        "FileDateTime": 1587677813,
+        "FileSize": 177536,
+        "FileType": 2,
+        "MimeType": "image/jpeg",
+        "SectionsFound": "",
+        "COMPUTED": {
+            "html": "width=\"860\" height=\"573\"",
+            "Height": 573,
+            "Width": 860,
+            "IsColor": 1
+        }
+    },
+    "width": 860,
+    "height": 573
+}
