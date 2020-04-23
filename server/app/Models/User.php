@@ -23,7 +23,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     const PROFILE_GUEST = 'guest';
 
     protected $fillable = [
-        'name', 'email'
+        'name', 'email', 'password', 'profile'
     ];
 
     protected $hidden = [
