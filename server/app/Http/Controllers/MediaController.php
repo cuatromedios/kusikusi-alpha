@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\Medium;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
@@ -28,23 +29,23 @@ class MediaController extends Controller
      * Gets a medium: Optimized using a preset if it is an image or the original one if not.
      *
      * @group Media
-     * @param $id
-     * @param $preset
+     * @urlParam entity_id required The id of the entity of type medium to get. Example: djr4sd7Gmd
+     * @urlParam preset required A preset configured in config/media.php to process the image. Example: icon.
      * @return Response
      */
-    public function get($id, $preset, $friendly = NULL)
+    public function get($entity_id, $preset, $friendly = NULL)
     {
         //die("{$id} {$preset} {$friendly}");
         // TODO: Review if the user can read the media
-        $entity = Entity::findOrFail($id);
+        $entity = Entity::findOrFail($entity_id);
         $presetSettings = Config::get('media.presets.' . $preset, NULL);
         if (NULL === $presetSettings) {
             return new \Exception("No media preset '$preset' found");
         }
 
         // Paths
-        $originalFilePath =   $id . '.' . $entity->content['format'];
-        $publicFilePath = $id . '/' .  $preset . '.' . $presetSettings['format'];
+        $originalFilePath =   $entity_id . '.' . $entity->content['format'];
+        $publicFilePath = $entity_id . '/' .  $preset . '.' . $presetSettings['format'];
 
         if (!$exists = Storage::disk('media_original')->exists($originalFilePath)) {
             return new \Exception('Medium ' . $originalFilePath . ' not found');
@@ -109,10 +110,11 @@ class MediaController extends Controller
      * Uploads a medium
      *
      * @group Media
-     * @urlParam $entity_id The id of the entity to upload a medium or file
+     * @urlParam entity_id The id of the entity to upload a medium or file
      * @bodyParam file required The file to be uploaded
      * @bodyParam thumb optional An optional file to represent the media, for example a thumb of a video
-     * @return Response
+     * @responseFile responses/entities.index.json
+     * @return \Illuminate\Http\JsonResponse
      */
     public function upload(Request $request, $entity_id)
     {
