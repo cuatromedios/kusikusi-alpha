@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,6 +14,7 @@ use PUGX\Shortid\Shortid;
 use App\Models\Traits\UsesShortId;
 use App\Models\EntityContent;
 use Illuminate\Support\Facades\Config;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class EntityModel extends Model
 {
@@ -328,10 +328,10 @@ class EntityModel extends Model
 
     public static function createRelation($relationData) {
         if (!isset($relationData['caller_entity_id'])) {
-            throw new InvalidArgumentException('createRelation: caller_entity_id is needed');
+            throw new HttpException(422, 'createRelation: caller_entity_id is needed');
         }
         if (!isset($relationData['called_entity_id'])) {
-            throw new InvalidArgumentException('createRelation: called_entity_id is needed');
+            throw new HttpException(422, 'createRelation: called_entity_id is needed');
         }
         if (!isset($relationData['kind'])) {
             $relationData['kind'] = EntityRelation::RELATION_UNDEFINED;
@@ -578,7 +578,7 @@ class EntityModel extends Model
             }
             //Throw an error if not model is defined on create
             if (!isset($entity['model'])) {
-                throw new \Exception('A model name is requiered to create a new entity');
+                throw new HttpException(422, 'A model name is requiered to create a new entity');
             }
             //Set the view as the model name if not view set
             if (!isset($entity['view'])) {
