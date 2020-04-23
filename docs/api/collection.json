@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "33d2072a-b604-4a7b-8495-ab0e5e395be8",
+        "_postman_id": "322ea37b-9ad0-4d26-a67c-9af7ca8b8b87",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -102,7 +102,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "enim",
+                                    "value": "ut",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -151,7 +151,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "sit",
+                                    "value": "explicabo",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -215,7 +215,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "maxime",
+                                    "value": "et",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -251,7 +251,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "architecto",
+                                    "value": "delectus",
                                     "description": "The id of the entity to delete"
                                 }
                             ]
@@ -297,14 +297,14 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 10\n}"
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 1\n}"
                         },
                         "description": "",
                         "response": []
                     }
                 },
                 {
-                    "name": "Creates or updates a relation.",
+                    "name": "Deletes a relation if exists.",
                     "request": {
                         "url": {
                             "protocol": "http",
@@ -401,7 +401,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"qui\",\n    \"password\": \"et\"\n}"
+                            "raw": "{\n    \"email\": \"quo\",\n    \"password\": \"magni\"\n}"
                         },
                         "description": "",
                         "response": []

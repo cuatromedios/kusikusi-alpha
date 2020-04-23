@@ -256,7 +256,7 @@ class EntityController extends Controller
     }
 
     /**
-     * Creates or updates a relation.
+     * Deletes a relation if exists.
      *
      * @group Entity
      * @authenticated
