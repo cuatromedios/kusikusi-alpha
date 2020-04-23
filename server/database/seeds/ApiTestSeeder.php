@@ -21,8 +21,6 @@ class ApiTestSeeder extends Seeder
         print("*** Generated user:\n");
         print("{\n");
         print("  \"email\": \"{$user_email}\",\n");
-        print("*** Generated user:\n");
-        print("{\n");
         print("  \"password\": \"{$user_password}\",\n");
         $user = new User([
             "name" => $user_name,
