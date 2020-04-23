@@ -273,12 +273,12 @@ class EntityController extends Controller
             'entity_called_id' => 'required'.self::ID_RULE,
             'kind' => 'required|string|max:25'
         ]);
-        $payload = $request->only( 'called_entity_id', 'kind', 'position', 'depth', 'tags');
-        $deletes = EntityRelation::where('caller_entity_id', $request['caller_entity_id'])
+        $query = EntityRelation::where('caller_entity_id', $request['caller_entity_id'])
             ->where('called_entity_id', $request['called_entity_id'])
-            ->where('kind', $request['kind'])
-            ->delete();
-        return(["deleted" => $deletes]);
+            ->where('kind', $request['kind']);
+        $relation = $query->first();
+        $query->delete();
+        return(["relation_id" => $relation ? $relation->relation_id : null]);
     }
 
     private function queryParamsValidation() {
