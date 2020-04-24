@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\EntityRelation;
+use App\Models\Medium;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class EntityController extends Controller
 {
@@ -322,12 +324,17 @@ class EntityController extends Controller
                     if (Str::startsWith( $select, 'properties.')) {
                         $appendProperties[] = Str::after($select, '.');
                     } else if (Str::startsWith( $select, 'contents.')) {
-                        $appendContents[] = Str::after($select, '.');
+                        $contentsParts = $this->getParts($select);
+                        foreach ($contentsParts['fields'] as $field) {
+                            $appendContents[] = $field;
+                        }
                     } else if ($select === "route") {
                         $q->appendRoute($lang);
                     } else if ($select === "contents") {
                         $modelInstance =  new $modelClassName();
                         $appendContents = array_merge($appendContents, $modelInstance->getContentFields()) ;
+                    } else if (Str::startsWith( $select, 'medium')) {
+                        $q->appendMedium(null, null, $lang);
                     } else if ($select) {
                         $q->addSelect($select);
                     }
@@ -357,14 +364,51 @@ class EntityController extends Controller
         $query->when($request->get('with'), function ($q) use ($request) {
                 $relations = explode(',', $request->get('with'));
                 foreach ($relations as $relation) {
+                    $relationParts = $this->getParts($relation);
                     if (!in_array($relation, $this->calledRelations)) {
-                        $q->with($relation);
-                        $this->calledRelations[] = $relation;
+                        if ($relationParts['relation'] === 'medium') {
+                            $q->with([$relationParts['relation'] => function($r) use ($relationParts, $request) {
+                                $addedContentFields = [];
+                                $mediumContentFields = (new Medium())->getContentFields();
+                                foreach ($relationParts['fields'] as $field) {
+                                    if (array_search($field, $mediumContentFields) !== false) {
+                                        $addedContentFields[] = $field;
+                                    } else if (Arr::exists(Config::get('media.presets', []), $field)) {
+                                            // $r->append($field);
+                                    } else {
+                                        $r->addSelect($field);
+                                    }
+                                }
+                                if (count($addedContentFields) > 0) {
+                                    $r->appendContents($request->lang, $addedContentFields);
+                                } else {
+                                    $r->appendContents($request->lang, ['title']);
+                                }
+                            }]);
+                        } else {
+                            $q->with($relationParts['relation']);
+                        }
+                        $this->calledRelations[] = $relationParts['relation'];
                     };
                 }
                 return $q;
             });
         return $query;
+    }
+
+    /**
+     * Get the parts of a item in the query
+     */
+    private function getParts($item) {
+        $partsParam = explode(':', $item);
+        $partsFields = explode('.', $partsParam[0]);
+        $param = $partsParam[1] ?? null;
+        $object = array_shift($partsFields);
+        return [
+          "relation" => $object,
+          "fields" => $partsFields,
+          "param" => $param
+        ];
     }
 
 }

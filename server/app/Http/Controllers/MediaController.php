@@ -40,7 +40,7 @@ class MediaController extends Controller
         $entity = Entity::findOrFail($entity_id);
         $presetSettings = Config::get('media.presets.' . $preset, NULL);
         if (NULL === $presetSettings) {
-            return new \Exception("No media preset '$preset' found");
+            abort(404, "No media preset '$preset' found");
         }
 
         // Paths
@@ -48,7 +48,7 @@ class MediaController extends Controller
         $publicFilePath = $entity_id . '/' .  $preset . '.' . $presetSettings['format'];
 
         if (!$exists = Storage::disk('media_original')->exists($originalFilePath)) {
-            return new \Exception('Medium ' . $originalFilePath . ' not found');
+            abort(404, 'File for medium ' . $originalFilePath . ' not found');
         }
 
         $filedata = Storage::disk('media_original')->get($originalFilePath);
@@ -121,7 +121,7 @@ class MediaController extends Controller
         $entity = Entity::findOrFail($entity_id);
         function processFile($id, $function, UploadedFile $file)
         {
-            $format = $file->getClientOriginalExtension() ? $file->getClientOriginalExtension() : $file->guessClientExtension();
+            $format = strtolower($file->getClientOriginalExtension() ? $file->getClientOriginalExtension() : $file->guessClientExtension());
             $format = $format == 'jpeg' ? 'jpg': $format;
             $properties = [
                 'format' => $format,

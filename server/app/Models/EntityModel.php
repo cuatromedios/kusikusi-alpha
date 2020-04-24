@@ -285,13 +285,14 @@ class EntityModel extends Model
             $contentFields = $this->contentFields;
         }
         foreach ($contentFields as $field) {
-            $query->leftJoin("contents as content_{$field}", function ($join) use ($field, $lang) {
-                $join->on("content_{$field}.entity_id", "entities.id")
-                    ->where("content_{$field}.field", $field)
-                    ->where("content_{$field}.lang", $lang)
+            $rand = rand(10000, 99999);
+            $query->leftJoin("contents as content_{$rand}_{$field}", function ($join) use ($field, $lang, $rand) {
+                $join->on("content_{$rand}_{$field}.entity_id", "entities.id")
+                    ->where("content_{$rand}_{$field}.field", $field)
+                    ->where("content_{$rand}_{$field}.lang", $lang)
                 ;
             });
-            $query->addSelect("content_{$field}.text as $field");
+            $query->addSelect("content_{$rand}_{$field}.text as $field");
         }
     }
     /**
@@ -312,6 +313,19 @@ class EntityModel extends Model
             ;
         });
         $query->addSelect("routes.path as route");
+    }
+
+    /**
+     * Scope to append a medium url to the result.
+     *
+     * @param  Builder $query
+     * @param  string $tag Select the first related media that is tagged, the first medium if ommitted
+     * @param  string $preset Use the preset to return the url of the medium, 'original' if omitted
+     * @return Builder
+     */
+
+    public function scopeAppendMedium($query, $tag=null, $preset='original', $lang=null) {
+        $query->with('medium');
     }
 
     /**********************
@@ -453,13 +467,13 @@ class EntityModel extends Model
     public function media() {
         return $this->entitiesRelated(EntityRelation::RELATION_MEDIA);
     }
-    public function medium() {
+    public function medium($tag=null, $lang=null) {
         return $this->belongsToOne('App\Models\Medium', 'relations', 'caller_entity_id', 'called_entity_id')
             ->using('App\Models\EntityRelation')
             ->as('relation')
             ->withPivot('kind', 'position', 'depth', 'tags')
-            ->where('kind', EntityRelation::RELATION_MEDIA)
-            ->withTimestamps();
+            ->select('id', 'properties->format as format')
+            ->where('kind', EntityRelation::RELATION_MEDIA);
     }
     public function routes() {
         return $this->hasMany('App\Models\Route', 'entity_id', 'id');
