@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 class Medium extends EntityModel
@@ -17,15 +16,15 @@ class Medium extends EntityModel
      */
     public function getThumbAttribute()
     {
-        return "/media/$this->id/thumb/{$this->getTitleAsSlug()}";
+        return "/media/$this->id/thumb/{$this->getTitleAsSlug('thumb')}";
     }
     public function getPreviewAttribute()
     {
-        return "/media/$this->id/preview/{$this->getTitleAsSlug()}";
+        return "/media/$this->id/preview/{$this->getTitleAsSlug('preview')}";
     }
-    private function getTitleAsSlug() {
+    private function getTitleAsSlug($preset) {
         $filename = isset($this['title']) ? Str::slug($this['title']) : 'media';
-        $fileformat = isset($this['format']) ? Str::slug($this['format']) : 'bin';
+        $fileformat = Config::get("media.presets.{$preset}.format", false) ??  (isset($this['format']) ? Str::slug($this['format']) : 'bin');
         return "{$filename}.{$fileformat}";
     }
 

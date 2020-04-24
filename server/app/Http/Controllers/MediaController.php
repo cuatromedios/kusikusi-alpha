@@ -44,7 +44,7 @@ class MediaController extends Controller
         }
 
         // Paths
-        $originalFilePath =   $entity_id . '.' . $entity->content['format'];
+        $originalFilePath =   $entity_id . '/file.' . $entity->properties['format'];
         $publicFilePath = $entity_id . '/' .  $preset . '.' . $presetSettings['format'];
 
         if (!$exists = Storage::disk('media_original')->exists($originalFilePath)) {
@@ -52,7 +52,7 @@ class MediaController extends Controller
         }
 
         $filedata = Storage::disk('media_original')->get($originalFilePath);
-        if (array_search($entity->content['format'], ['jpg', 'png', 'gif']) === FALSE) {
+        if (array_search($entity->properties['format'], ['jpg', 'png', 'gif']) === FALSE) {
             return new Response(
                 $filedata,  200,
                 [

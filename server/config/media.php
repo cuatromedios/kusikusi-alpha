@@ -6,9 +6,9 @@ return [
             'quality' => 95,
             'width' => 1200,
             'height' =>  1200,
-            'background' => '#ffffff',
+            'background' => 'crop',
             'alignment' => 'center',
-            'scale' => 'contain',
+            'scale' => 'cover',
             'format' => 'jpg',
             'effects' => []
         ],
