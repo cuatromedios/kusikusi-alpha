@@ -63,7 +63,7 @@ class WebController extends Controller
         $entity = Entity::select("*")
             ->where("id", $searchResult->entity_id)
             ->appendProperties($searchResult->entity_model)
-            ->appendContents($lang, $searchResult->entity_model)
+            ->appendContents($searchResult->entity_model, $lang)
             ->with('entitiesRelated')
             ->with('routes');
         $entity=$entity->first();

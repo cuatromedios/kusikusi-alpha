@@ -277,7 +277,7 @@ class EntityModel extends Model
      * @return Builder
      */
 
-    public function scopeAppendContents($query, $lang=null, $modelOrFields=null) {
+    public function scopeAppendContents($query, $modelOrFields=null, $lang=null) {
         $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
         if (is_string($modelOrFields)) {
             $modelClassName = "App\\Models\\".Str::studly($modelOrFields);
@@ -353,9 +353,9 @@ class EntityModel extends Model
                 }
             }
             if (count($addedContentFields) > 0) {
-                $relation->appendContents($lang, $addedContentFields);
+                $relation->appendContents($addedContentFields, $lang);
             } else {
-                $relation->appendContents($lang, ['title']);
+                $relation->appendContents(['title'], $lang);
             }
         }]);
     }

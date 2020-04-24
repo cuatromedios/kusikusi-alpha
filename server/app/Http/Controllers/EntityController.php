@@ -342,7 +342,7 @@ class EntityController extends Controller
                         $q->appendProperties($appendProperties);
                     }
                     if (count($appendContents) > 0) {
-                        $q->appendContents($lang, $appendContents);
+                        $q->appendContents($appendContents, $lang);
                     }
                     $this->addedSelects[] = $select;
                 }

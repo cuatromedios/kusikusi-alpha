@@ -18,7 +18,7 @@ class HtmlController extends Controller
                 ->ancestorOf($currentEntity->id)
                 ->descendantOf('root')
                 ->orderBy('ancestor_relation_depth', 'desc')
-                ->appendContents($request->lang, ['title'])
+                ->appendContents(['title'], $request->lang)
                 ->appendRoute($request->lang)
                 ->get()
         ];
@@ -27,7 +27,7 @@ class HtmlController extends Controller
     private function children(Request $request, Entity $entity) {
         $children = Entity::select('id', 'model')
             ->childOf($entity->id)
-            ->appendContents($request->lang, ['title'])
+            ->appendContents(['title'], $request->lang)
             ->appendRoute($request->lang)
             ->appendMedium('icon')
             ->orderBy('position')
