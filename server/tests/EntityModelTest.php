@@ -15,7 +15,7 @@ class EntityModelTest extends TestCase
         'home' =>['id'=>'home', 'model'=>'home', 'view'=>'home', 'parent_entity_id'=>'root'],
         'root_without_model'=>['id'=>'root', 'view'=>'root'],
         'page' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home'],
-        'page_with_content' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'content'=>['title'=>['en'=>"The page", 'es'=>'La página']]],
+        'page_with_content' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>"The page", 'es'=>'La página']]],
     ];
 
     /* *
@@ -74,7 +74,7 @@ class EntityModelTest extends TestCase
     {
         $page = new Entity($this->data['page_with_content']);
         $page->save();
-        $this->seeInDatabase('entities', $this->data['page']);
+        $this->seeInDatabase('contents', ['entity_id'=>'page', 'field'=>'title']);
     }
 
   /*   public function testEntityContentRoutes()
