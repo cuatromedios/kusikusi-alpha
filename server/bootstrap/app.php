@@ -97,6 +97,9 @@ $app->configure('validation');
 $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
 ]);
+$app->middleware([
+	'Nord\Lumen\Cors\CorsMiddleware'
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +118,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Intervention\Image\ImageServiceProvider::class);
 $app->register(\Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class);
+$app->register('Nord\Lumen\Cors\CorsServiceProvider');
 
 /*
 |--------------------------------------------------------------------------

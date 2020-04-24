@@ -1,0 +1,7 @@
+// app global css in SCSS form
+$bg-color: lighten(desaturate($secondary, 66%), 50%);
+$text-color: darken(desaturate($primary, 75%), 25%);
+body {
+  background-color: $bg-color;
+  color: $text-color;
+}

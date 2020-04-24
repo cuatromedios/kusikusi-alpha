@@ -1,0 +1,84 @@
+<template>
+  <nq-page max-width="sm" class="flex flex-center">
+    <nq-form cancel-label="" :submit-label="$t('login.button')" @submit="handleLogin">
+      <q-img src="~assets/logo.svg" alt="Retryver" height="72px" class="q-my-md" contain />
+      <nq-input :autofocus="true"
+                class="col-12"
+                v-model="form.email"
+                :label="$t('login.email')"
+                :rules="[
+                  $rules.required($t('login.invalidEmail')),
+                  $rules.email($t('login.invalidEmail'))
+                ]"/>
+      <nq-input v-model="form.password"
+                class="col-12"
+                :type="isPwd ? 'password' : 'text'"
+                :label="$t('login.password')"
+                @keyup.enter="handleLogin"
+                :rules="[
+                  $rules.required($t('login.invalidPassword'))
+                ]">
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </nq-input>
+    </nq-form>
+  </nq-page>
+</template>
+<script>
+import Feedback from '../components/Feedback'
+
+export default {
+  components: { Feedback },
+  name: 'Login',
+  beforeCreate () {
+    this.$store.dispatch('resetUserData')
+  },
+  mounted () {
+    // this.$store.commit('ui/setTitle', this.$t('login.title'))
+  },
+  data () {
+    return {
+      form: {
+        email: '',
+        password: ''
+      },
+      message: '',
+      isPwd: true
+    }
+  },
+  methods: {
+    handleLogin: async function () {
+      let loginResult = await this.$api.post('/user/login', this.form)
+      if (loginResult.success) {
+        this.$store.commit('setAuthtoken', loginResult.data.token)
+        this.$store.commit('setUser', loginResult.data.user)
+        this.$router.push({ name: 'content' })
+      } else {
+        if (loginResult.status === 401) {
+          this.$q.notify({
+            position: 'top',
+            color: 'negative',
+            message: this.$t('login.loginInvalid')
+          })
+        } else {
+          this.$q.notify({
+            position: 'top',
+            color: 'negative',
+            message: `${this.$t('login.loginError')} (${loginResult.status})`
+          })
+        }
+      }
+    }
+  }
+}
+</script>
+<style>
+  .login-card {
+    max-width: 40em;
+  }
+</style>
