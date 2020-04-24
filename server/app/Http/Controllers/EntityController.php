@@ -367,24 +367,7 @@ class EntityController extends Controller
                     $relationParts = $this->getParts($relation);
                     if (!in_array($relation, $this->calledRelations)) {
                         if ($relationParts['relation'] === 'medium') {
-                            $q->with([$relationParts['relation'] => function($r) use ($relationParts, $request) {
-                                $addedContentFields = [];
-                                $mediumContentFields = (new Medium())->getContentFields();
-                                foreach ($relationParts['fields'] as $field) {
-                                    if (array_search($field, $mediumContentFields) !== false) {
-                                        $addedContentFields[] = $field;
-                                    } else if (Arr::exists(Config::get('media.presets', []), $field)) {
-                                            // $r->append($field);
-                                    } else {
-                                        $r->addSelect($field);
-                                    }
-                                }
-                                if (count($addedContentFields) > 0) {
-                                    $r->appendContents($request->lang, $addedContentFields);
-                                } else {
-                                    $r->appendContents($request->lang, ['title']);
-                                }
-                            }]);
+                            $q->appendMedium($relationParts['param'], $relationParts['fields'], $request->lang);
                         } else {
                             $q->with($relationParts['relation']);
                         }

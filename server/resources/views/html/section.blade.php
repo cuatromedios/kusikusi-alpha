@@ -6,7 +6,13 @@
 <div>
     <ul>
         @forelse ($children as $child)
-           <li><a href="{{ $child->route }}.html">{{ $child->title }}</a></li>
+           <li>
+               <a href="{{ $child->route }}.html">
+                   @if($child->medium)
+                   <img src="{{ $child->medium->thumb }}" alt="{{ $child->medium->title }}">
+                   @endif
+               {{ $child->title }}
+               </a></li>
         @empty
            <li>No children</li>
         @endforelse

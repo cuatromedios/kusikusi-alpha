@@ -2,7 +2,7 @@
 
 return [
     'presets' => [
-        'large' => [
+        'preview' => [
             'quality' => 95,
             'width' => 1200,
             'height' =>  1200,
@@ -12,17 +12,7 @@ return [
             'format' => 'jpg',
             'effects' => []
         ],
-        'medium' => [
-            'quality' => 90,
-            'width' => 512,
-            'height' =>  512,
-            'background' => '#ffffff',
-            'alignment' => 'center',
-            'scale' => 'contain',
-            'format' => 'jpg',
-            'effects' => []
-        ],
-        'small' => [
+        'thumb' => [
             'quality' => 80,
             'width' => 128,
             'height' =>  128,

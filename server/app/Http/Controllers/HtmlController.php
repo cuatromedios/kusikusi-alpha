@@ -27,10 +27,9 @@ class HtmlController extends Controller
     private function children(Request $request, Entity $entity) {
         $children = Entity::select('id', 'model')
             ->childOf($entity->id)
-            ->appendProperties(['title'])
             ->appendContents($request->lang, ['title'])
             ->appendRoute($request->lang)
-            ->with(['medium' => function ($q) { $q->select('id','model','properties->format as format')->whereJsonContains('tags', 'icon'); }])
+            ->appendMedium('icon')
             ->orderBy('position')
             ->orderBy('title')
             ->get();

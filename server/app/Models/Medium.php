@@ -8,37 +8,25 @@ use Illuminate\Support\Str;
 
 class Medium extends EntityModel
 {
-    protected $appends = ['small','large'];
-    protected $contentFields = [ "title", "welcome", "footer" ];
+    protected $appends = ['thumb','preview'];
+    protected $contentFields = [ "title", "summary"];
     protected $propertiesFields = [ "size", "lang", "format", "length", "exif", "width", "height" ];
 
     /**
-     * @param $key
      * @return string Returns a public path to the medium using presets
      */
-    public function getSmallAttribute()
+    public function getThumbAttribute()
     {
-        return "/media/$this->id/small/{$this->getTitleAsSlug()}";
+        return "/media/$this->id/thumb/{$this->getTitleAsSlug()}";
     }
-    public function getLargeAttribute()
+    public function getPreviewAttribute()
     {
-        return "/media/$this->id/large/{$this->getTitleAsSlug()}";
+        return "/media/$this->id/preview/{$this->getTitleAsSlug()}";
     }
     private function getTitleAsSlug() {
-        if (isset($this['title'])) {
-            $filename=Str::slug($this['title']);
-        } else {
-            $filename='media';
-        }
-        if (isset($this['format'])) {
-            $fileformat=Str::slug($this['format']);
-        } else {
-            $fileformat='bin';
-        }
+        $filename = isset($this['title']) ? Str::slug($this['title']) : 'media';
+        $fileformat = isset($this['format']) ? Str::slug($this['format']) : 'bin';
         return "{$filename}.{$fileformat}";
-    }
-    public static function extensionIsImage($extension) {
-        return array_search(strtolower($extension), ['jpeg', 'jpg', 'png', 'gif']) !== false;
     }
 
 }

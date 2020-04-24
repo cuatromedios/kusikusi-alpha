@@ -320,12 +320,34 @@ class EntityModel extends Model
      *
      * @param  Builder $query
      * @param  string $tag Select the first related media that is tagged, the first medium if ommitted
-     * @param  string $preset Use the preset to return the url of the medium, 'original' if omitted
+     * @param  string $fields An array of fields to include, ['id', 'properties->format', 'contents.title'] if omitted
      * @return Builder
      */
 
-    public function scopeAppendMedium($query, $tag=null, $preset='original', $lang=null) {
-        $query->with('medium');
+    public function scopeAppendMedium($query, $tag=null, $fields=null, $lang=null) {
+        $query->with(['medium' => function ($relation) use ($fields, $lang, $tag) {
+            $relation->select('id', 'properties->format as format');
+            if (isset($tag)) {
+                $relation->whereJsonContains('tags', $tag);
+            }
+            $mediumContentFields = (new Medium())->getContentFields();
+            $addedContentFields = [];
+            // TODO: Lay eagera loading? https://stackoverflow.com/questions/47222168/setappends-on-relation-which-is-being-loaded-by-with-in-laravel
+            if (is_array($fields)) {
+                foreach ($fields as $field) {
+                    if (array_search($field, $mediumContentFields) !== false) {
+                        $addedContentFields[] = $field;
+                    } else {
+                        $relation->addSelect($field);
+                    }
+                }
+            }
+            if (count($addedContentFields) > 0) {
+                $relation->appendContents($lang, $addedContentFields);
+            } else {
+                $relation->appendContents($lang, ['title']);
+            }
+        }]);
     }
 
     /**********************
@@ -472,7 +494,6 @@ class EntityModel extends Model
             ->using('App\Models\EntityRelation')
             ->as('relation')
             ->withPivot('kind', 'position', 'depth', 'tags')
-            ->select('id', 'properties->format as format')
             ->where('kind', EntityRelation::RELATION_MEDIA);
     }
     public function routes() {
