@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\EntityContent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PUGX\Shortid\Shortid;
 use App\Models\Traits\UsesShortId;
-use App\Models\EntityContent;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -95,8 +95,8 @@ class EntityModel extends Model
                 ->where('relation_children.kind', '=', EntityRelation::RELATION_ANCESTOR)
             ;
         })
-        ->addSelect('relation_children.position as child_relation_position')
-        ->addSelect('relation_children.tags as child_relation_tags');
+            ->addSelect('relation_children.position as child_relation_position')
+            ->addSelect('relation_children.tags as child_relation_tags');
     }
 
     /**
@@ -153,7 +153,7 @@ class EntityModel extends Model
                 ->where('relation_descendants.called_entity_id', '=', $entity_id)
                 ->where('relation_descendants.kind', '=', EntityRelation::RELATION_ANCESTOR)
                 ->where('relation_descendants.depth', '<=', $depth);
-            })
+        })
             ->addSelect('relation_descendants.position as descendant_relation_position')
             ->addSelect('relation_descendants.depth as descendant_relation_depth')
             ->addSelect('relation_descendants.tags as descendant_relation_tags');
@@ -195,11 +195,11 @@ class EntityModel extends Model
         $query->join('relations as related_by', function ($join) use ($entity_id, $kind) {
             $join->on('related_by.called_entity_id', '=', 'entities.id')
                 ->where('related_by.caller_entity_id', '=', $entity_id);
-                if ($kind === null) {
-                    $join->where('related_by.kind', '!=', 'ancestor');
-                } else {
-                    $join->where('related_by.kind', '=', $kind);
-                }
+            if ($kind === null) {
+                $join->where('related_by.kind', '!=', 'ancestor');
+            } else {
+                $join->where('related_by.kind', '=', $kind);
+            }
         })->addSelect('related_by.kind as relation_kind', 'related_by.position as relation_position', 'related_by.depth as relation_depth', 'related_by.tags as relation_tags');
     }
 
@@ -239,7 +239,7 @@ class EntityModel extends Model
             $join->on('relation_media.called_entity_id', '=', 'entities.id')
                 ->where('relation_media.caller_entity_id', '=', $entity_id)
                 ->where('relation_media.kind', '=', EntityRelation::RELATION_MEDIA);
-            })
+        })
             ->addSelect( 'relation_media.position as media_position', 'relation_media.depth as media_depth', 'relation_media.tags as media_tags');
     }
     /**
@@ -252,9 +252,13 @@ class EntityModel extends Model
 
     public function scopeAppendProperties($query, $modelOrFields=null) {
         if (is_string($modelOrFields)) {
-            $modelClassName = "App\\Models\\".Str::studly($modelOrFields);
-            $modelInstance =  new $modelClassName();
-            $propertiesFields = $modelInstance->getPropertiesFields();
+            $modelClassName = "App\\Models\\" . Str::studly($modelOrFields);
+            if (class_exists($modelClassName)) {
+                $modelInstance = new $modelClassName();
+                $propertiesFields = $modelInstance->getPropertiesFields();
+            } else {
+                $propertiesFields = [];
+            }
         } else if (is_array($modelOrFields)) {
             $propertiesFields = $modelOrFields;
         } else {
@@ -277,8 +281,13 @@ class EntityModel extends Model
         $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
         if (is_string($modelOrFields)) {
             $modelClassName = "App\\Models\\".Str::studly($modelOrFields);
-            $modelInstance =  new $modelClassName();
-            $contentFields = $modelInstance->getContentFields();
+            if (class_exists($modelClassName)) {
+                $modelInstance =  new $modelClassName();
+                $contentFields = $modelInstance->getContentFields();
+            } else {
+                $contentFields = [];
+            }
+
         } else if (is_array($modelOrFields)) {
             $contentFields = $modelOrFields;
         } else {
@@ -332,11 +341,12 @@ class EntityModel extends Model
             }
             $mediumContentFields = (new Medium())->getContentFields();
             $addedContentFields = [];
-            // TODO: Lay eagera loading? https://stackoverflow.com/questions/47222168/setappends-on-relation-which-is-being-loaded-by-with-in-laravel
             if (is_array($fields)) {
                 foreach ($fields as $field) {
                     if (array_search($field, $mediumContentFields) !== false) {
                         $addedContentFields[] = $field;
+                    } else if (Arr::exists(Config::get("media.presets", []), $field)) {
+                        // TODO: Lay eagera loading? https://stackoverflow.com/questions/47222168/setappends-on-relation-which-is-being-loaded-by-with-in-laravel
                     } else {
                         $relation->addSelect($field);
                     }
