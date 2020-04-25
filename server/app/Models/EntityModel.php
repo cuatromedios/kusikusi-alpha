@@ -423,7 +423,18 @@ class EntityModel extends Model
     {
         $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
         foreach ($contents as $key=>$value) {
-            if (gettype($value) === 'array') {
+            if (is_numeric($key)) {
+                EntityContent::updateOrCreate(
+                    [
+                        "entity_id" => $this->getId(),
+                        "field" => $value['field'],
+                        "lang" => $value['lang'],
+                    ],
+                    [
+                        "text" => $value['text'],
+                    ]
+                );
+            } else if (gettype($value) === 'array') {
                 foreach ($value as $lang => $text) {
                     $this->addContents([ $key => $text], $lang);
                 }

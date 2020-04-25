@@ -34,6 +34,18 @@ class EntityModelTest extends TestCase
                 'title'=>['en'=>"The section", 'es'=>'La sección'],
                 'slug'=>['en'=>"the-section", 'es'=>'la-seccion']
             ]
+        ],
+        'page_with_raw_content' => [
+            'id'=>'pageraw',
+            'model'=>'page',
+            'view'=>'page',
+            'parent_entity_id'=>'home',
+            'contents'=>[
+                [ "field"=>"title", "lang"=>"en", "text"=>"The page raw"],
+                [ "field"=>"title", "lang"=>"es", "text"=>"La página raw"],
+                [ "field"=>"slug", "lang"=>"en", "text"=>"the-page-raw"],
+                [ "field"=>"slug", "lang"=>"es", "text"=>"la-pagina-raw"]
+            ]
         ]
     ];
 
@@ -117,9 +129,26 @@ class EntityModelTest extends TestCase
 
     public function testCreateEntityWithRawContent()
     {
-        $page = new Entity($this->data['page_with_content']);
-        $page->save();
-        $this->seeInDatabase('contents', ['entity_id'=>'page', 'field'=>'title']);
+        $data = [$this->data['page_with_raw_content']];
+        $totalCount = 0;
+        foreach ($data as $entity_data) {
+            $rowCount = 0;
+            $entity = new Entity($entity_data);
+            $entity->save();
+            $this->seeInDatabase('entities', ['id'=>$entity_data['id']]);
+            foreach ($entity_data['contents'] as $rawContent) {
+                $this->seeInDatabase('contents', [
+                    'entity_id'=>$entity_data['id'],
+                    'field'=>$rawContent['field'],
+                    'lang'=>$rawContent['lang'],
+                    'text'=>$rawContent['text']
+                ]);
+                $rowCount++;
+                $totalCount++;
+            }
+            $this->assertEquals($rowCount, EntityContent::where('entity_id', $entity_data['id'])->get()->count());
+        }
+        $this->assertEquals($totalCount, EntityContent::get()->count());
     }
 
   /*   public function testEntityContentRoutes()

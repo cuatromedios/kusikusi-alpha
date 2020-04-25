@@ -171,7 +171,8 @@ class EntityController extends Controller
         $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related');
         $entity = new Entity($payload);
         $entity->save();
-        return($entity);
+        $createdEntity = Entity::with('contents')->find($entity->id);
+        return($createdEntity);
     }
 
     /**
