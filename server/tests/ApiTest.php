@@ -12,6 +12,7 @@ class ApiTest extends TestCase
         'root' => ['id'=>'root', 'model'=>'root', 'view'=>'root'],
         'home' => ['id'=>'home', 'model'=>'home', 'view' =>'home', 'parent_entity_id'=>'home', 'properties'=>'"price":50.4','published_at'=>'2015-05-02T00:00:00', 'unpublished_at'=>'2018-05-01T00:00:00'],
         'page_with_content' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'The page', 'es'=>'La pagina']]],
+        'page_with_raw_content' => ['id'=>'pageraw', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>[["lang"=>"en", "field"=>"title", "text"=>"The raw page"], ["lang"=>"es", "field"=>"title", "text"=>"La página raw"]]],
         'section_with_content_slug' => ['id'=>'section', 'model'=>'section', 'view'=>'section', 'parent_entity_id'=>'section', 'contents'=>['title'=>['en'=>'The page', 'es'=>'La pagina'], 'section'=>['en'=>'The page', 'es'=>'La página'], 'slug'=>['en'=>'Hello', 'es'=>'Hola']]],
         'medium' => ['id'=>'medium', 'parent_entity_id'=>'medium', 'model'=>'medium']
     ];
@@ -132,10 +133,27 @@ class ApiTest extends TestCase
         ->seeStatusCode(200);
         $auth = json_decode($response->response->getContent(), true);
         $entity_id = $auth['id'];
-        $review = $this->json('GET', '/api/entities/page', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        $review = $this->json('GET', '/api/entity/page', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeJsonContains(['lang'=>'en', 'field'=>'title', 'text'=>'The page'])
         ->seeJsonContains(['lang'=>'es', 'field'=>'title', 'text'=>'La pagina'])
         ->seeStatusCode(200);
+        return $entity_id;
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testCreateEntityWithRawContents($authorizationToken)
+    {
+        $json = $this->data['page_with_raw_content'];
+        $response = $this->json('POST', '/api/entity', $json, ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+            ->seeStatusCode(200);
+        $auth = json_decode($response->response->getContent(), true);
+        $entity_id = $auth['id'];
+        $review = $this->json('GET', '/api/entity/pageraw', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+            ->seeJsonContains(['lang'=>'en', 'field'=>'title', 'text'=>'The raw page'])
+            ->seeJsonContains(['lang'=>'es', 'field'=>'title', 'text'=>'La página raw'])
+            ->seeStatusCode(200);
         return $entity_id;
     }
 

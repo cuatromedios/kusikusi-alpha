@@ -27,5 +27,9 @@ $router->group(["prefix" => "api"], function () use ($router) {
         $router->delete('/entity/{caller_entity_id}/relation/{called_entity_id}/{kind}', ['uses' => 'EntityController@deleteRelation']);
         $router->post('/medium/{entity_id}/upload', ['uses' => 'MediaController@upload']);
     });
+
+    $router->get('/{path:.*}', function () use ($router) {
+        return response(['error'=>'Api route not found'], 404);
+    });
 });
 
