@@ -31,5 +31,5 @@ class EntityRelation extends Pivot
     protected $casts = [
         'tags' => 'array'
     ];
-    protected $hidden = array('created_at', 'updated_at', 'called_entity_id', 'caller_entity_id');
+    protected $hidden = ['created_at', 'updated_at'];
 }

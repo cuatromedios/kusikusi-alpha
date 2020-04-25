@@ -516,6 +516,9 @@ class EntityModel extends Model
             ->when($kind, function ($q) use ($kind) {
                 return $q->where('kind', $kind);
             })
+            ->when($kind === null, function ($q) use ($kind) {
+                return $q->where('kind', '!=', EntityRelation::RELATION_ANCESTOR);
+            })
             ->withTimestamps();
     }
     public function entities_relating($kind = null) {
@@ -526,7 +529,14 @@ class EntityModel extends Model
             ->when($kind, function ($q) use ($kind) {
                 return $q->where('kind', $kind);
             })
+            ->when($kind === null, function ($q) use ($kind) {
+                return $q->where('kind', '!=', EntityRelation::RELATION_ANCESTOR);
+            })
             ->withTimestamps();
+    }
+    public function entity_relations() {
+        return $this->hasMany('App\Models\EntityRelation', 'caller_entity_id', 'id')
+            ->where('kind', '!=', EntityRelation::RELATION_ANCESTOR);
     }
     public function media() {
         return $this->entities_related(EntityRelation::RELATION_MEDIA);
