@@ -475,7 +475,7 @@ class EntityModel extends Model
      * @param null $kind
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|mixed
      */
-    public function entitiesRelated($kind = null)
+    public function entities_related($kind = null)
     {
         return $this->belongsToMany('App\Models\Entity', 'relations', 'caller_entity_id', 'called_entity_id')
             ->using('App\Models\EntityRelation')
@@ -486,7 +486,7 @@ class EntityModel extends Model
             })
             ->withTimestamps();
     }
-    public function entitiesRelating($kind = null) {
+    public function entities_relating($kind = null) {
         return $this->belongsToMany('App\Models\Entity', 'relations', 'called_entity_id', 'caller_entity_id')
             ->using('App\Models\EntityRelation')
             ->as('relation')
@@ -497,7 +497,7 @@ class EntityModel extends Model
             ->withTimestamps();
     }
     public function media() {
-        return $this->entitiesRelated(EntityRelation::RELATION_MEDIA);
+        return $this->entities_related(EntityRelation::RELATION_MEDIA);
     }
     public function medium($tag=null, $lang=null) {
         return $this->belongsToOne('App\Models\Medium', 'relations', 'caller_entity_id', 'called_entity_id')
@@ -513,7 +513,7 @@ class EntityModel extends Model
         return $this->hasOne('App\Models\Route', 'entity_id', 'id')
             ->where('default', true);
     }
-    public function entityContents($lang = null) {
+    public function contents($lang = null) {
         return $this->hasMany('App\Models\EntityContent', 'entity_id', 'id')
             ->when($lang !== null, function ($q) use ($lang) {
                 return $q->where('lang', $lang);

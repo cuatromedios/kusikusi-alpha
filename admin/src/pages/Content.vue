@@ -49,7 +49,7 @@ export default {
     this.$store.commit('setEditButton', true)
     this.$store.commit('setSaveButton', false)
     this.entity.id = this.$route.params.entity_id || 'home'
-    const contentResult = await this.$api.get('/entity/home?with=entityContents,entitiesRelated')
+    const contentResult = await this.$api.get('/entity/home?with=contents,entities_related')
     if (contentResult.success) {
       this.entity = contentResult.data
     }

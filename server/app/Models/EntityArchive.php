@@ -17,7 +17,7 @@ class EntityArchive extends Model
     }
 
     public static function archive($entity_id) {
-        $entityToArchive = Entity::with('entityContents')->with('routes')->with('entitiesRelated')->find($entity_id);
+        $entityToArchive = Entity::with('contents')->with('routes')->with('entities_related')->find($entity_id);
         EntityArchive::create([
             "entity_id" => $entity_id,
             "version" => $entityToArchive->version,

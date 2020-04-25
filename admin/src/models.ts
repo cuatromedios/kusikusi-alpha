@@ -8,6 +8,6 @@ export interface Entity {
   published_at: string;
   unpublished_at: string;
   version: number;
-  entityContents: Array<object>;
-  entitiesRelated: Array<object>;
+  contents: Array<object>;
+  entities_related: Array<object>;
 }

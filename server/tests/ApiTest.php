@@ -77,7 +77,6 @@ class ApiTest extends TestCase
         ->seeStatusCode(200);
         $auth = json_decode($response->response->getContent(), true);
         $entity_id = $auth['id'];
-         print("\nENTITY CREATED ON testCreateEntityWithOnlyModel:\nEntity Id: ".$entity_id."\n");
         return $entity_id;
     }
 
@@ -102,7 +101,6 @@ class ApiTest extends TestCase
         ->seeStatusCode(200);
         $auth = json_decode($response->response->getContent(), true);
         $entity_id = $auth['id'];
-        print("\nENTITY CREATED ON testCreateEntityWithOwnId:\nEntity Id: ".$entity_id."\n");
         return $entity_id;
     }
 
@@ -117,11 +115,10 @@ class ApiTest extends TestCase
         ->seeStatusCode(200);
         $auth = json_decode($response->response->getContent(), true);
         $entity_id = $auth['id'];
-        $review = $this->json('GET', '/api/entity/home', ['with'=>'entitiesRelated'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        $review = $this->json('GET', '/api/entity/home', ['with'=>'entities_related'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeJsonContains(['kind'=>'ancestor', 'depth'=>1])
         ->seeJsonContains(['kind'=>'ancestor', 'depth'=>2])
         ->seeStatusCode(200);
-        print("\nENTITY CREATED ON testCreateEntityWithOptionalParameters:\nEntity Id: ".$entity_id."\n");
         return $entity_id;
     }
 
@@ -135,11 +132,10 @@ class ApiTest extends TestCase
         ->seeStatusCode(200);
         $auth = json_decode($response->response->getContent(), true);
         $entity_id = $auth['id'];
-        $review = $this->json('GET', '/api/entities/page', ['with'=>'entityContents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        $review = $this->json('GET', '/api/entities/page', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeJsonContains(['lang'=>'en', 'field'=>'title', 'text'=>'The page'])
         ->seeJsonContains(['lang'=>'es', 'field'=>'title', 'text'=>'La pagina'])
         ->seeStatusCode(200);
-        print("\nENTITY CREATED ON testCreateEntityWithOptionalParameters:\nEntity Id: ".$entity_id."\n");
         return $entity_id;
     }
 
@@ -156,7 +152,6 @@ class ApiTest extends TestCase
         ->seeJsonContains(['path'=>'/Hello', 'lang'=>'es'])
         ->seeJsonContains(['path'=>'/Hola', 'lang'=>'en'])
         ->seeStatusCode(200);
-        print("\nENTITY CREATED ON testCreateEntityWithOptionalParameters:\nEntity Id: ".$entity_id."\n");
         return $entity_id;
     }
 
@@ -173,7 +168,6 @@ class ApiTest extends TestCase
         $entity_id = $auth['id'];
         $this->seeInDatabase('relations', ['caller_entity_id'=>'medium', 'kind'=>'ancestor', 'called_entity_id'=>'medium', 'depth'=>1]);
         $this->seeInDatabase('relations', ['caller_entity_id'=>'medium', 'kind'=>'ancestor', 'called_entity_id'=>'medium', 'depth'=>2]);
-        print("\nENTITY CREATED ON testCreateEntityWithOptionalParameters:\nEntity Id: ".$entity_id."\n");
         return $entity_id;
     }
 }

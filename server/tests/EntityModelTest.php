@@ -15,7 +15,26 @@ class EntityModelTest extends TestCase
         'home' =>['id'=>'home', 'model'=>'home', 'view'=>'home', 'parent_entity_id'=>'root'],
         'root_without_model'=>['id'=>'root', 'view'=>'root'],
         'page' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home'],
-        'page_with_content' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>"The page", 'es'=>'La página']]],
+        'page_with_content' => [
+            'id'=>'page',
+            'model'=>'page',
+            'view'=>'page',
+            'parent_entity_id'=>'home',
+            'contents'=>[
+                'title'=>['en'=>"The page", 'es'=>'La página'],
+                'slug'=>['en'=>"the-page", 'es'=>'la-pagina']
+            ]
+        ],
+        'section_with_content' => [
+            'id'=>'section',
+            'model'=>'section',
+            'view'=>'section',
+            'parent_entity_id'=>'home',
+            'contents'=>[
+                'title'=>['en'=>"The section", 'es'=>'La sección'],
+                'slug'=>['en'=>"the-section", 'es'=>'la-seccion']
+            ]
+        ]
     ];
 
     /* *
@@ -71,6 +90,32 @@ class EntityModelTest extends TestCase
     }
 
     public function testCreateEntityContent()
+    {
+        $data = [$this->data['page_with_content'], $this->data['section_with_content']];
+        $totalCount = 0;
+        foreach ($data as $entity_data) {
+            $rowCount = 0;
+            $entity = new Entity($entity_data);
+            $entity->save();
+            $this->seeInDatabase('entities', ['id'=>$entity_data['id']]);
+            foreach ($entity_data['contents'] as $field=>$values) {
+                foreach ($values as $lang=>$text) {
+                    $this->seeInDatabase('contents', [
+                        'entity_id'=>$entity_data['id'],
+                        'field'=>$field,
+                        'lang'=>$lang,
+                        'text'=>$text
+                    ]);
+                    $rowCount++;
+                    $totalCount++;
+                }
+            }
+            $this->assertEquals($rowCount, EntityContent::where('entity_id', $entity_data['id'])->get()->count());
+        }
+        $this->assertEquals($totalCount, EntityContent::get()->count());
+    }
+
+    public function testCreateEntityWithRawContent()
     {
         $page = new Entity($this->data['page_with_content']);
         $page->save();

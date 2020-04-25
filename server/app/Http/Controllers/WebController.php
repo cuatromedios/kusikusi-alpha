@@ -64,7 +64,7 @@ class WebController extends Controller
             ->where("id", $searchResult->entity_id)
             ->appendProperties($searchResult->entity_model)
             ->appendContents($searchResult->entity_model, $lang)
-            ->with('entitiesRelated')
+            ->with('entities_related')
             ->with('routes');
         $entity=$entity->first();
         if (!$entity->isPublished()) {

@@ -35,7 +35,7 @@ class EntityController extends Controller
      * @queryParam related-by (filter) The id or short id of the entity the result entities should have been called by using a relation. Can be added a filter to a kind of relation for example: theShortId:category. The ancestor kind of relations are discarted unless are explicity specified. Example: ElFYpgEvWS
      * @queryParam relating (filter) The id or short id of the entity the result entities should have been a caller of using a relation. Can be added a filder to a kind o relation for example: shortFotoId:medium to know the entities has caller that medium. The ancestor kind of relations are discarted unless are explicity specified. Example: enKSUfUcZN
      * @queryParam media-of (filter) The id or short id of the entity the result entities should have a media relation to. Example: enKSUfUcZN
-     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)
+     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,contents,entities_related, entities_related.contents (nested relations)
      * @urlParam model_name If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available.
      * @responseFile responses/entities.index.json
      * @return \Illuminate\Http\JsonResponse
@@ -123,7 +123,7 @@ class EntityController extends Controller
      * @authenticated
      * @urlParam entity_id The id of the entity to show.
      * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax. Example: id,model,properties.price
-     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,entityContents,entitiesRelated, entitiesRelated.entityContents (nested relations)
+     * @queryParam with A comma separated list of relationships should be included in the result. Example: media,contents,entities_related, entities_related.contents (nested relations)
      * @responseFile responses/entities.show.json
      * @return \Illuminate\Http\JsonResponse
      */
@@ -168,7 +168,7 @@ class EntityController extends Controller
             'published_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
             'unpublished_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59'
         ]);
-        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'relations');
+        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related');
         $entity = new Entity($payload);
         $entity->save();
         return($entity);
@@ -198,7 +198,7 @@ class EntityController extends Controller
             'unpublished_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
             'entity_id' => self::ID_RULE
         ]);
-        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'relations');
+        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related');
         $entity = Entity::find($entity_id);
         $entity->fill($payload);
         $entity->save();

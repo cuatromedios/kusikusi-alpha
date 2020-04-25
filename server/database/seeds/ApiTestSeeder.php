@@ -18,17 +18,17 @@ class ApiTestSeeder extends Seeder
         $user_profile = "admin";
         $user_password = 'Hello123';
 
-        print("*** Generated user:\n");
+        /*print("*** Generated user:\n");
         print("{\n");
         print("  \"email\": \"{$user_email}\",\n");
-        print("  \"password\": \"{$user_password}\",\n");
+        print("  \"password\": \"{$user_password}\",\n");*/
         $user = new User([
             "name" => $user_name,
             "email" => $user_email,
             "password" => $user_password,
             "profile" => $user_profile
         ]);
-        print("}\n");
+        // print("}\n");
 
         $user->save();
     }
