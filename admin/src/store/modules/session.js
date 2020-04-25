@@ -1,5 +1,6 @@
 import { LocalStorage } from 'quasar'
 import _ from 'lodash'
+import Vue from 'vue'
 
 // initial state
 const state = {
@@ -15,10 +16,10 @@ const getters = {
     return (state.authtoken !== '')
   },
   entitiesWithWritePermissions (state) {
-    let entities = []
+    const entities = []
     for (let e = 0; e < _.get(state, 'user.permissions.length', 0); e++) {
       if (state.user.permissions[e].write !== 'none' && state.user.permissions[e].read !== 'none') {
-        let entity = state.user.permissions[e].entity
+        const entity = state.user.permissions[e].entity
         entity.write = state.user.permissions[e].write
         entity.read = state.user.permissions[e].read
         entities.push(entity)
@@ -27,10 +28,10 @@ const getters = {
     return entities
   },
   entitiesWithPermissions (state) {
-    let entities = []
+    const entities = []
     for (let e = 0; e < _.get(state, 'user.permissions.length', 0); e++) {
       if (state.user.permissions[e].read !== 'none') {
-        let entity = state.user.permissions[e].entity
+        const entity = state.user.permissions[e].entity
         entity.write = state.user.permissions[e].write
         entity.read = state.user.permissions[e].read
         entities.push(entity)
@@ -43,7 +44,7 @@ const getters = {
 // actions
 const actions = {
   getLocalSession ({ dispatch, commit }) {
-    const session = LocalStorage.getItem('session')
+    const session = LocalStorage.getItem('kusikusi_session')
     if (!session || session === {}) {
       dispatch('resetUserData')
     } else {
@@ -62,16 +63,16 @@ const actions = {
 const mutations = {
   setAuthtoken (state, newToken) {
     state.authtoken = newToken
-    // Api.setHeader('Authorization', 'Bearer ' + newToken)
-    let session = LocalStorage.getItem('session') || {}
+    Vue.prototype.$api.setAuthorization(newToken)
+    const session = LocalStorage.getItem('kusikusi_session') || {}
     session.authtoken = newToken
-    LocalStorage.set('session', session)
+    LocalStorage.set('kusikusi_session', session)
   },
   setUser (state, newUser) {
     state.user = newUser
-    let session = LocalStorage.getItem('session') || {}
+    const session = LocalStorage.getItem('kusikusi_session') || {}
     session.user = newUser
-    LocalStorage.set('session', session)
+    LocalStorage.set('kusikusi_session', session)
   }
 }
 

@@ -76,7 +76,7 @@ const getters = {
 // actions
 const actions = {
   async getCmsConfig ({ commit }) {
-    // let configResult = await Api.get('/config/cms')
+    const configResult = await Vue.prototype.$api.get('/config/cms')
     commit('setCms', configResult.result)
     let editorLang = LocalStorage.getItem('editorLang')
     if (!editorLang || editorLang === '') {

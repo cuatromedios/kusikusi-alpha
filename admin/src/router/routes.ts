@@ -8,7 +8,7 @@ const routes: RouteConfig[] = [
     children: [
       {
         path: '/login',
-        component: () => import('pages/Login'),
+        component: () => import('pages/Login.vue'),
         name: 'login'
       }
     ]
@@ -18,8 +18,8 @@ const routes: RouteConfig[] = [
     component: () => import('layouts/InternalLayout.vue'),
     children: [
       {
-        path: '/content',
-        component: () => import('pages/ContentDisplay'),
+        path: '/content/:entity_id?',
+        component: () => import('pages/Content.vue'),
         name: 'content'
       }
     ]

@@ -59,7 +59,7 @@ module.exports = configure(function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: [ 'LocalStorage', 'Notify' ]
+      plugins: ['LocalStorage', 'Notify']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie

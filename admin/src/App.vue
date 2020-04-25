@@ -19,7 +19,7 @@ export default {
     this.$api.baseURL = process.env.API_URL
     await this.$store.dispatch('getLocalSession')
     if (this.$store.getters.hasToken) {
-      let meResult = await this.$api.get('/me')
+      const meResult = await this.$api.get('/me')
       this.prepared = true
       if (meResult.status >= 400 && this.$route.name !== 'login') {
         this.$router.push({ name: 'login' })

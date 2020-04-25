@@ -30,10 +30,8 @@
   </nq-page>
 </template>
 <script>
-import Feedback from '../components/Feedback'
 
 export default {
-  components: { Feedback },
   name: 'Login',
   beforeCreate () {
     this.$store.dispatch('resetUserData')
@@ -53,7 +51,7 @@ export default {
   },
   methods: {
     handleLogin: async function () {
-      let loginResult = await this.$api.post('/user/login', this.form)
+      const loginResult = await this.$api.post('/user/login', this.form)
       if (loginResult.success) {
         this.$store.commit('setAuthtoken', loginResult.data.token)
         this.$store.commit('setUser', loginResult.data.user)

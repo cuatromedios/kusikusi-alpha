@@ -8,10 +8,10 @@ export const nqFieldMixin = {
     }
   },
   methods: {
-    onFocus() {
+    onFocus () {
       this.focused = true
     },
-    onBlur(endpoint, payload, form) {
+    onBlur () {
       this.focused = false
     }
   }

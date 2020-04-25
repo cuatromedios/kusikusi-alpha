@@ -74,6 +74,8 @@ module.exports = {
     'arrow-parens': 'off',
     'one-var': 'off',
 
+    'camelcase': 'off',
+
     'import/first': 'off',
     'import/named': 'error',
     'import/namespace': 'error',
@@ -87,6 +89,7 @@ module.exports = {
     // TypeScript
     'quotes': ['warn', 'single'],
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/camelcase': 'off',
 
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
