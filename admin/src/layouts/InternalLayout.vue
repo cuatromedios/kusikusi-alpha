@@ -31,7 +31,7 @@
               @mouseout="miniState = true">
       <q-list class="rounded-borders text-info q-mt-lg">
         <q-item
-          v-for="item in $store.getters['ui/menu']"
+          v-for="item in $store.getters['menu']"
           :key="item.label"
           clickable
           v-ripple
@@ -46,9 +46,7 @@
       </q-list>
     </q-drawer>
     <q-page-container>
-      <div class="q-pa-lg">
         <router-view :editBus="editBus" :saveBus="saveBus"/>
-      </div>
     </q-page-container>
   </q-layout>
 </template>

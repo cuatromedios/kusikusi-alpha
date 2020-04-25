@@ -18,13 +18,14 @@ export default {
   async created () {
     this.$api.baseURL = process.env.API_URL
     await this.$store.dispatch('getLocalSession')
-    if (this.$store.getters.hasToken) {
-      const meResult = await this.$api.get('/me')
-      this.prepared = true
+    if (this.$store.getters.hasAuthtoken) {
+      const meResult = await this.$api.get('/user/me')
       if (meResult.status >= 400 && this.$route.name !== 'login') {
+        this.prepared = true
         this.$router.push({ name: 'login' })
       } else {
         this.$store.commit('setUser', meResult.data)
+        this.prepared = true
       }
     } else {
       this.prepared = true

@@ -28,26 +28,23 @@ export default {
     invalidPassword: 'Please enter a password'
   },
   dashboard: {
-    title: 'Dashboard',
-    yourcontent: 'Your content',
-    yourcontentdescription: 'The content you have access to'
+    // title: 'Dashboard',
+    // yourcontent: 'Your content',
+    // yourcontentdescription: 'The content you have access to'
   },
   content: {
-    title: 'Content',
     icon: 'ballot',
-    editor: {
-      name: 'Entity name',
-      contents: 'Contents',
-      title: 'Title',
-      summary: 'Summary',
-      url: 'Friendly url',
-      footer: 'Footer',
-      publication: 'Publication',
-      publishedAt: 'Publish at',
-      unpublishedAt: 'Stop publishing at',
-      active: 'Is active',
-      delete: 'Do you really want to delete this entity?'
-    }
+    view: 'Vista',
+    contents: 'Contents',
+    publication: 'Publication',
+    active: 'Published',
+    delete: 'Do you really want to delete this entity?',
+    title: 'Title',
+    summary: 'Summary',
+    url: 'Friendly url',
+    footer: 'Footer',
+    publishedAt: 'Publish at',
+    unpublishedAt: 'Stop publishing at'
   },
   media: {
     title: 'Media',

@@ -70,9 +70,6 @@ const mutations = {
   },
   setUser (state, newUser) {
     state.user = newUser
-    const session = LocalStorage.getItem('kusikusi_session') || {}
-    session.user = newUser
-    LocalStorage.set('kusikusi_session', session)
   }
 }
 

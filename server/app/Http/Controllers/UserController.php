@@ -4,6 +4,7 @@ namespace  App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Config;
 use App\Models\User;
@@ -41,6 +42,17 @@ class UserController extends Controller
         } else {
             return response()->json(['error' => 'Unauthorized'], 401 );
         }
+    }
+
+    /**
+     * Returns the current logged user
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showMe()
+    {
+        $user = User::find(Auth::user()->id);
+        return $user;
     }
 
     /**
