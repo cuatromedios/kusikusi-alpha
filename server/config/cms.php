@@ -20,6 +20,16 @@ return [
     "short_id_length" => 10, // Change if you database is going to be veeeery big. Maximum 16.
     "models" => [
         "home" => [
+            "allowedChildren" => ["section", "page"],
+            "ui" => [
+                [
+                    "title" => "content.contents",
+                    "components" => [
+                        ["component" => "input", "value" => "contents.title", "label" => "content.title"],
+                        ["component" => "input", "value" => "contents.welcome", "label" => "content.summary"]
+                    ],
+                ]
+            ]
         ],
         "page" => [
         ],

@@ -88,7 +88,7 @@ const actions = {
 
 // mutations
 const mutations = {
-  setCms (state, newConfig) {
+  setConfig (state, newConfig) {
     state.config = newConfig
   },
   setTitle (state, newTitle) {

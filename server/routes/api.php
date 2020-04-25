@@ -9,9 +9,8 @@ $router->group(["prefix" => "api"], function () use ($router) {
     /**
      * Unauthenticated routes
     */
-    $router->get('/', function () use ($router) {
-        return ["version" => '4.0'];
-    });
+    $router->get('/', function () use ($router) {return ["version" => '4.0'];});
+    $router->get('/cms/config', ['uses' => 'CmsController@showConfig']);
     $router->post('/user/login', ['uses' => 'UserController@authenticate']);
 
     /**
