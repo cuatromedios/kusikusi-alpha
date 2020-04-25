@@ -48,6 +48,27 @@ class EntityModel extends Model
         'is_active' => 'boolean'
     ];
 
+    /**
+     * ATTRIBUTES
+     */
+
+    public function getPublishedAtAttribute($value)
+    {
+        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:s') : null;
+    }
+    public function getUnpublishedAtAttribute($value)
+    {
+        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:s') : null;
+    }
+    public function getCreatedAtAttribute($value)
+    {
+        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:s') : null;
+    }
+    public function getUpdatedAtAttribute($value)
+    {
+        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:s') : null;
+    }
+
     /**********************
      * SCOPES
      **********************/
