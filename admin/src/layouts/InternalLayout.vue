@@ -2,25 +2,9 @@
   <q-layout view="hHh lpR lFf" class="bg-grey-3">
     <q-header class="bg-primary text-white">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="left = !left"/>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="~assets/logo.svg">
-          </q-avatar>
-          Kusikusi
-        </q-toolbar-title>
-        <q-btn v-if="$store.state.ui.toolbar.editButton"
-               flat size="lg" icon="edit" type="a" class="bg-accent no-border-radius action-button last-action-button"
-               :label="$t('general.edit')"
-               @click="editBus.$emit('on-edit', {})" />
-        <q-btn v-if="$store.state.ui.toolbar.saveButton"
-               flat size="md" type="a" class="no-border-radius q-mr-sm"
-               :label="$t('general.cancel')"
-               @click="saveBus.$emit('on-cancel', {})" />
-        <q-btn v-if="$store.state.ui.toolbar.saveButton"
-               flat size="lg" icon="cloud_upload" type="a" class="bg-positive no-border-radius action-button last-action-button"
-               @click="saveBus.$emit('on-save', {})"
-               :label="$t('general.save')" />
+        <q-btn dense flat round @click="left = !left">
+          <img src="~assets/logo.svg" style="width: 3em" >
+        </q-btn>
       </q-toolbar>
     </q-header>
     <q-drawer v-model="left"
@@ -67,8 +51,4 @@ export default {
 </script>
 
 <style lang="stylus">
-  .action-button
-    margin: 0
-    &.last-action-button
-      margin 0 -12px 0 0
 </style>

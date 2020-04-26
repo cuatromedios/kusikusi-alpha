@@ -36,6 +36,23 @@
         </q-card-section>
       </q-card>
     </div>
+    <div class="fixed-top-right text-white action-buttons">
+      <q-btn v-if="!editing && !loading"
+             push size="lg" icon="edit" class="bg-accent no-border-radius"
+             :label="$t('general.edit')"
+             :disable="saving"
+             @click="editing = true" />
+      <q-btn v-if="editing"
+             flat size="md" class="no-border-radius q-mr-sm"
+             :label="$t('general.cancel')"
+             @click="cancel" />
+      <q-btn v-if="editing"
+             push size="lg" icon="cloud_upload" class="bg-positive no-border-radius"
+             :disable="loading"
+             :loading="saving"
+             @click="save"
+             :label="$t('general.save')" />
+    </div>
   </nq-page>
 </template>
 
@@ -82,6 +99,8 @@ export default {
   methods: {
     async refreshEntity () {
       this.loading = true
+      this.editing = false
+      this.saving = false
       this.fieldsets = []
       this.$store.commit('setEditButton', true)
       this.$store.commit('setSaveButton', false)
@@ -128,7 +147,39 @@ export default {
     },
     findContentRow (props) {
       return _.find(this.entity.contents, (o) => { return o.lang === props.lang && o.field === props.field })
+    },
+    cancel () {
+      this.refreshEntity()
+    },
+    async save () {
+      if (this.entity.id === 'new') {
+
+      } else {
+        const updateResult = await this.$api.patch(`/entity/${this.entity.id}`, this.entity)
+        if (updateResult.success) {
+          this.$q.notify({
+            position: 'top',
+            color: 'positive',
+            message: this.$t('content.saveOk')
+          })
+          this.editing = false
+        } else {
+          this.$q.notify({
+            position: 'top',
+            color: 'negative',
+            message: this.$t('login.saveError')
+          })
+        }
+      }
     }
   }
 }
 </script>
+<style lang="scss">
+  .action-buttons {
+    z-index: 2001;
+    .q-btn {
+       max-height: 50px
+    }
+  }
+</style>
