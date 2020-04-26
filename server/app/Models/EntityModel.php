@@ -70,11 +70,11 @@ class EntityModel extends Model
     }
     public function setPublishedAtAttribute($value)
     {
-        $this->attributes['published_at'] = Carbon::make($value)->setTimezone('UTC')->format('Y-m-d\TH:i:s');
+        if ($value !== null) $this->attributes['published_at'] = Carbon::make($value)->setTimezone('UTC')->format('Y-m-d\TH:i:s');
     }
     public function setUnpublishedAtAttribute($value)
     {
-        $this->attributes['unpublished_at'] = Carbon::make($value)->setTimezone('UTC')->format('Y-m-d\TH:i:s');
+        if ($value !== null) $this->attributes['unpublished_at'] = Carbon::make($value)->setTimezone('UTC')->format('Y-m-d\TH:i:s');
     }
 
     /**********************

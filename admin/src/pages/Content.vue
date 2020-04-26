@@ -10,7 +10,6 @@
             </nq-field>
             <nq-input dense v-model="entity.view" :label="$t('contents.view')" class="col-12" :readonly="!editing"/>
             <nq-input dense v-model="entity.published_at" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing"/>
-            <nq-input dense v-model="entity.unpublished_at" :label="$t('contents.unpublishedAt')" class="col-12" :readonly="!editing"/>
             <div class="col-12 text-grey text-center"><code>(ID: {{ entity.id }})</code></div>
           </div>
         </q-card-section>

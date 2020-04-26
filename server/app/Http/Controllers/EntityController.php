@@ -15,7 +15,7 @@ class EntityController extends Controller
 {
     const ID_RULE = 'string|min:1|max:16|regex:/^[A-Za-z0-9_-]+$/';
     const MODEL_RULE = 'string|min:1|max:32|regex:/^[a-z0-9-]+$/';
-    const TIMEZONED_DATE = 'date_format:Y-m-d\TH:i:sP|after_or_equal:1000-01-01T00:00:00-12:00|before_or_equal:9999-12-31T23:59:59-12:00';
+    const TIMEZONED_DATE = 'nullable|date_format:Y-m-d\TH:i:sP|after_or_equal:1000-01-01T00:00:00-12:00|before_or_equal:9999-12-31T23:59:59-12:00';
     private $calledRelations = [];
     private $addedSelects = [];
     /**
