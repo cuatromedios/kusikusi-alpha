@@ -32,7 +32,7 @@ export default {
     // yourcontent: 'Your content',
     // yourcontentdescription: 'The content you have access to'
   },
-  content: {
+  contents: {
     icon: 'ballot',
     view: 'Vista',
     contents: 'Contents',

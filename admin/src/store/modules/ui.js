@@ -73,6 +73,9 @@ const getters = {
   },
   iconOf: (state) => (model) => {
     return _.get(state, `config.models[${model}].icon`, 'blur_on')
+  },
+  nameOf: (state) => (model) => {
+    return _.get(state, `config.models[${model}].name`, model)
   }
 }
 

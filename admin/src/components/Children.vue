@@ -28,7 +28,7 @@
 
           <q-item-section>
             <q-item-label><h3><router-link :to="{ name: 'content', params: { entity_id:entity.id } }">{{ entity.title }}</router-link></h3></q-item-label>
-            <q-item-label caption lines="1">{{ entity.model }}</q-item-label>
+            <q-item-label caption lines="1">{{ $store.getters.nameOf(entity.model) }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>

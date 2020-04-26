@@ -24,7 +24,7 @@ return [
             "name" => "models.home",
             "form" => [
                 [
-                    "label" => "content.contents",
+                    "label" => "contents.contents",
                     "components" => [
                         ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
                         ["component" => "nq-input", "value" => "contents.welcome", "label" => "contents.summary"],

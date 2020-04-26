@@ -1,16 +1,17 @@
 <template>
   <nq-page :title="entity.model" max-width="lg">
     <template slot="aside">
-      <h2>{{ $t('content.publication') }}</h2>
+      <h2>{{ $t('contents.publication') }}</h2>
       <q-card>
         <q-card-section  v-if="!loading">
           <div class="row q-col-gutter-sm">
             <nq-field dense class="col-12" :readonly="!editing">
-              <q-checkbox v-model="entity.is_active" :label="$t('content.active')" :disable="!editing" />
+              <q-checkbox v-model="entity.is_active" :label="$t('contents.active')" :disable="!editing" />
             </nq-field>
-            <nq-input dense v-model="entity.view" :label="$t('content.view')" class="col-12" :readonly="!editing"/>
-            <nq-input dense v-model="entity.published_at" :label="$t('content.publishedAt')" class="col-12" :readonly="!editing"/>
-            <nq-input dense v-model="entity.unpublished_at" :label="$t('content.unpublishedAt')" class="col-12" :readonly="!editing"/>
+            <nq-input dense v-model="entity.view" :label="$t('contents.view')" class="col-12" :readonly="!editing"/>
+            <nq-input dense v-model="entity.published_at" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing"/>
+            <nq-input dense v-model="entity.unpublished_at" :label="$t('contents.unpublishedAt')" class="col-12" :readonly="!editing"/>
+            <div class="col-12 text-grey text-center"><code>(ID: {{ entity.id }})</code></div>
           </div>
         </q-card-section>
         <q-card-section v-if="loading">
