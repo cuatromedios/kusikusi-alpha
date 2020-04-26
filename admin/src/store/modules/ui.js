@@ -6,7 +6,7 @@ import _ from 'lodash'
 const state = {
   config: {},
   lang: 'en',
-  editorLang: null,
+  uiLang: null,
   currentTitle: '',
   loading: false,
   toolbar: {
@@ -78,17 +78,43 @@ const actions = {
   async getCmsConfig ({ commit }) {
     const configResult = await Vue.prototype.$api.get('/config/cms')
     commit('setCms', configResult.result)
-    let editorLang = LocalStorage.getItem('editorLang')
-    if (!editorLang || editorLang === '') {
-      editorLang = configResult.result.langs[0] || 'en'
+    let uiLang = LocalStorage.getItem('uiLang')
+    if (!uiLang || uiLang === '') {
+      uiLang = configResult.result.langs[0] || 'en'
     }
-    commit('setEditorLang', editorLang)
+    commit('setUiLang', uiLang)
   }
 }
 
 // mutations
 const mutations = {
   setConfig (state, newConfig) {
+    _.set(newConfig, `langs`, _.get(newConfig, 'langs', ['en']))
+    state.lang = newConfig.langs[0]
+    for (const m in _.get(newConfig, 'models', [])) {
+      for (const f in _.get(newConfig, `models[${m}].form`, [])) {
+        const procesedComponents = []
+        for (const c in _.get(newConfig, `models[${m}].form[${f}].components`, [])) {
+          const component = _.get(newConfig, `models[${m}].form[${f}].components[${c}]`)
+          if (_.startsWith(component.value, 'contents.')) {
+            for (const l in newConfig.langs) {
+              const langComponent = _.clone(component)
+              langComponent.value += `.${newConfig.langs[l]}`
+              langComponent.isMultiLang = true
+              langComponent.props = {
+                lang: newConfig.langs[l],
+                field: langComponent.value.split('.')[1]
+              }
+              procesedComponents.push(langComponent)
+            }
+          } else {
+            component.isMultiLang = false
+            procesedComponents.push(component)
+          }
+        }
+        _.set(newConfig, `models[${m}].form[${f}].components`, procesedComponents)
+      }
+    }
     state.config = newConfig
   },
   setTitle (state, newTitle) {
@@ -99,9 +125,9 @@ const mutations = {
     state.lang = newLang
     Vue.i18n.set(newLang)
   },
-  setEditorLang (state, newLang) {
-    LocalStorage.set('editorLang', newLang)
-    state.editorLang = newLang
+  setUiLang (state, newLang) {
+    LocalStorage.set('uiLang', newLang)
+    state.uiLang = newLang
   },
   setEditButton (state, show) {
     state.toolbar.editButton = show

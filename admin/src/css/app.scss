@@ -72,3 +72,20 @@ code.ticket-code {
     }
   }
 }
+.nq-input-field, .nq-select {
+  font-size: 1.5em;
+  font-weight: 400;
+}
+.q-field--dense .nq-input-field, .q-field--dense .nq-select {
+  font-size: 1.1em;
+  font-weight: 400;
+}
+.nq-input-percentage .q-field__append {
+  color: $grey-6;
+  font-size: $body-font-size * 1.5;
+  line-height: 100%;
+}
+.nq-input-currency .q-field__append {
+  color: $grey-6;
+  font-size: $body-font-size * 1.25;
+}

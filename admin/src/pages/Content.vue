@@ -3,7 +3,7 @@
     <template slot="aside">
       <h2>{{ $t('content.publication') }}</h2>
       <q-card>
-        <q-card-section class="row q-col-gutter-sm">
+        <q-card-section class="row" v-if="!loading">
           <nq-field dense class="col-12" :readonly="!editing">
             <q-checkbox v-model="entity.is_active" :label="$t('content.active')" :disable="!editing" />
           </nq-field>
@@ -11,19 +11,45 @@
           <nq-input dense v-model="entity.published_at" :label="$t('content.publishedAt')" class="col-12" :readonly="!editing"/>
           <nq-input dense v-model="entity.unpublished_at" :label="$t('content.unpublishedAt')" class="col-12" :readonly="!editing"/>
         </q-card-section>
+        <q-card-section v-if="loading">
+          <q-skeleton type="QSlider" class="q-mb-md" />
+          <q-skeleton type="QSlider" class="q-mb-md" />
+          <q-skeleton type="QSlider" class="q-mb-md" />
+          <q-skeleton type="QSlider" class="q-mb-md" />
+        </q-card-section>
       </q-card>
     </template>
-    <h2>{{ $t('content.contents') }}</h2>
-    <p>Nunc finibus odio nunc, id pellentesque lacus tempor semper....</p>
+    <div v-for="(fieldset, fieldsetIndex) in fieldsets" :key="fieldsetIndex">
+      <h2>{{ $t(fieldset.label) }}</h2>
+      <q-card>
+        <q-card-section>
+          <div class="row q-col-gutter-md">
+            <div v-for="(component, componentIndex) in fieldset.components"
+                 :key="componentIndex"
+                 :is="component.component"
+                 :label="$t(component.label)"
+                 :value="getValue(component)"
+                 @input="setValue(component, $event)"
+                 class="col-12" />
+          </div>
+        </q-card-section>
+      </q-card>
+    </div>
   </nq-page>
 </template>
 
 <script>
+import _ from 'lodash'
+import Children from '../components/Children'
 export default {
   name: 'Content',
+  components: { Children },
   data () {
     return {
       editing: false,
+      loading: true,
+      saving: false,
+      fieldsets: [],
       entity: {
         id: '',
         model: '',
@@ -45,13 +71,62 @@ export default {
       }
     }
   },
-  async mounted () {
-    this.$store.commit('setEditButton', true)
-    this.$store.commit('setSaveButton', false)
-    this.entity.id = this.$route.params.entity_id || 'home'
-    const contentResult = await this.$api.get('/entity/home?with=contents,entities_related')
-    if (contentResult.success) {
-      this.entity = contentResult.data
+  async created () {
+    await this.refreshEntity()
+  },
+  async beforeRouteUpdate (to, from, next) {
+    await this.refreshEntity()
+    next()
+  },
+  methods: {
+    async refreshEntity () {
+      this.loading = true
+      this.fieldsets = []
+      this.$store.commit('setEditButton', true)
+      this.$store.commit('setSaveButton', false)
+      this.entity.id = this.$route.params.entity_id || 'home'
+      const contentResult = await this.$api.get('/entity/home?with=contents,entities_related')
+      this.loading = false
+      if (contentResult.success) {
+        this.entity = contentResult.data
+        /* const fieldsets = _.clone(_.get(this.$store.state, `ui.config.models.${this.entity.model}.form`, []))
+        for (const f in fieldsets) {
+          for (const c in fieldsets[f].components) {
+            console.log(fieldsets[f].components[c].value)
+            fieldsets[f].components[c].value = this.entity.model
+          }
+        } */
+        this.fieldsets = _.get(this.$store.state, `ui.config.models.${this.entity.model}.form`, [])
+      }
+    },
+    getValue (component) {
+      if (component.isMultiLang) {
+        const foundField = this.findContentRow(component.props)
+        if (foundField) {
+          return foundField.text
+        } else {
+          this.entity.contents.push({
+            lang: component.props.lang,
+            field: component.props.field,
+            text: ''
+          })
+        }
+      } else {
+        return this.entity[component.value]
+      }
+    },
+    setValue (component, value) {
+      if (component.isMultiLang) {
+        const foundField = this.findContentRow(component.props)
+        if (foundField) {
+          foundField.text = value
+        }
+      } else {
+        this.entity[component.value] = value
+      }
+    },
+    findContentRow (props) {
+      return _.find(this.entity.contents, (o) => { return o.lang === props.lang && o.field === props.field })
     }
   }
 }
