@@ -103,7 +103,10 @@ class EntityModel extends Model
     {
         return $query->where('is_active', true)
             ->whereDate('published_at', '<=', Carbon::now()->setTimezone('UTC')->format('Y-m-d\TH:i:s'))
-            ->whereDate('unpublished_at', '>', Carbon::now()->setTimezone('UTC')->format('Y-m-d\TH:i:s'))
+            ->where(function($query) {
+                $query->whereDate('unpublished_at', '>', Carbon::now()->setTimezone('UTC')->format('Y-m-d\TH:i:s'))
+                    ->orWhereNull('unpublished_at');
+            })
             ->whereNull('deleted_at');
     }
 
