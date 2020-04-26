@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\EntityContent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -454,6 +453,7 @@ class EntityModel extends Model
     public function addContents($contents, $lang = NULL)
     {
         $lang = $lang ?? Config::get('cms.langs')[0] ?? '';
+        $routeToAdd = false;
         foreach ($contents as $key=>$value) {
             if (is_numeric($key)) {
                 EntityContent::updateOrCreate(
@@ -466,6 +466,12 @@ class EntityModel extends Model
                         "text" => $value['text'],
                     ]
                 );
+                if ($value['field'] == 'slug') {
+                    $routeToAdd = [
+                        "lang" => $value['lang'],
+                        "slug" => $value['text']
+                    ];
+                }
             } else if (gettype($value) === 'array') {
                 foreach ($value as $lang => $text) {
                     $this->addContents([ $key => $text], $lang);
@@ -482,17 +488,23 @@ class EntityModel extends Model
                     ]
                 );
                 if ($key == 'slug') {
-                    Route::where('entity_id', $this->getId())->where('default', true)->where('lang', $lang)->delete();
-                    $parent_route = Route::where('entity_id', $this->parent_entity_id)->where('lang', $lang)->where('default', true)->first();
-                    $parent_route_path = $parent_route ? $parent_route->path === '/' ? '' : $parent_route->path : '';
-                    Route::create([
-                        "entity_id" => $this->getId(),
-                        "entity_model" => $this->model,
-                        "path" => $parent_route_path."/".$value,
-                        "lang" => $lang,
-                        "default" => true
-                    ]);
+                    $routeToAdd = [
+                        "lang" => $lang ,
+                        "slug" => $value
+                    ];
                 }
+            }
+            if ($routeToAdd) {
+                Route::where('entity_id', $this->getId())->where('default', true)->where('lang', $lang)->delete();
+                $parent_route = Route::where('entity_id', $this->parent_entity_id)->where('lang', $lang)->where('default', true)->first();
+                $parent_route_path = $parent_route ? $parent_route->path === '/' ? '' : $parent_route->path : '';
+                Route::create([
+                    "entity_id" => $this->getId(),
+                    "entity_model" => $this->model,
+                    "path" => $parent_route_path."/".$routeToAdd['slug'],
+                    "lang" => $routeToAdd['lang'],
+                    "default" => true
+                ]);
             }
         }
     }
