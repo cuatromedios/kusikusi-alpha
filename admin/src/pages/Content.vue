@@ -31,8 +31,10 @@
                  :is="component.component"
                  :label="$t(component.label)"
                  :readonly="!editing"
+                 :entity="entity"
                  :value="getValue(component)"
                  @input="setValue(component, $event)"
+                 v-bind="component.props"
                  class="col-12" />
           </div>
         </q-card-section>
@@ -92,22 +94,23 @@ export default {
     }
   },
   async created () {
-    await this.refreshEntity()
+    await this.refreshEntity(this.$route.params.entity_id)
   },
   async beforeRouteUpdate (to, from, next) {
-    await this.refreshEntity()
+    await this.refreshEntity(to.params.entity_id)
     next()
   },
   methods: {
-    async refreshEntity () {
+    async refreshEntity (entity_id) {
       this.loading = true
       this.editing = false
       this.saving = false
       this.fieldsets = []
       this.$store.commit('setEditButton', true)
       this.$store.commit('setSaveButton', false)
-      this.entity.id = this.$route.params.entity_id || 'home'
-      const contentResult = await this.$api.get('/entity/home?with=contents,entities_related')
+      this.entity.id = entity_id || 'home'
+      console.log("refresh", entity_id, this.entity.id)
+      const contentResult = await this.$api.get(`/entity/${this.entity.id}?with=contents,entities_related`)
       this.loading = false
       if (contentResult.success) {
         this.entity = contentResult.data
@@ -151,7 +154,7 @@ export default {
       return _.find(this.entity.contents, (o) => { return o.lang === props.lang && o.field === props.field })
     },
     cancel () {
-      this.refreshEntity()
+      this.refreshEntity(this.entity.id)
     },
     async save () {
       if (this.entity.id === 'new') {

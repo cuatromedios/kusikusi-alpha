@@ -21,14 +21,20 @@ h2 {
     margin-top: $flex-gutter-lg !important;
   }
 }
+a {
+  color: $secondary;
+}
 .q-card {
   h2 {
     margin-top: 0;
     margin-bottom: 8px;
   }
+  h3 {
+    font-size: 1.15em;
+  }
   h3, p {
     margin: 0;
-    margin-bottom: 8px;
+    margin-bottom: 0px;
   }
 }
 .q-table th {

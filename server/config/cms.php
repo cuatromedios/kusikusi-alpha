@@ -26,9 +26,9 @@ return [
                 [
                     "label" => "content.contents",
                     "components" => [
-                        ["component" => "nq-input", "value" => "contents.title", "label" => "content.title"],
-                        ["component" => "nq-input", "value" => "contents.welcome", "label" => "content.summary"],
-                        ["component" => "nq-input", "value" => "model", "label" => "content.model"]
+                        ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
+                        ["component" => "nq-input", "value" => "contents.welcome", "label" => "contents.summary"],
+                        ["component" => "nq-input", "value" => "contents.slug", "label" => "contents.slug"]
                     ],
                 ],
                 [
@@ -40,9 +40,38 @@ return [
             ]
         ],
         "page" => [
+            "icon" => "description",
+            "name" => "models.page",
+            "form" => [
+                [
+                    "label" => "content.contents",
+                    "components" => [
+                        ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
+                        ["component" => "nq-input", "value" => "contents.welcome", "label" => "content.summary"],
+                        ["component" => "nq-input", "value" => "contents.slug", "label" => "contents.slug"]
+                    ],
+                ]
+            ]
         ],
         "section" => [
-            "allowedChildren" => ['page']
+            "icon" => "folder",
+            "name" => "models.section",
+            "form" => [
+                [
+                    "label" => "content.contents",
+                    "components" => [
+                        ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
+                        ["component" => "nq-input", "value" => "contents.summary", "label" => "contents.summary"],
+                        ["component" => "nq-input", "value" => "contents.slug", "label" => "contents.slug"]
+                    ],
+                ],
+                [
+                    "label" => "content.children",
+                    "components" => [
+                        ["component" => "children", "props" => ["models" => ["page"]]]
+                    ],
+                ]
+            ]
         ],
         "medium" => [
         ]

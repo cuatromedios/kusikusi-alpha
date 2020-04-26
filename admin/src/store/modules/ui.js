@@ -70,6 +70,9 @@ const getters = {
     }
     menu.push(state.menuItems.logout)
     return menu
+  },
+  iconOf: (state) => (model) => {
+    return _.get(state, `config.models[${model}].icon`, 'blur_on')
   }
 }
 
