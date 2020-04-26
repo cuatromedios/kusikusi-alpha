@@ -1,5 +1,5 @@
 <template>
-  <nq-page :title="entity.model" max-width="lg">
+  <nq-page :title="getEntityTitle.text || getEntityTitle" max-width="lg">
     <template slot="aside">
       <h2>{{ $t('contents.publication') }}</h2>
       <q-card>
@@ -177,6 +177,11 @@ export default {
           })
         }
       }
+    }
+  },
+  computed: {
+    getEntityTitle () {
+      return this.findContentRow({ lang: this.$store.state.ui.config.langs[0], field: 'title' }) || this.$store.getters.nameOf(this.entity.model)
     }
   }
 }
