@@ -95,7 +95,7 @@ const actions = {
 // mutations
 const mutations = {
   setConfig (state, newConfig) {
-    _.set(newConfig, `langs`, _.get(newConfig, 'langs', ['en']))
+    _.set(newConfig, 'langs', _.get(newConfig, 'langs', ['en']))
     state.lang = newConfig.langs[0]
     for (const m in _.get(newConfig, 'models', [])) {
       for (const f in _.get(newConfig, `models[${m}].form`, [])) {
@@ -104,7 +104,7 @@ const mutations = {
           const component = _.get(newConfig, `models[${m}].form[${f}].components[${c}]`)
           if (_.startsWith(component.value, 'contents.')) {
             for (const l in newConfig.langs) {
-              const langComponent = _.clone(component)
+              const langComponent = _.cloneDeep(component)
               langComponent.value += `.${newConfig.langs[l]}`
               langComponent.isMultiLang = true
               langComponent.props = {

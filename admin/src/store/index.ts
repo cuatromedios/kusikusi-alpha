@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import ui from './modules/ui'
 import session from './modules/session'
+import content from './modules/content'
 // import exampleState from './module-example/state'
 
 /*
@@ -22,7 +23,8 @@ export default store(function ({ Vue }) {
   const Store = new Vuex.Store({
     modules: {
       ui,
-      session
+      session,
+      content
     },
 
     // enable strict mode (adds overhead!)

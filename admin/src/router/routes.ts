@@ -18,7 +18,7 @@ const routes: RouteConfig[] = [
     component: () => import('layouts/InternalLayout.vue'),
     children: [
       {
-        path: '/content/:entity_id?',
+        path: '/content/:entity_id?/:model?/:conector?/:parent_entity_id?',
         component: () => import('pages/Content.vue'),
         name: 'content'
       }

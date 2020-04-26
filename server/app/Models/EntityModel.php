@@ -49,24 +49,32 @@ class EntityModel extends Model
     ];
 
     /**
-     * ATTRIBUTES
+     * ACCESORS AND MUTATORS
      */
 
     public function getPublishedAtAttribute($value)
     {
-        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:s') : null;
+        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:sP') : null;
     }
     public function getUnpublishedAtAttribute($value)
     {
-        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:s') : null;
+        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:sP') : null;
     }
     public function getCreatedAtAttribute($value)
     {
-        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:s') : null;
+        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:sP') : null;
     }
     public function getUpdatedAtAttribute($value)
     {
-        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:s') : null;
+        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:sP') : null;
+    }
+    public function setPublishedAtAttribute($value)
+    {
+        $this->attributes['published_at'] = Carbon::make($value)->setTimezone('UTC')->format('Y-m-d\TH:i:s');
+    }
+    public function setUnpublishedAtAttribute($value)
+    {
+        $this->attributes['unpublished_at'] = Carbon::make($value)->setTimezone('UTC')->format('Y-m-d\TH:i:s');
     }
 
     /**********************
@@ -94,8 +102,8 @@ class EntityModel extends Model
     public function scopeIsPublished($query)
     {
         return $query->where('is_active', true)
-            ->whereDate('published_at', '<=', Carbon::now())
-            ->whereDate('unpublished_at', '>', Carbon::now())
+            ->whereDate('published_at', '<=', Carbon::now()->setTimezone('UTC')->format('Y-m-d\TH:i:s'))
+            ->whereDate('unpublished_at', '>', Carbon::now()->setTimezone('UTC')->format('Y-m-d\TH:i:s'))
             ->whereNull('deleted_at');
     }
 

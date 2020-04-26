@@ -56,6 +56,7 @@ class Handler extends ExceptionHandler
                 'error' => [
                     'status' => $rendered->getStatusCode(),
                     'message' => $exception->getMessage(),
+                    'data' => method_exists($rendered, 'getData') ? $rendered->getData() : null
                 ]
             ];
             if (env('APP_DEBUG', false)) {

@@ -1,22 +1,23 @@
 <template>
   <div>
-    <!--q-btn-dropdown class="absolute-top-right q-ma-md" outline color="positive"  icon="add_circle"  :label="$t('general.add')" v-if="allowed && allowed.length > 1">
-      <q-list>
-        <q-item clickable v-close-popup
-                v-for="model in allowed"
-                @click="$router.push({name: 'contentNew', params: {entity_id: 'new', parent_id: $store.state.content.entity.id, model: model}})"
-                :key="model">
-          <q-item-section>
-            <q-item-label>{{ $store.state.ui.config.models[model] ? $store.state.ui.config.models[model].name : model }}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-btn-dropdown>
-    <q-btn class="absolute-top-right q-ma-md"
-           outline color="positive"  icon="add_circle"
-           :label="`${$t('general.add')} ${$store.state.ui.config.models[allowed[0]].name}`" v-if="allowed && allowed.length === 1"
-           @click="$router.push({name: 'contentNew', params: {entity_id: 'new', parent_id: $store.state.content.entity.id, model: allowed[0]}})"
-    /-->
+    <div class="q-mb-md flex justify-end">
+      <q-btn-dropdown class="" outline color="positive"  icon="add_circle"  :label="$t('general.add')" v-if="models && models.length > 1">
+        <q-list>
+          <q-item clickable v-close-popup
+                  v-for="model in models"
+                  @click="add(model)"
+                  :key="model">
+            <q-item-section>
+              <q-item-label>{{ $store.getters.nameOf(model) }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
+      <q-btn class=""
+             outline color="positive"  icon="add_circle"
+             :label="`${$t('general.add')} ${$store.getters.nameOf(models[0])}`" v-if="models && models.length === 1"
+             @click="add(models[0])"/>
+    </div>
     <q-list bordered>
       <draggable v-model="children">
         <q-item
@@ -45,10 +46,7 @@ export default {
   components: { draggable },
   name: 'Children',
   props: {
-    entity: {
-      type: Object,
-      default: () => {}
-    },
+    entity: {},
     ofModel: {
       type: Array,
       default: () => []
@@ -72,9 +70,12 @@ export default {
     this.getChildren()
   },
   methods: {
-    async getChildren (page = 1) {
-      const childrenResult = await this.$api.get(`/entities?child-of=${this.entity.id}&select=contents.title,published_at,unpublished_at,is_active,model,id`)
+    async getChildren () {
+      const childrenResult = await this.$api.get(`/entities?child-of=${this.entity.id}&select=contents.title,published_at,unpublished_at,is_active,model,id&only-published=true`)
       this.children = childrenResult.data.data
+    },
+    add (model) {
+      this.$router.push({ name: 'content', params: { entity_id: 'new', model: model, conector: 'in', parent_entity_id: this.entity.id } })
     }
   }
 }

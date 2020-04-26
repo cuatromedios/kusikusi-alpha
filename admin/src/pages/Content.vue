@@ -1,5 +1,5 @@
 <template>
-  <nq-page :title="getEntityTitle.text || getEntityTitle" max-width="lg">
+  <nq-page :title="getEntityTitle" max-width="lg">
     <template slot="aside">
       <h2>{{ $t('contents.publication') }}</h2>
       <q-card>
@@ -63,6 +63,7 @@
 
 <script>
 import _ from 'lodash'
+import moment from 'moment'
 import Children from '../components/Children'
 export default {
   name: 'Content',
@@ -77,8 +78,8 @@ export default {
         id: '',
         model: '',
         view: '',
-        entitycontents: [],
-        entitiesrelated: [],
+        contents: [],
+        entity_relations: [],
         parent_entity_id: '',
         is_active: true,
         properties: {},
@@ -98,11 +99,11 @@ export default {
     await this.refreshEntity(this.$route.params.entity_id)
   },
   async beforeRouteUpdate (to, from, next) {
-    await this.refreshEntity(to.params.entity_id)
+    await this.refreshEntity(to.params.entity_id, to.params.model, to.params.parent_entity_id)
     next()
   },
   methods: {
-    async refreshEntity (entity_id) {
+    async refreshEntity (entity_id, model, parent_entity_id) {
       this.loading = true
       this.editing = false
       this.saving = false
@@ -110,20 +111,29 @@ export default {
       this.$store.commit('setEditButton', true)
       this.$store.commit('setSaveButton', false)
       this.entity.id = entity_id || 'home'
-      console.log("refresh", entity_id, this.entity.id)
-      const contentResult = await this.$api.get(`/entity/${this.entity.id}?with=contents,entities_related`)
-      this.loading = false
-      if (contentResult.success) {
-        this.entity = contentResult.data
-        /* const fieldsets = _.clone(_.get(this.$store.state, `ui.config.models.${this.entity.model}.form`, []))
-        for (const f in fieldsets) {
-          for (const c in fieldsets[f].components) {
-            console.log(fieldsets[f].components[c].value)
-            fieldsets[f].components[c].value = this.entity.model
+      if (entity_id !== 'new') {
+        const contentResult = await this.$api.get(`/entity/${this.entity.id}?with=contents,entities_related`)
+        this.loading = false
+        if (contentResult.success) {
+          this.entity = contentResult.data
+        } else {
+          this.entity = {
+            contents: [],
+            entity_relations: []
           }
-        } */
-        this.fieldsets = _.get(this.$store.state, `ui.config.models.${this.entity.model}.form`, [])
+        }
+      } else {
+        this.entity = _.cloneDeep(this.$store.state.content.blankEntity)
+        this.entity.model = model || this.$route.params.model
+        this.entity.view = model || this.$route.params.model
+        this.entity.id = entity_id || this.$route.params.entity_id
+        this.entity.parent_entity_id = parent_entity_id || this.$route.params.parent_entity_id
+        this.entity.published_at = moment().format()
+        this.entity.unpublished_at = '9999-12-30T23:59:59+00:00'
+        this.editing = true
+        this.loading = false
       }
+      this.fieldsets = _.get(this.$store.state, `ui.config.models.${this.entity.model}.form`, [])
     },
     getValue (component) {
       if (component.isMultiLang) {
@@ -152,14 +162,34 @@ export default {
       }
     },
     findContentRow (props) {
+      if (!this.entity) return undefined
       return _.find(this.entity.contents, (o) => { return o.lang === props.lang && o.field === props.field })
     },
     cancel () {
-      this.refreshEntity(this.entity.id)
+      if (this.isNew) {
+        this.$router.replace({ name: 'content', params: { entity_id: this.$route.params.parent_entity_id } })
+      } else {
+        this.refreshEntity(this.entity.id)
+      }
     },
     async save () {
-      if (this.entity.id === 'new') {
-
+      if (this.isNew) {
+        delete this.entity.id
+        const saveResult = await this.$api.post('/entity', this.entity)
+        if (saveResult.success) {
+          this.$q.notify({
+            position: 'top',
+            color: 'positive',
+            message: this.$t('content.saveOk')
+          })
+          this.$router.replace({ name: 'content', params: { entity_id: saveResult.data.id } })
+        } else {
+          this.$q.notify({
+            position: 'top',
+            color: 'negative',
+            message: this.$t('login.saveError')
+          })
+        }
       } else {
         const updateResult = await this.$api.patch(`/entity/${this.entity.id}`, this.entity)
         if (updateResult.success) {
@@ -181,7 +211,12 @@ export default {
   },
   computed: {
     getEntityTitle () {
-      return this.findContentRow({ lang: this.$store.state.ui.config.langs[0], field: 'title' }) || this.$store.getters.nameOf(this.entity.model)
+      if (!this.entity) return ''
+      const fromContents = this.findContentRow({ lang: this.$store.state.ui.config.langs[0], field: 'title' })
+      return fromContents && fromContents.text !== '' ? fromContents.text : this.$store.getters.nameOf(this.entity.model)
+    },
+    isNew () {
+      return this.$route.params.entity_id === 'new'
     }
   }
 }

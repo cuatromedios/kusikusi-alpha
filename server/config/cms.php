@@ -32,7 +32,7 @@ return [
                     ],
                 ],
                 [
-                    "label" => "content.children",
+                    "label" => "contents.children",
                     "components" => [
                         ["component" => "children", "props" => ["models" => ["section", "page"]]]
                     ],

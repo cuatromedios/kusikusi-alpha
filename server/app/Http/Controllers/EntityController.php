@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use App\Models\EntityRelation;
 use App\Models\Medium;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
@@ -14,6 +15,7 @@ class EntityController extends Controller
 {
     const ID_RULE = 'string|min:1|max:16|regex:/^[A-Za-z0-9_-]+$/';
     const MODEL_RULE = 'string|min:1|max:32|regex:/^[a-z0-9-]+$/';
+    const TIMEZONED_DATE = 'date_format:Y-m-d\TH:i:sP|after_or_equal:1000-01-01T00:00:00-12:00|before_or_equal:9999-12-31T23:59:59-12:00';
     private $calledRelations = [];
     private $addedSelects = [];
     /**
@@ -26,7 +28,7 @@ class EntityController extends Controller
      * @queryParam select A comma separated list of fields of the entity to include. It is possible to flat the properties json column using a dot syntax. Example: id,model,properties.price
      * @queryParam order-by A comma separated lis of fields to order by. Example: model,properties.price:desc,contents.title
      * @queryParam of-model (filter) The name of the model the entities should be. Example: page
-     * @queryParam is-published (filter) Get only published, not deleted entities, true if not set. Example: true
+     * @queryParam only-published (filter) Get only published, not deleted entities, true if not set. Example: true
      * @queryParam child-of (filter) The id or short id of the entity the result entities should be child of. Example: home
      * @queryParam parent-of (filter) The id or short id of the entity the result entities should be parent of (will return only one). Example: 8fguTpt5SB
      * @queryParam ancestor-of (filter) The id or short id of the entity the result entities should be ancestor of. Example: enKSUfUcZN
@@ -71,7 +73,7 @@ class EntityController extends Controller
         $entities = $entities->when($request->get('of-model'), function ($q) use ($request) {
                 return $q->ofModel($request->get('of-model'));
             })
-            ->when(!$request->exists('is-published') || $request->get('is-published') === 'true' || $request->get('is-published') === '', function ($q) use ($request) {
+            ->when($request->exists('only-published') && ($request->get('only-published') === 'true' || $request->get('only-published') === ''), function ($q) use ($request) {
                 return $q->isPublished();
             })
             ->when($request->get('child-of'), function ($q) use ($request) {
@@ -165,10 +167,11 @@ class EntityController extends Controller
             'model' => 'required|string|max:32',
             'view' => 'string|max:32',
             'id' => self::ID_RULE,
-            'published_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
-            'unpublished_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59'
+            'published_at' => self::TIMEZONED_DATE,
+            'unpublished_at' => self::TIMEZONED_DATE,
+            'is_active' => 'boolean'
         ]);
-        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related');
+        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related', 'is_active');
         $entity = new Entity($payload);
         $entity->save();
         $createdEntity = Entity::with('contents')->find($entity->id);
@@ -195,11 +198,12 @@ class EntityController extends Controller
     {
         $this->validate($request, [
             'view' => 'string|max:32',
-            'published_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
-            'unpublished_at' => 'date_format:Y-m-d\TH:i:s|after_or_equal:1000-01-01T00:00:00|before_or_equal:9999-12-31T23:59:59',
-            'entity_id' => self::ID_RULE
+            'published_at' => self::TIMEZONED_DATE,
+            'unpublished_at' => self::TIMEZONED_DATE,
+            'entity_id' => self::ID_RULE,
+            'is_active' => 'boolean'
         ]);
-        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related');
+        $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related', 'is_active');
         $entity = Entity::find($entity_id);
         $entity->fill($payload);
         $entity->save();
@@ -298,7 +302,7 @@ class EntityController extends Controller
             'media-of' => self::ID_RULE,
             'of-model' => self::MODEL_RULE,
             'model_name' => self::MODEL_RULE,
-            'is-published' => 'in:true,false',
+            'only-published' => 'in:true,false',
         ];
     }
 
