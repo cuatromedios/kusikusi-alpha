@@ -2,8 +2,8 @@
   <q-layout view="hHh lpR lFf" class="bg-grey-3">
     <q-header class="bg-primary text-white">
       <q-toolbar>
-        <q-btn dense flat round @click="left = !left">
-          <img src="~assets/logo.svg" style="width: 3em" >
+        <q-btn dense icon="menu" flat @click="left = !left">
+          <img src="~assets/logo.svg" style="width: 2.5em;" >
         </q-btn>
       </q-toolbar>
     </q-header>
