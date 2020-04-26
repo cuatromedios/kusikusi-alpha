@@ -28,6 +28,7 @@
                  :key="componentIndex"
                  :is="component.component"
                  :label="$t(component.label)"
+                 :readonly="!editing"
                  :value="getValue(component)"
                  @input="setValue(component, $event)"
                  class="col-12" />
