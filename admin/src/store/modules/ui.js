@@ -108,6 +108,7 @@ const mutations = {
               langComponent.value += `.${newConfig.langs[l]}`
               langComponent.isMultiLang = true
               langComponent.props = {
+                ...langComponent.props,
                 lang: newConfig.langs[l],
                 field: langComponent.value.split('.')[1]
               }
