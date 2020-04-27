@@ -51,22 +51,21 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         $rendered = parent::render($request, $exception);
+        $response = [
+            'status' => $rendered->getStatusCode(),
+            'message' => $exception->getMessage(),
+            'data' => method_exists($rendered, 'getData') ? $rendered->getData() : null
+        ];
+        if (env('APP_DEBUG', false)) {
+            $response['file'] = $exception->getFile();
+            $response['line'] = $exception->getLine();
+            $response['trace'] = $exception->getTraceAsString();
+        }
         if (Str::of($request->getPathInfo())->startsWith('/api')) {
-            $response = [
-                'error' => [
-                    'status' => $rendered->getStatusCode(),
-                    'message' => $exception->getMessage(),
-                    'data' => method_exists($rendered, 'getData') ? $rendered->getData() : null
-                ]
-            ];
-            if (env('APP_DEBUG', false)) {
-                $response['error']['file'] = $exception->getFile();
-                $response['error']['line'] = $exception->getLine();
-                $response['error']['trace'] = $exception->getTraceAsString();
-            }
-            return response()->json($response, $rendered->getStatusCode());;
+            return response()->json($response, $rendered->getStatusCode());
         } else {
-            return $rendered;
+            $response['trace'] = $exception->getTrace();
+            return view('html.error', $response);
         }
     }
 }
