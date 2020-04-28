@@ -15,7 +15,7 @@
     RewriteRule ^ %1 [L,R=301]
 
    # Handle CMS...
-    RewriteCond %{REQUEST_URI} /cms
+    RewriteCond %{REQUEST_URI} ^/cms
     RewriteCond %{REQUEST_FILENAME} !-s
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ cms/index.html [L]
