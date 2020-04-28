@@ -14,6 +14,7 @@ use Illuminate\Support\Arr;
 class EntityController extends Controller
 {
     const ID_RULE = 'string|min:1|max:16|regex:/^[A-Za-z0-9_-]+$/';
+    const ID_RULE_WITH_FILTER = 'string|min:1|max:40|regex:/^[A-Za-z0-9_-]+:?[a-z0-9]+$/';
     const MODEL_RULE = 'string|min:1|max:32|regex:/^[a-z0-9-]+$/';
     const TIMEZONED_DATE = 'nullable|date_format:Y-m-d\TH:i:sP|after_or_equal:1000-01-01T00:00:00-12:00|before_or_equal:9999-12-31T23:59:59-12:00';
     private $calledRelations = [];
@@ -249,8 +250,9 @@ class EntityController extends Controller
         $this->validate($request, [
             'entity_caller_id' => 'required'.self::ID_RULE,
             'entity_called_id' => 'required'.self::ID_RULE,
-            'kind' => 'string|max:25',
+            'kind' => 'string|max:25|regex:/^[a-z0-9]+$/',
             'position' => 'integer',
+            'tags.*' => 'string',
             'depth' => 'integer'
         ]);
         $payload = $request->only( 'called_entity_id', 'kind', 'position', 'depth', 'tags');
@@ -297,8 +299,8 @@ class EntityController extends Controller
             'ancestor-of' => self::ID_RULE,
             'descendant-of' => self::ID_RULE,
             'siblings-of' => self::ID_RULE,
-            'related-by' => self::ID_RULE,
-            'relating' => self::ID_RULE,
+            'related-by' => self::ID_RULE_WITH_FILTER,
+            'relating' => self::ID_RULE_WITH_FILTER,
             'media-of' => self::ID_RULE,
             'of-model' => self::MODEL_RULE,
             'model_name' => self::MODEL_RULE,
