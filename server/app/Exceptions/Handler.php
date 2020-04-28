@@ -65,7 +65,7 @@ class Handler extends ExceptionHandler
             return response()->json($response, $rendered->getStatusCode());
         } else {
             $response['trace'] = $exception->getTrace();
-            return view('html.error', $response);
+            return response()->make(view('html.error', $response));
         }
     }
 }
