@@ -13,7 +13,12 @@ class ApiTest extends TestCase
         'home' => ['id'=>'home', 'model'=>'home', 'view' =>'home', 'parent_entity_id'=>'home', 'properties'=>'"price":50.4'],
         'page_with_content' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'The page', 'es'=>'La pagina']]],
         'page_with_raw_content' => ['id'=>'pageraw', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>[["lang"=>"en", "field"=>"title", "text"=>"The raw page"], ["lang"=>"es", "field"=>"title", "text"=>"La página raw"]]],
-        'section_with_content_slug' => ['id'=>'section', 'model'=>'section', 'view'=>'section', 'parent_entity_id'=>'section', 'contents'=>['title'=>['en'=>'The page', 'es'=>'La pagina'], 'section'=>['en'=>'The page', 'es'=>'La página'], 'slug'=>['en'=>'Hello', 'es'=>'Hola']]],
+        'page_of_section_one' => ['id'=>'page_sone', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section', 'contents'=>['title'=>['en'=>'The section one', 'es'=>'La seccion uno']]],
+        'page_of_section_two' => ['id'=>'page_stwo', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section', 'contents'=>['title'=>['en'=>'The section two', 'es'=>'La seccion dos']]],
+        'page_of_section_ec_one' => ['id'=>'page_secone', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section_ec', 'contents'=>['title'=>['en'=>'The section ec one', 'es'=>'La seccion ec uno']]],
+        'page_of_section_ec_two' => ['id'=>'page_sectwo', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section_ec', 'contents'=>['title'=>['en'=>'The section ec two', 'es'=>'La seccion ec dos']]],
+        'section_entities_collection' => ['id'=>'section_ec','model'=>'section', 'view'=>'section', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'Heading', 'es'=>'El Titulo'], 'section'=>['en'=>'The page', 'es'=>'La página'], 'slug'=>['en'=>'Route', 'es'=>'Ruta']]],
+        'section_with_content_slug' => ['id'=>'section', 'model'=>'section', 'view'=>'section', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'The page', 'es'=>'La pagina'], 'section'=>['en'=>'The page', 'es'=>'La página'], 'slug'=>['en'=>'Hello', 'es'=>'Hola']]],
         'medium' => ['id'=>'medium', 'parent_entity_id'=>'medium', 'model'=>'medium']
     ];
     /**
@@ -188,4 +193,150 @@ class ApiTest extends TestCase
         $this->seeInDatabase('relations', ['caller_entity_id'=>'medium', 'kind'=>'ancestor', 'called_entity_id'=>'medium', 'depth'=>2]);
         return $entity_id;
     }
+
+    public function testSetCollectionEntities()
+    {
+        $root = new Entity($this->data['section_entities_collection']);
+        $root->save();
+        $root = new Entity($this->data['page_of_section_one']);
+        $root->save();
+        $root = new Entity($this->data['page_of_section_two']);
+        $root->save();
+        $root = new Entity($this->data['page_of_section_ec_one']);
+        $root->save();
+        $root = new Entity($this->data['page_of_section_ec_two']);
+        $root->save();
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testOfModelEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities', ['of-model'=>'page'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>6])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 6);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testChildOfEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities', ['child-of'=>'home'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>5])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 5);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testParentOfEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities', ['parent-of'=>'page_sone'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>1])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 1);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testAncestorOfEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities', ['ancestor-of'=>'page_sone'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>4])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 4);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testDescendantOfEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities', ['descendant-of'=>'section'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>2])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 2);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testSiblingsOfEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities', ['siblings-of'=>'section'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>4])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 4);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testRelatingEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities?relating=section:ancestor', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>2])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 2);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testRelatedByEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities?related-by=section:ancestor', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>3])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 3);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testOfModelPlusChildOfEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities?of-model=page', ['child-of'=>'home'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>2])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 2);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testAncestorOfPlusOfModelEntitiesCollection($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities?ancestor-of=page_sone', ['of-model'=>'home'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>3])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 3);
+    }
+
 }
