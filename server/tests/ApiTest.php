@@ -19,7 +19,9 @@ class ApiTest extends TestCase
         'page_of_section_ec_two' => ['id'=>'page_sectwo', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section_ec', 'contents'=>['title'=>['en'=>'The section ec two', 'es'=>'La seccion ec dos']]],
         'section_entities_collection' => ['id'=>'section_ec','model'=>'section', 'view'=>'section', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'Heading', 'es'=>'El Titulo'], 'section'=>['en'=>'The page', 'es'=>'La página'], 'slug'=>['en'=>'Route', 'es'=>'Ruta']]],
         'section_with_content_slug' => ['id'=>'section', 'model'=>'section', 'view'=>'section', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'The page', 'es'=>'La pagina'], 'section'=>['en'=>'The page', 'es'=>'La página'], 'slug'=>['en'=>'Hello', 'es'=>'Hola']]],
-        'medium' => ['id'=>'medium', 'parent_entity_id'=>'medium', 'model'=>'medium']
+        'medium' => ['id'=>'medium', 'parent_entity_id'=>'medium', 'model'=>'medium'],
+        'select' => ['select'=>'id,model,properties,view,parent_entity_id,is_active,created_by,updated_by,published_at,unpublished_at,version,version_tree,version_relations,version_full,created_at,updated_at,deleted_at'],
+        'select_records' => ['id'=>'home', 'model'=>'home', 'view'=>'home', 'parent_entity_id'=>'home', 'is_active'=>true, 'updated_by'=>null, 'created_by'=>null, 'unpublished_at'=>null, 'deleted_at'=>null, 'properties'=>'"price":50.4', 'version'=>1, 'version_tree'=>26, 'version_relations'=>0, 'version_full'=>27]
     ];
     /**
      * A basic test example.
@@ -207,6 +209,52 @@ class ApiTest extends TestCase
         $root = new Entity($this->data['page_of_section_ec_two']);
         $root->save();
         $this->assertTrue(true);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testReadAllEntitiesRecords($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>12])
+        ->seeStatusCode(200);
+        $json = json_decode($response->response->getContent(), true);
+        $data = count($json['data']);
+        $this->assertEquals($data, 12);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testSelectEntitiesRecords($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities/home', $this->data['select'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains($this->data['select_records'])
+        ->seeStatusCode(200);
+    }
+
+     /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testSelectEntitiesContents($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entity/section', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['lang'=>'en', 'field'=>'title', 'text'=>'The page'])
+        ->seeJsonContains(['lang'=>'en', 'field'=>'slug', 'text'=>'Hello'])
+        ->seeJsonContains(['lang'=>'en', 'field'=>'section', 'text'=>'The page'])
+        ->seeStatusCode(200);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testSelectEntitiesRoutes($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entity/section', ['with'=>'routes'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['path'=>'/Hola', 'lang'=>'es'])
+        ->seeJsonContains(['path'=>'/Hello', 'lang'=>'en'])        
+        ->seeStatusCode(200);
     }
 
     /**
