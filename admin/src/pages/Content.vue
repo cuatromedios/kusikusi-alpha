@@ -237,7 +237,6 @@ export default {
     },
     contentLang: {
       set (lang) {
-        console.log('Lang set', lang)
         this.$store.commit('setLang', lang)
       },
       get () {
