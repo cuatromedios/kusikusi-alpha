@@ -1,5 +1,16 @@
 <template>
   <nq-page :title="getEntityTitle" max-width="lg">
+    <div id="langSelector" v-if="$store.state.ui.config && $store.state.ui.config.langs.length > 1" class="rounded-borders shadow-1">
+      <q-radio v-model="contentLang"
+               v-for="lang in $store.state.ui.config.langs"
+               :key="lang"
+               :val="lang"
+               :label="lang"
+      />
+      <q-radio v-model="contentLang"
+               val="all"
+               label="All"/>
+    </div>
     <template slot="aside">
       <h2>{{ $t('contents.publication') }}</h2>
       <q-card>
@@ -29,9 +40,12 @@
             <div v-for="(component, componentIndex) in fieldset.components"
                  :key="componentIndex"
                  :is="component.component"
-                 :label="$t(component.label)"
+                 :label="`${$t(component.label)} ${component.isMultiLang ? '('+component.props.lang+')' : ''}`"
                  :readonly="!editing"
+                 :data-multilingual="component.isMultiLang"
+                 :data-lang="component.props ? component.props.lang : ''"
                  :entity="entity"
+                 v-show="!component.isMultiLang || (component.isMultiLang && (component.props.lang === contentLang || contentLang === 'all'))"
                  :value="getValue(component)"
                  @input="setValue(component, $event)"
                  v-bind="component.props"
@@ -219,6 +233,15 @@ export default {
     },
     views () {
       return _.get(this.$store.state, `ui.config.models.${this.entity.model}.views`, [this.entity.model])
+    },
+    contentLang: {
+      set (lang) {
+        console.log('Lang set', lang)
+        this.$store.commit('setLang', lang)
+      },
+      get () {
+        return this.$store.state.ui.lang
+      }
     }
   }
 }
@@ -229,5 +252,12 @@ export default {
     .q-btn {
        max-height: 50px
     }
+  }
+  #langSelector {
+    position: fixed;
+    top: 64px;
+    right: 24px;
+    background-color: rgba(255,255,255,0.5);
+    padding: 4px 16px;
   }
 </style>
