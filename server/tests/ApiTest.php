@@ -11,17 +11,19 @@ class ApiTest extends TestCase
     private $data = [
         'root' => ['id'=>'root', 'model'=>'root', 'view'=>'root'],
         'home' => ['id'=>'home', 'model'=>'home', 'view' =>'home', 'parent_entity_id'=>'home', 'properties'=>'"price":50.4'],
-        'page_with_content' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'The page', 'es'=>'La pagina']]],
-        'page_with_raw_content' => ['id'=>'pageraw', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>[["lang"=>"en", "field"=>"title", "text"=>"The raw page"], ["lang"=>"es", "field"=>"title", "text"=>"La página raw"]]],
-        'page_of_section_one' => ['id'=>'page_sone', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section', 'contents'=>['title'=>['en'=>'The section one', 'es'=>'La seccion uno']]],
-        'page_of_section_two' => ['id'=>'page_stwo', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section', 'contents'=>['title'=>['en'=>'The section two', 'es'=>'La seccion dos']]],
-        'page_of_section_ec_one' => ['id'=>'page_secone', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section_ec', 'contents'=>['title'=>['en'=>'The section ec one', 'es'=>'La seccion ec uno']]],
-        'page_of_section_ec_two' => ['id'=>'page_sectwo', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section_ec', 'contents'=>['title'=>['en'=>'The section ec two', 'es'=>'La seccion ec dos']]],
-        'section_entities_collection' => ['id'=>'section_ec','model'=>'section', 'view'=>'section', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'Heading', 'es'=>'El Titulo'], 'section'=>['en'=>'The page', 'es'=>'La página'], 'slug'=>['en'=>'Route', 'es'=>'Ruta']]],
-        'section_with_content_slug' => ['id'=>'section', 'model'=>'section', 'view'=>'section', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en'=>'The page', 'es'=>'La pagina'], 'section'=>['en'=>'The page', 'es'=>'La página'], 'slug'=>['en'=>'Hello', 'es'=>'Hola']]],
+        'page_with_content' => ['id'=>'page', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en_US'=>'The page', 'es_ES'=>'La pagina']]],
+        'page_with_raw_content' => ['id'=>'pageraw', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'home', 'contents'=>[["lang"=>"en_US", "field"=>"title", "text"=>"The raw page"], ["lang"=>"es_ES", "field"=>"title", "text"=>"La página raw"]]],
+        'page_of_section_one' => ['id'=>'page_sone', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section', 'contents'=>['title'=>['en_US'=>'The section one', 'es_ES'=>'La seccion uno']]],
+        'page_of_section_two' => ['id'=>'page_stwo', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section', 'contents'=>['title'=>['en_US'=>'The section two', 'es_ES'=>'La seccion dos']]],
+        'page_of_section_ec_one' => ['id'=>'page_secone', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section_ec', 'contents'=>['title'=>['en_US'=>'The section ec one', 'es_ES'=>'La seccion ec uno']]],
+        'page_of_section_ec_two' => ['id'=>'page_sectwo', 'model'=>'page', 'view'=>'page', 'parent_entity_id'=>'section_ec', 'contents'=>['title'=>['en_US'=>'The section ec two', 'es_ES'=>'La seccion ec dos']]],
+        'section_entities_collection' => ['id'=>'section_ec','model'=>'section', 'view'=>'section', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en_US'=>'Heading', 'es_ES'=>'El Titulo'], 'section'=>['en_US'=>'The page', 'es_ES'=>'La página'], 'slug'=>['en_US'=>'Route', 'es_ES'=>'Ruta']]],
+        'section_with_content_slug' => ['id'=>'section', 'model'=>'section', 'view'=>'section', 'parent_entity_id'=>'home', 'contents'=>['title'=>['en_US'=>'The page', 'es_ES'=>'La pagina'], 'section'=>['en_US'=>'The page', 'es_ES'=>'La página'], 'slug'=>['en_US'=>'Hello', 'es_ES'=>'Hola']]],
         'medium' => ['id'=>'medium', 'parent_entity_id'=>'medium', 'model'=>'medium'],
         'select' => ['select'=>'id,model,properties,view,parent_entity_id,is_active,created_by,updated_by,published_at,unpublished_at,version,version_tree,version_relations,version_full,created_at,updated_at,deleted_at'],
-        'select_records' => ['id'=>'home', 'model'=>'home', 'view'=>'home', 'parent_entity_id'=>'home', 'is_active'=>true, 'updated_by'=>null, 'created_by'=>null, 'unpublished_at'=>null, 'deleted_at'=>null, 'properties'=>'"price":50.4', 'version'=>1, 'version_tree'=>26, 'version_relations'=>0, 'version_full'=>27]
+        'select_records' => ['id'=>'home', 'model'=>'home', 'view'=>'home', 'parent_entity_id'=>'home', 'is_active'=>true, 'updated_by'=>null, 'created_by'=>null, 'unpublished_at'=>null, 'deleted_at'=>null, 'properties'=>'"price":50.4', 'version'=>1, 'version_tree'=>26, 'version_relations'=>0, 'version_full'=>27],
+        'edit' => ['id'=>'page_sones', 'view'=>'pages', 'properties'=>'"prop":10.5', 'contents'=>['title'=>['en_US'=>'page', 'es_ES'=>'pagina']], 'relations'=>['called_entity_id'=>'section']],
+        'create_relation' => ['called_entity_id'=>'medium', 'kind'=>'medium', 'tags'=>null, 'position' => 3, 'depth' => 4]
     ];
     /**
      * A basic test example.
@@ -141,8 +143,8 @@ class ApiTest extends TestCase
         $auth = json_decode($response->response->getContent(), true);
         $entity_id = $auth['id'];
         $review = $this->json('GET', '/api/entity/page', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
-        ->seeJsonContains(['lang'=>'en', 'field'=>'title', 'text'=>'The page'])
-        ->seeJsonContains(['lang'=>'es', 'field'=>'title', 'text'=>'La pagina'])
+        ->seeJsonContains(['lang'=>'en_US', 'field'=>'title', 'text'=>'The page'])
+        ->seeJsonContains(['lang'=>'es_ES', 'field'=>'title', 'text'=>'La pagina'])
         ->seeStatusCode(200);
         return $entity_id;
     }
@@ -158,8 +160,8 @@ class ApiTest extends TestCase
         $auth = json_decode($response->response->getContent(), true);
         $entity_id = $auth['id'];
         $review = $this->json('GET', '/api/entity/pageraw', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
-            ->seeJsonContains(['lang'=>'en', 'field'=>'title', 'text'=>'The raw page'])
-            ->seeJsonContains(['lang'=>'es', 'field'=>'title', 'text'=>'La página raw'])
+            ->seeJsonContains(['lang'=>'en_US', 'field'=>'title', 'text'=>'The raw page'])
+            ->seeJsonContains(['lang'=>'es_ES', 'field'=>'title', 'text'=>'La página raw'])
             ->seeStatusCode(200);
         return $entity_id;
     }
@@ -174,8 +176,8 @@ class ApiTest extends TestCase
         $auth = json_decode($response->response->getContent(), true);
         $entity_id = $auth['id'];
         $review = $this->json('GET', '/api/entities/section', ['with'=>'routes'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
-        ->seeJsonContains(['path'=>'/Hello', 'lang'=>'es'])
-        ->seeJsonContains(['path'=>'/Hola', 'lang'=>'en'])
+        ->seeJsonContains(['path'=>'/Hello', 'lang'=>'es_ES'])
+        ->seeJsonContains(['path'=>'/Hola', 'lang'=>'en_US'])
         ->seeStatusCode(200);
         return $entity_id;
     }
@@ -214,14 +216,23 @@ class ApiTest extends TestCase
     /**
      * @depends testLoginWithCorrectData
      */
-    public function testReadAllEntitiesRecords($authorizationToken)
+    public function testOrderByEntitiesRecords($authorizationToken)
     {
-        $response = $this->json('GET', '/api/entities', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        $response = $this->json('GET', '/api/entities', ['order-by'=>'model,view,contents.title'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeJsonContains(['total'=>12])
         ->seeStatusCode(200);
-        $json = json_decode($response->response->getContent(), true);
-        $data = count($json['data']);
-        $this->assertEquals($data, 12);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testReadAllEntitiesRecords($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities?&per-page=6&page=2', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>12, 'current_page'=>2])
+        ->json('GET', '/api/entities?&per-page=6&page=1', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['total'=>12, 'current_page'=>1])
+        ->seeStatusCode(200);
     }
 
     /**
@@ -240,9 +251,9 @@ class ApiTest extends TestCase
     public function testSelectEntitiesContents($authorizationToken)
     {
         $response = $this->json('GET', '/api/entity/section', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
-        ->seeJsonContains(['lang'=>'en', 'field'=>'title', 'text'=>'The page'])
-        ->seeJsonContains(['lang'=>'en', 'field'=>'slug', 'text'=>'Hello'])
-        ->seeJsonContains(['lang'=>'en', 'field'=>'section', 'text'=>'The page'])
+        ->seeJsonContains(['lang'=>'en_US', 'field'=>'title', 'text'=>'The page'])
+        ->seeJsonContains(['lang'=>'en_US', 'field'=>'slug', 'text'=>'Hello'])
+        ->seeJsonContains(['lang'=>'en_US', 'field'=>'section', 'text'=>'The page'])
         ->seeStatusCode(200);
     }
 
@@ -252,8 +263,17 @@ class ApiTest extends TestCase
     public function testSelectEntitiesRoutes($authorizationToken)
     {
         $response = $this->json('GET', '/api/entity/section', ['with'=>'routes'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
-        ->seeJsonContains(['path'=>'/Hola', 'lang'=>'es'])
-        ->seeJsonContains(['path'=>'/Hello', 'lang'=>'en'])        
+        ->seeJsonContains(['path'=>'/Hola', 'lang'=>'es_ES'])
+        ->seeJsonContains(['path'=>'/Hello', 'lang'=>'en_US'])        
+        ->seeStatusCode(200);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testSelectLangEntitiesRoutes($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/entities?select=contents&lang=en_US', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeStatusCode(200);
     }
 
@@ -386,5 +406,38 @@ class ApiTest extends TestCase
         $data = count($json['data']);
         $this->assertEquals($data, 3);
     }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testEditEntity($authorizationToken)
+    {
+        $response = $this->json('PATCH', '/api/entity/page_sone', $this->data['edit'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['id'=>'page_sones', 'view'=>'pages', 'properties'=>'"prop":10.5'])
+        ->seeStatusCode(200);
+        $response = $this->json('GET', '/api/entity/page_sones', ['with'=>'contents'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['lang'=>'en_US', 'field'=>'title', 'text'=>'page'])
+        ->seeJsonContains(['lang'=>'es_ES', 'field'=>'title', 'text'=>'pagina'])
+        ->seeStatusCode(200);
+    }
+
+     /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testCreateEntityRelation($authorizationToken)
+    {
+        $response = $this->json('POST', '/api/entity/pageraw/relation', $this->data['create_relation'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['caller_entity_id'=>'pageraw', 'called_entity_id'=>'medium', 'kind'=>'medium'])
+        ->seeStatusCode(200);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+   /*  public function testDeleteEntityRelation($authorizationToken)
+    {
+        $response = $this->json('DELETE', '/api/entity/pageraw/relation/home', $this->data['create_relation'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeStatusCode(200);
+    } */
 
 }
