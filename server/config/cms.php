@@ -22,6 +22,7 @@ return [
         "home" => [
             "icon" => "home",
             "name" => "models.home",
+            "views" => ["home", "home2"],
             "form" => [
                 [
                     "label" => "contents.contents",

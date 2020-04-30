@@ -72,6 +72,9 @@ code.ticket-code {
       background-color: transparent !important;
     }
   }
+  .q-field__append {
+    display: none;
+  }
 }
 .nq-input-field, .nq-select {
   font-weight: 400;

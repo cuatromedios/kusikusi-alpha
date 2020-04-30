@@ -8,7 +8,7 @@
             <nq-field dense class="col-12" :readonly="!editing">
               <q-checkbox v-model="entity.is_active" :label="$t('contents.active')" :disable="!editing" />
             </nq-field>
-            <nq-input dense v-model="entity.view" :label="$t('contents.view')" class="col-12" :readonly="!editing"/>
+            <nq-select dense v-model="entity.view" :label="$t('contents.view')" class="col-12" :readonly="!editing" :options="views"/>
             <nq-input dense v-model="entity.published_at" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing"/>
             <div class="col-12 text-grey text-center"><code>(ID: {{ entity.id }})</code></div>
           </div>
@@ -128,7 +128,7 @@ export default {
         this.entity.id = entity_id || this.$route.params.entity_id
         this.entity.parent_entity_id = parent_entity_id || this.$route.params.parent_entity_id
         this.entity.published_at = moment().format()
-        this.entity.unpublished_at = '9999-12-30T23:59:59+00:00'
+        this.entity.unpublished_at = null
         this.editing = true
         this.loading = false
       }
@@ -216,6 +216,9 @@ export default {
     },
     isNew () {
       return this.$route.params.entity_id === 'new'
+    },
+    views () {
+      return _.get(this.$store.state, `ui.config.models.${this.entity.model}.views`, [this.entity.model])
     }
   }
 }
