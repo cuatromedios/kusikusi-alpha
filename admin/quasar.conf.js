@@ -79,7 +79,7 @@ module.exports = configure(function (ctx) {
         'QSeparator',
         'QSkeleton',
         'QSpinner',
-        'QToolbar',
+        'QToolbar'
       ],
       directives: ['Ripple'],
 

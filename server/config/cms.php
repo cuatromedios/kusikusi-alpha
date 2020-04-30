@@ -26,7 +26,7 @@ return [
                 [
                     "label" => "contents.contents",
                     "components" => [
-                        ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
+                        ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title", "props" => ["size" => "xl"]],
                         ["component" => "nq-input", "value" => "contents.welcome", "label" => "contents.summary", "props" => ["type" => "textarea"]],
                         ["component" => "nq-input", "value" => "contents.slug", "label" => "contents.slug"]
                     ],
