@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="readonly">
     <div class="q-mb-md flex justify-end">
       <q-btn-dropdown class="" outline color="positive"  icon="add_circle"  :label="$t('general.add')" v-if="models && models.length > 1">
         <q-list>
@@ -47,6 +47,10 @@ export default {
   name: 'Children',
   props: {
     entity: {},
+    readonly: {
+      type: Boolean,
+      default: true
+    },
     ofModel: {
       type: Array,
       default: () => []
