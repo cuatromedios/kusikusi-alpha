@@ -1,4 +1,10 @@
 export default {
+  en: 'Inglés',
+  es: 'Español',
+  en_US: 'Inglés EU',
+  es_MX: 'Español México',
+  es_ES: 'Español España',
+  all: 'Todos',
   general: {
     title: 'Kusikusi',
     subtitle: 'By Cuatromedios',
@@ -27,11 +33,6 @@ export default {
     invalidEmail: 'Please enter a valid email',
     invalidPassword: 'Please enter a password'
   },
-  dashboard: {
-    // title: 'Dashboard',
-    // yourcontent: 'Your content',
-    // yourcontentdescription: 'The content you have access to'
-  },
   contents: {
     icon: 'ballot',
     view: 'Vista',
@@ -41,7 +42,7 @@ export default {
     delete: 'Do you really want to delete this entity?',
     title: 'Title',
     summary: 'Summary',
-    url: 'Friendly url',
+    slug: 'Friendly url',
     footer: 'Footer',
     publishedAt: 'Publish at',
     unpublishedAt: 'Stop publishing at'

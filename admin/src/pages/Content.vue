@@ -2,14 +2,15 @@
   <nq-page :title="getEntityTitle" max-width="lg">
     <div id="langSelector" v-if="$store.state.ui.config && $store.state.ui.config.langs.length > 1" class="rounded-borders shadow-1">
       <q-radio v-model="contentLang"
+               size="sm"
                v-for="lang in $store.state.ui.config.langs"
                :key="lang"
                :val="lang"
-               :label="lang"
+               :label="$t(lang)"
       />
       <q-radio v-model="contentLang"
                val="all"
-               label="All"/>
+               :label="$t('all')"/>
     </div>
     <template slot="aside">
       <h2>{{ $t('contents.publication') }}</h2>
@@ -254,6 +255,7 @@ export default {
     }
   }
   #langSelector {
+    font-size: 0.85em;
     position: fixed;
     top: 64px;
     right: 24px;
