@@ -21,7 +21,7 @@
               <q-checkbox v-model="entity.is_active" :label="$t('contents.active')" :disable="!editing" />
             </nq-field>
             <nq-select dense v-model="entity.view" :label="$t('contents.view')" class="col-12" :readonly="!editing" :options="views"/>
-            <nq-input dense v-model="entity.published_at" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing"/>
+            <nq-date-time dense v-model="entity.published_at" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing"/>
             <div class="col-12 text-grey text-center"><code>(ID: {{ entity.id }})</code></div>
           </div>
         </q-card-section>
