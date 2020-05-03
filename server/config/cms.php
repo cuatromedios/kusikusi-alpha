@@ -36,7 +36,7 @@ return [
                 [
                     "label" => "contents.children",
                     "components" => [
-                        ["component" => "children", "props" => ["models" => ["section", "page"]]]
+                        ["component" => "children", "props" => ["models" => ["section", "page"], "order_by" => "contents.title"]]
                     ],
                 ]
             ]

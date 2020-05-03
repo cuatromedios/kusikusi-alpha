@@ -45,7 +45,8 @@ export default {
     slug: 'Friendly url',
     footer: 'Footer',
     publishedAt: 'Publish at',
-    unpublishedAt: 'Stop publishing at'
+    unpublishedAt: 'Stop publishing at',
+    children: 'Children'
   },
   media: {
     title: 'Media',
@@ -70,6 +71,13 @@ export default {
       uploading: 'Uploading',
       uploaded: 'Uploaded'
     }
+  },
+  models: {
+    home: "Home",
+    section: "Section",
+    page: "Page",
+    media: "Media container",
+    medium: "Medium",
   },
   qr: {
     title: 'QR Code',

@@ -62,6 +62,10 @@ export default {
     tags: {
       type: Array,
       default: () => []
+    },
+    order_by: {
+      type: String,
+      default: "child_relation_position"
     }
 
   },
@@ -75,7 +79,7 @@ export default {
   },
   methods: {
     async getChildren () {
-      const childrenResult = await this.$api.get(`/entities?child-of=${this.entity.id}&select=contents.title,published_at,unpublished_at,is_active,model,id&only-published=true`)
+      const childrenResult = await this.$api.get(`/entities?child-of=${this.entity.id}&select=contents.title,published_at,unpublished_at,is_active,model,id&only-published=false&order-by=${this.order_by}`)
       this.children = childrenResult.data.data
     },
     add (model) {
