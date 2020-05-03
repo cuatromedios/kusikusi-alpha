@@ -85,7 +85,8 @@ module.exports = configure(function (ctx) {
         'QSkeleton',
         'QSpinner',
         'QTime',
-        'QToolbar'
+        'QToolbar',
+        'QTooltip'
       ],
       directives: ['Ripple'],
 

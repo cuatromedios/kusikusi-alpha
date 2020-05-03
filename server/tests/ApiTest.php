@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Illuminate\Database\Seeder;
@@ -186,6 +187,64 @@ class ApiTest extends TestCase
         $entity_id = $auth['id'];
         $this->seeInDatabase('relations', ['caller_entity_id'=>'medium', 'kind'=>'ancestor', 'called_entity_id'=>'medium', 'depth'=>1]);
         $this->seeInDatabase('relations', ['caller_entity_id'=>'medium', 'kind'=>'ancestor', 'called_entity_id'=>'medium', 'depth'=>2]);
+        return $entity_id;
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testCreateEntityWithPublishDates($authorizationToken)
+    {
+        $json = $this->data['page_with_content'];
+        $json["published_at"] = "2020-01-01T15:30:55-06:00";
+        $json["unpublished_at"] = "2050-01-01T16:30:55-06:00";
+        $expectedPublishedInResponse = Carbon::make($json["published_at"])
+            ->setTimezone(env('APP_TIMEZONE', 'UTC'))
+            ->format('Y-m-d\TH:i:sP');
+        $expectedUnppublishedInResponse = Carbon::make($json["unpublished_at"])
+            ->setTimezone(env('APP_TIMEZONE', 'UTC'))
+            ->format('Y-m-d\TH:i:sP');
+        unset($json["id"]);
+        $response = $this->json('POST', '/api/entity', $json, ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+            ->seeStatusCode(200)
+            ->seeJsonContains(["published_at" => $expectedPublishedInResponse])
+            ->seeJsonContains(["unpublished_at" => $expectedUnppublishedInResponse]);
+        $createdEntity = json_decode($response->response->getContent(), true);
+        $review = $this->json('GET', '/api/entity/'.$createdEntity['id'], ['select'=>'id,published_at,unpublished_at'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['id'=>$createdEntity['id']])
+        ->seeJsonContains(["published_at" => $expectedPublishedInResponse])
+        ->seeJsonContains(["unpublished_at" => $expectedUnppublishedInResponse])
+        ->seeStatusCode(200);
+        return $createdEntity['id'];
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     * @depends testCreateEntityWithPublishDates
+     */
+    public function testUpdateEntityWithPublishDates($authorizationToken, $entity_id)
+    {
+        $json = [
+            "id" => $entity_id,
+            "published_at" => "2025-01-01T15:30:55-02:00",
+            "unpublished_at" => "2045-01-01T16:30:55+08:00"
+
+        ];
+        $expectedPublishedInResponse = Carbon::make($json["published_at"])
+            ->setTimezone(env('APP_TIMEZONE', 'UTC'))
+            ->format('Y-m-d\TH:i:sP');
+        $expectedUnppublishedInResponse = Carbon::make($json["unpublished_at"])
+            ->setTimezone(env('APP_TIMEZONE', 'UTC'))
+            ->format('Y-m-d\TH:i:sP');
+        $response = $this->json('PATCH', '/api/entity/'.$entity_id, $json, ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+            ->seeStatusCode(200)
+            ->seeJsonContains(["published_at" => $expectedPublishedInResponse])
+            ->seeJsonContains(["unpublished_at" => $expectedUnppublishedInResponse]);
+        $review = $this->json('GET', '/api/entity/'.$entity_id, ['select'=>'id,published_at,unpublished_at'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+            ->seeJsonContains(['id'=>$entity_id])
+            ->seeJsonContains(["published_at" => $expectedPublishedInResponse])
+            ->seeJsonContains(["unpublished_at" => $expectedUnppublishedInResponse])
+            ->seeStatusCode(200);
         return $entity_id;
     }
 }

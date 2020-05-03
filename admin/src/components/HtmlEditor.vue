@@ -34,30 +34,28 @@ export default {
     EditorMenuBar
   },
   mounted () {
-    this.editor = new Editor ({
+    this.editor = new Editor({
       content: this.value,
       editable: !this.readonly,
       extensions: [
-        new Heading ({ levels: [1, 2, 3] }),
-        new Bold (),
-        new Italic (),
-        new Strike (),
-        new Underline (),
-        new CodeBlock (),
-        new Code (),
-        new BulletList (),
-        new OrderedList (),
-        new ListItem (),
-        new Blockquote (),
-        new Table (),
-        new TableHeader (),
-        new TableCell (),
-        new TableRow (),
-        new History (),
-        new HardBreak (),
-        new Link ({
-          openOnClick: false,
-        })
+        new Heading({ levels: [1, 2, 3] }),
+        new Bold(),
+        new Italic(),
+        new Strike(),
+        new Underline(),
+        new CodeBlock(),
+        new Code(),
+        new BulletList(),
+        new OrderedList(),
+        new ListItem(),
+        new Blockquote(),
+        new Table(),
+        new TableHeader(),
+        new TableCell(),
+        new TableRow(),
+        new History(),
+        new HardBreak(),
+        new Link({ openOnClick: false })
       ],
       onUpdate: ({ getHTML }) => {
         this.contentUpdated(getHTML())
@@ -67,7 +65,10 @@ export default {
   props: {
     value: String,
     label: String,
-    readonly: true,
+    readonly: {
+      type: Boolean,
+      default: true
+    },
     toolbar: {
       type: Array,
       default: () => [
@@ -76,14 +77,14 @@ export default {
           { command: 'heading', label: 'H1', params: { level: 1 } },
           { command: 'heading', label: 'H2', params: { level: 2 } },
           { command: 'heading', label: 'H3', params: { level: 3 } },
-          { command: 'code_block', icon: 'code'}
+          { command: 'code_block', icon: 'code' }
         ],
         [
-          { command: 'bold', icon: 'format_bold'},
-          { command: 'italic', icon: 'format_italic'},
+          { command: 'bold', icon: 'format_bold' },
+          { command: 'italic', icon: 'format_italic' },
           { command: 'strike', icon: 'format_strikethrough' },
           { command: 'underline', icon: 'format_underline' },
-          { command: 'code', icon: 'functions'}
+          { command: 'code', icon: 'functions' }
         ],
         [
           { method: 'addLink', command: 'link', activeCommand: 'link', icon: 'link' }
@@ -94,33 +95,33 @@ export default {
           { command: 'blockquote', icon: 'format_quote' }
         ],
         [
-          { command: 'createTable', activeCommand: 'table', icon: 'border_all', params: {rowsCount: 3, colsCount: 3, withHeaderRow: true }, dontSendParamsToActiveCommand: true },
-          { command: 'deleteTable', activeCommand: 'table', showCommand: 'table', icon: 'border_all', color: 'negative'},
-          { command: 'addColumnBefore', activeCommand: 'table', showCommand: 'table', icon: 'border_left', color: 'positive'},
-          { command: 'addColumnAfter', activeCommand: 'table', showCommand: 'table', icon: 'border_right', color: 'positive'},
-          { command: 'deleteColumn', activeCommand: 'table', showCommand: 'table', icon: 'border_vertical', color: 'negative'},
-          { command: 'addRowBefore', activeCommand: 'table', showCommand: 'table', icon: 'border_top', color: 'positive'},
-          { command: 'addRowAfter', activeCommand: 'table', showCommand: 'table', icon: 'border_bottom', color: 'positive'},
-          { command: 'deleteRow', activeCommand: 'table', showCommand: 'table', icon: 'border_horizontal', color: 'negative'},
-          { command: 'toggleCellMerge', activeCommand: 'table', showCommand: 'table', icon: 'border_outer', color: 'dark'}
+          { command: 'createTable', activeCommand: 'table', icon: 'border_all', params: { rowsCount: 3, colsCount: 3, withHeaderRow: true }, dontSendParamsToActiveCommand: true },
+          { command: 'deleteTable', activeCommand: 'table', showCommand: 'table', icon: 'border_all', color: 'negative' },
+          { command: 'addColumnBefore', activeCommand: 'table', showCommand: 'table', icon: 'border_left', color: 'positive' },
+          { command: 'addColumnAfter', activeCommand: 'table', showCommand: 'table', icon: 'border_right', color: 'positive' },
+          { command: 'deleteColumn', activeCommand: 'table', showCommand: 'table', icon: 'border_vertical', color: 'negative' },
+          { command: 'addRowBefore', activeCommand: 'table', showCommand: 'table', icon: 'border_top', color: 'positive' },
+          { command: 'addRowAfter', activeCommand: 'table', showCommand: 'table', icon: 'border_bottom', color: 'positive' },
+          { command: 'deleteRow', activeCommand: 'table', showCommand: 'table', icon: 'border_horizontal', color: 'negative' },
+          { command: 'toggleCellMerge', activeCommand: 'table', showCommand: 'table', icon: 'border_outer', color: 'dark' }
         ]
       ]
     }
   },
   data () {
     return {
-      editor: null,
+      editor: null
     }
   },
   methods: {
     methodBridge (method, command, attributes) {
-      this[method](command, attributes);
+      this[method](command, attributes)
     },
     addLink (command, attributes) {
       this.$q.dialog({
         title: 'Link address',
         prompt: {
-          model: attributes.href || 'https://' ,
+          model: attributes.href || 'https://',
           type: 'text'
         },
         cancel: true,
@@ -133,20 +134,20 @@ export default {
         // console.log('I am triggered on both OK and Cancel')
       })
     },
-    contentUpdated(html) {
+    contentUpdated (html) {
       this.$emit('input', html)
     }
   },
   watch: {
     readonly () {
       this.editor.setOptions({
-        editable: !this.readonly,
+        editable: !this.readonly
       })
-    },
+    }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.editor.destroy()
-  },
+  }
 }
 </script>
 <style lang="scss">

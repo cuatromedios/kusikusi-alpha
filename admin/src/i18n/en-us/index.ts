@@ -73,11 +73,11 @@ export default {
     }
   },
   models: {
-    home: "Home",
-    section: "Section",
-    page: "Page",
-    media: "Media container",
-    medium: "Medium",
+    home: 'Home',
+    section: 'Section',
+    page: 'Page',
+    media: 'Media container',
+    medium: 'Medium'
   },
   qr: {
     title: 'QR Code',

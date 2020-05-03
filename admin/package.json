@@ -42,6 +42,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.1.2",
     "quasar-app-extension-api-wrapper": "0.0.8",
+    "quasar-app-extension-filters": "^0.2.1",
     "quasar-app-extension-nequ-components": "^0.6.0",
     "quasar-app-extension-vuelidate-rules": "^0.2.0"
   },

@@ -18,11 +18,17 @@
         <q-card-section  v-if="!loading">
           <div class="row q-col-gutter-sm">
             <nq-field dense class="col-12" :readonly="!editing">
-              <q-checkbox v-model="entity.is_active" :label="$t('contents.active')" :disable="!editing" />
+              <q-checkbox v-model="entity.is_active" :label="$t('contents.active')" :disable="!editing" left-label color="dark" />
             </nq-field>
             <nq-select dense v-model="entity.view" :label="$t('contents.view')" class="col-12" :readonly="!editing" :options="views"/>
-            <nq-date-time dense v-model="entity.published_at" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing"/>
-            <div class="col-12 text-grey text-center"><code>(ID: {{ entity.id }})</code></div>
+            <nq-date-time dense v-model="entity.published_at" display-format="dddd DD MMMM YYYY, h:mm a" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing" v-if="editing"></nq-date-time>
+            <nq-field :label="$t('contents.publishedAt')" class="col-12" readonly stack-label v-if="!editing">
+              <p>{{ entity.published_at | moment('dddd DD MMMM YYYY, h:mm a') }}
+                <small>(UTC&nbsp;{{ entity.published_at | moment('Z') }})</small></p>
+            </nq-field>
+            <nq-field label="ID" class="col-12" readonly stack-label>
+              <p>{{ entity.id }}</p>
+            </nq-field>
           </div>
         </q-card-section>
         <q-card-section v-if="loading">

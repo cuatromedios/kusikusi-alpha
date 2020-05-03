@@ -29,6 +29,7 @@ class EntityModel extends Model
     protected $fillable = ['id', 'model', 'properties', 'view', 'parent_entity_id', 'is_active', 'published_at', 'unpublished_at', 'contents', 'relations'];
     protected $guarded = ['id'];
     protected $contentFields = [ "title", 'slug' ];
+
     protected $propertiesFields = [];
     private $storedContents = [];
     private $storedRelations = [];
@@ -50,7 +51,6 @@ class EntityModel extends Model
     /**
      * ACCESORS AND MUTATORS
      */
-
     public function getPublishedAtAttribute($value)
     {
         return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:sP') : null;
@@ -59,21 +59,21 @@ class EntityModel extends Model
     {
         return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:sP') : null;
     }
-    public function getCreatedAtAttribute($value)
-    {
-        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:sP') : null;
-    }
-    public function getUpdatedAtAttribute($value)
-    {
-        return isset($value) ? Carbon::make($value)->format('Y-m-d\TH:i:sP') : null;
-    }
     public function setPublishedAtAttribute($value)
     {
-        if ($value !== null) $this->attributes['published_at'] = Carbon::make($value)->setTimezone('UTC')->format('Y-m-d\TH:i:s');
+        if ($value !== null) $this->attributes['published_at'] = Carbon::make($value)->setTimezone(env('APP_TIMEZONE', 'UTC'))->format('Y-m-d\TH:i:s');
     }
     public function setUnpublishedAtAttribute($value)
     {
-        if ($value !== null) $this->attributes['unpublished_at'] = Carbon::make($value)->setTimezone('UTC')->format('Y-m-d\TH:i:s');
+        if ($value !== null) $this->attributes['unpublished_at'] = Carbon::make($value)->setTimezone(env('APP_TIMEZONE', 'UTC'))->format('Y-m-d\TH:i:s');
+    }
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     */
+    protected function serializeDate($date)
+    {
+        return $date->format('Y-m-d\TH:i:sP');
     }
 
     /**********************

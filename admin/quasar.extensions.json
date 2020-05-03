@@ -1,5 +1,11 @@
 {
   "api-wrapper": {},
   "vuelidate-rules": {},
-  "nequ-components": {}
+  "nequ-components": {},
+  "filters": {
+    "thousandsDelimeter": ",",
+    "currencySymbol": "$",
+    "decimalDelimeter": ".",
+    "momentLocale": "en"
+  }
 }

@@ -28,8 +28,9 @@ class CreateEntitiesTable extends Migration
             $table->integer('version_tree')->unsigned()->default(0);
             $table->integer('version_relations')->unsigned()->default(0);
             $table->integer('version_full')->unsigned()->default(0);
-            $table->timestamps();
-            $table->softDeletes();
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

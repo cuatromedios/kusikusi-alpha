@@ -72,9 +72,12 @@ code.ticket-code {
       background-color: transparent !important;
     }
   }
-  .q-field__append {
+  .q-field__append, .q-field__prepend {
     display: none;
   }
+}
+.q-field__control {
+  color: $dark
 }
 .nq-input-field, .nq-select {
   font-weight: 400;

@@ -20,7 +20,8 @@ class CreateRoutesTable extends Migration
             $table->string('entity_model', 16);
             $table->char('lang', 5)->index()->nullable();
             $table->boolean('default')->default(false);
-            $table->timestamps();
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
             $table->foreign('entity_id')->references('id')->on('entities')
                 ->onDelete('cascade')->onUpdate('cascade');
         });

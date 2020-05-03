@@ -22,7 +22,8 @@ class CreateRelationsTable extends Migration
             $table->integer('position')->unsigned()->default(0);
             $table->integer('depth')->unsigned()->default(0);
             $table->json('tags')->nullable();
-            $table->timestamps();
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
             $table->foreign('caller_entity_id')->references('id')->on('entities')
                 ->onDelete('cascade')->onUpdate('cascade');;
             $table->foreign('called_entity_id')->references('id')->on('entities')

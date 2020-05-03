@@ -19,7 +19,8 @@ class CreateContentsTable extends Migration
             $table->char('lang', 5)->index();
             $table->string('field', 25)->index();
             $table->text('text');
-            $table->timestamps();
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
             $table->index('entity_id', 'lang');
             $table->foreign('entity_id')->references('id')->on('entities')
                 ->onDelete('cascade')->onUpdate('cascade');

@@ -31,7 +31,6 @@
             <q-item-label><h3><router-link :to="{ name: 'content', params: { entity_id:entity.id } }">{{ entity.title }}</router-link></h3></q-item-label>
             <q-item-label caption lines="1">{{ $store.getters.nameOf(entity.model) }}</q-item-label>
           </q-item-section>
-
           <q-item-section side>
           </q-item-section>
         </q-item>
@@ -39,7 +38,6 @@
     </q-list>
   </div>
 </template>
-
 <script>
 import draggable from 'vuedraggable'
 export default {
@@ -65,7 +63,7 @@ export default {
     },
     order_by: {
       type: String,
-      default: "child_relation_position"
+      default: 'child_relation_position'
     }
 
   },
