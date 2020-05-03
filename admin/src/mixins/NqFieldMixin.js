@@ -7,11 +7,13 @@ export const nqFieldMixin = {
       focused: false
     }
   },
+  mounted () {
+  },
   methods: {
-    onFocus () {
+    onFocus() {
       this.focused = true
     },
-    onBlur () {
+    onBlur(endpoint, payload, form) {
       this.focused = false
     }
   }

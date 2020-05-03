@@ -79,9 +79,10 @@
 import _ from 'lodash'
 import moment from 'moment'
 import Children from '../components/Children'
+import HtmlEditor from '../components/HtmlEditor'
 export default {
   name: 'Content',
-  components: { Children },
+  components: { Children, HtmlEditor },
   data () {
     return {
       editing: false,

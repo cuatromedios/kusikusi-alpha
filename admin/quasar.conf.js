@@ -59,6 +59,7 @@ module.exports = configure(function (ctx) {
         'QAvatar',
         'QBtn',
         'QBtnDropdown',
+        'QBtnGroup',
         'QCard',
         'QCardSection',
         'QCardActions',
@@ -89,7 +90,7 @@ module.exports = configure(function (ctx) {
       directives: ['Ripple'],
 
       // Quasar plugins
-      plugins: ['LocalStorage', 'Notify']
+      plugins: ['LocalStorage', 'Notify', 'Dialog']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
