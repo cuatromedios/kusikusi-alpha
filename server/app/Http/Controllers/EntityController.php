@@ -298,6 +298,30 @@ class EntityController extends Controller
         }
     }
 
+    /**
+     * Reorders an array of relations
+     *
+     * Receive an array of relation ids, and sets the individual position to its index in the array.
+     *
+     * @group Entity
+     * @authenticated
+     * @bodyParam relation_ids array required An array of relation ids to reorder. Example ['s4FG56mkdRT5', 'FG56mkdRT5s3', '4FG56mkdRT5d']
+     * @responseFile responses/entities.reorderRelations.json
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function reorderRelations(Request $request)
+    {
+        $this->validate($request, [
+            'relation_ids' => 'required',
+            'relation_ids.*' => self::ID_RULE
+        ]);
+        for ($r = 0; $r < count($request['relation_ids']); $r++) {
+            EntityRelation::where('relation_id', $request['relation_ids'][$r])
+                ->update(['position' => ($r + 1)]);
+        }
+        return(["relations" =>EntityRelation::select('relation_id', 'position')->orderBy('position')->find($request['relation_ids'])]);
+    }
+
     private function queryParamsValidation() {
         return [
             'child-of' => self::ID_RULE,

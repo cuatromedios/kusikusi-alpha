@@ -11,7 +11,7 @@ export default {
     pullToRefresh: 'Pull to refresh',
     releaseToRefresh: 'release to refresh',
     refreshing: 'Refreshing',
-    serverError: 'There was an error in the server',
+    serverError: 'There was an error reading infromation from the server',
     back: 'Back',
     edit: 'Edit',
     save: 'Save',
@@ -46,7 +46,8 @@ export default {
     footer: 'Footer',
     publishedAt: 'Publish at',
     unpublishedAt: 'Stop publishing at',
-    children: 'Children'
+    children: 'Children',
+    reorder: 'Reorder'
   },
   media: {
     title: 'Media',

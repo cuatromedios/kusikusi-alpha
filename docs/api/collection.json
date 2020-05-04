@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "e1863cb2-a955-4918-9f45-d09e66b45685",
+        "_postman_id": "8c8ee61f-2788-4673-b9ab-7d3c6cf6be03",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -136,7 +136,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "quo",
+                                    "value": "exercitationem",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -157,6 +157,34 @@
                             "raw": "[]"
                         },
                         "description": "Returns a paginated collection of entities, filtered by all set conditions.",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Reorders an array of relations",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/entities\/relations\/reorder",
+                            "query": []
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"relation_ids\": []\n}"
+                        },
+                        "description": "Receive an array of relation ids, and sets the individual position to its index in the array.",
                         "response": []
                     }
                 },
@@ -185,7 +213,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "ducimus",
+                                    "value": "at",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -249,7 +277,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "quia",
+                                    "value": "repellendus",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -285,7 +313,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "sint",
+                                    "value": "et",
                                     "description": "The id of the entity to delete"
                                 }
                             ]
@@ -331,7 +359,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 3\n}"
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 9\n}"
                         },
                         "description": "",
                         "response": []
@@ -391,7 +419,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "voluptates",
+                                    "value": "officiis",
                                     "description": "The id of the entity to upload a medium or file"
                                 }
                             ]
@@ -409,7 +437,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"file\": \"voluptatum\",\n    \"thumb\": \"voluptas\"\n}"
+                            "raw": "{\n    \"file\": \"quidem\",\n    \"thumb\": \"iure\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -485,7 +513,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"rerum\",\n    \"password\": \"et\"\n}"
+                            "raw": "{\n    \"email\": \"quia\",\n    \"password\": \"eius\"\n}"
                         },
                         "description": "",
                         "response": []

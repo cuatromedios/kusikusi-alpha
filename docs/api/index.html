@@ -103,6 +103,10 @@ print_r(json_decode((string) $body));</code></pre>
         "home": {
             "icon": "home",
             "name": "models.home",
+            "views": [
+                "home",
+                "home2"
+            ],
             "form": [
                 {
                     "label": "contents.contents",
@@ -110,17 +114,28 @@ print_r(json_decode((string) $body));</code></pre>
                         {
                             "component": "nq-input",
                             "value": "contents.title",
-                            "label": "contents.title"
+                            "label": "contents.title",
+                            "props": {
+                                "size": "xl"
+                            }
                         },
                         {
-                            "component": "nq-input",
+                            "component": "html-editor",
                             "value": "contents.welcome",
-                            "label": "contents.summary"
+                            "label": "contents.summary",
+                            "props": {
+                                "type": "textarea"
+                            }
                         },
                         {
                             "component": "nq-input",
                             "value": "contents.slug",
                             "label": "contents.slug"
+                        },
+                        {
+                            "component": "nq-input",
+                            "value": "view",
+                            "label": "Vista"
                         }
                     ]
                 },
@@ -133,7 +148,8 @@ print_r(json_decode((string) $body));</code></pre>
                                 "models": [
                                     "section",
                                     "page"
-                                ]
+                                ],
+                                "order_by": "contents.title"
                             }
                         }
                     ]
@@ -220,7 +236,7 @@ Returns a paginated collection of entities, filtered by all set conditions.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/quo]"
+    "http://127.0.0.1:8000/api/entities[/exercitationem]"
 );
 
 let params = {
@@ -255,7 +271,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entities[/quo]',
+    'http://127.0.0.1:8000/api/entities[/exercitationem]',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -281,7 +297,7 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/quo]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;only-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entities[/exercitationem]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;only-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -509,6 +525,92 @@ print_r(json_decode((string) $body));</code></pre>
 </tbody>
 </table>
 <!-- END_e361c4dd3cbd2391c19b5f4811a2b853 -->
+<!-- START_f8974bfc4b59ca48260d995e658e9903 -->
+<h2>Reorders an array of relations</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Receive an array of relation ids, and sets the individual position to its index in the array.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/entities/relations/reorder"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "relation_ids": []
+}
+
+fetch(url, {
+    method: "PATCH",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;patch(
+    'http://127.0.0.1:8000/api/entities/relations/reorder',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'relation_ids' =&gt; [],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-bash">curl -X PATCH \
+    "http://127.0.0.1:8000/api/entities/relations/reorder" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"relation_ids":[]}'
+</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "relations": [
+        {
+            "relation_id": "JvE3WPG504",
+            "position": 1
+        },
+        {
+            "relation_id": "izMhhYpXA7",
+            "position": 2
+        }
+    ]
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PATCH api/entities/relations/reorder</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>relation_ids</code></td>
+<td>array</td>
+<td>required</td>
+<td>An array of relation ids to reorder. Example ['s4FG56mkdRT5', 'FG56mkdRT5s3', '4FG56mkdRT5d']</td>
+</tr>
+</tbody>
+</table>
+<!-- END_f8974bfc4b59ca48260d995e658e9903 -->
 <!-- START_452b2ebcc9c1afb7cfdc2a7e8a3caf40 -->
 <h2>Retrieve the entity for the given ID.</h2>
 <p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small></p>
@@ -516,7 +618,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/ducimus"
+    "http://127.0.0.1:8000/api/entity/at"
 );
 
 let params = {
@@ -540,7 +642,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entity/ducimus',
+    'http://127.0.0.1:8000/api/entity/at',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -555,7 +657,7 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/ducimus?select=id%2Cmodel%2Cproperties.price&amp;with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/at?select=id%2Cmodel%2Cproperties.price&amp;with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -774,7 +876,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/quia"
+    "http://127.0.0.1:8000/api/entity/repellendus"
 );
 
 let headers = {
@@ -802,7 +904,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;patch(
-    'http://127.0.0.1:8000/api/entity/quia',
+    'http://127.0.0.1:8000/api/entity/repellendus',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -822,7 +924,7 @@ $response = $client-&gt;patch(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X PATCH \
-    "http://127.0.0.1:8000/api/entity/quia" \
+    "http://127.0.0.1:8000/api/entity/repellendus" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
@@ -925,7 +1027,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/sint"
+    "http://127.0.0.1:8000/api/entity/et"
 );
 
 let headers = {
@@ -942,7 +1044,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;delete(
-    'http://127.0.0.1:8000/api/entity/sint',
+    'http://127.0.0.1:8000/api/entity/et',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -953,7 +1055,7 @@ $response = $client-&gt;delete(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X DELETE \
-    "http://127.0.0.1:8000/api/entity/sint" \
+    "http://127.0.0.1:8000/api/entity/et" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -1003,7 +1105,7 @@ let body = {
     "kind": "medium | category",
     "tags": [],
     "position": 3,
-    "depth": 3
+    "depth": 9
 }
 
 fetch(url, {
@@ -1027,7 +1129,7 @@ $response = $client-&gt;post(
             'kind' =&gt; 'medium | category',
             'tags' =&gt; [],
             'position' =&gt; 3,
-            'depth' =&gt; 3,
+            'depth' =&gt; 9,
         ],
     ]
 );
@@ -1037,7 +1139,7 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/entity/1/relation" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":3}'
+    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":9}'
 </code></pre>
 <blockquote>
 <p>Example response (200):</p>
@@ -1199,7 +1301,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/medium/voluptates/upload"
+    "http://127.0.0.1:8000/api/medium/officiis/upload"
 );
 
 let headers = {
@@ -1208,8 +1310,8 @@ let headers = {
 };
 
 let body = {
-    "file": "voluptatum",
-    "thumb": "voluptas"
+    "file": "quidem",
+    "thumb": "iure"
 }
 
 fetch(url, {
@@ -1222,25 +1324,25 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://127.0.0.1:8000/api/medium/voluptates/upload',
+    'http://127.0.0.1:8000/api/medium/officiis/upload',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'file' =&gt; 'voluptatum',
-            'thumb' =&gt; 'voluptas',
+            'file' =&gt; 'quidem',
+            'thumb' =&gt; 'iure',
         ],
     ]
 );
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X POST \
-    "http://127.0.0.1:8000/api/medium/voluptates/upload" \
+    "http://127.0.0.1:8000/api/medium/officiis/upload" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"file":"voluptatum","thumb":"voluptas"}'
+    -d '{"file":"quidem","thumb":"iure"}'
 </code></pre>
 <blockquote>
 <p>Example response (200):</p>
@@ -1452,10 +1554,6 @@ print_r(json_decode((string) $body));</code></pre>
     -G "http://127.0.0.1:8000/media/djr4sd7Gmd/icon.[/1]" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
-<blockquote>
-<p>Example response (404):</p>
-</blockquote>
-<pre><code class="language-json">null</code></pre>
 <h3>HTTP Request</h3>
 <p><code>GET media/{entity_id}/{preset}[/{friendly}]</code></p>
 <h4>URL Parameters</h4>
@@ -1497,8 +1595,8 @@ let headers = {
 };
 
 let body = {
-    "email": "rerum",
-    "password": "et"
+    "email": "quia",
+    "password": "eius"
 }
 
 fetch(url, {
@@ -1518,8 +1616,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'email' =&gt; 'rerum',
-            'password' =&gt; 'et',
+            'email' =&gt; 'quia',
+            'password' =&gt; 'eius',
         ],
     ]
 );
@@ -1529,7 +1627,7 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"rerum","password":"et"}'
+    -d '{"email":"quia","password":"eius"}'
 </code></pre>
 <blockquote>
 <p>Example response (200):</p>
@@ -1608,7 +1706,7 @@ print_r(json_decode((string) $body));</code></pre>
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
-<p>Example response (500):</p>
+<p>Example response (200):</p>
 </blockquote>
 <pre><code class="language-json">null</code></pre>
 <h3>HTTP Request</h3>
