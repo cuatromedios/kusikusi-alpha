@@ -6,6 +6,7 @@ use App\Models\Entity;
 use App\Models\EntityRelation;
 use App\Models\Medium;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
@@ -248,8 +249,8 @@ class EntityController extends Controller
     public function createRelation(Request $request, $caller_entity_id)
     {
         $this->validate($request, [
-            'entity_caller_id' => 'required'.self::ID_RULE,
-            'entity_called_id' => 'required'.self::ID_RULE,
+            'caller_entity_id' => self::ID_RULE,
+            'called_entity_id' => 'required|'.self::ID_RULE,
             'kind' => 'string|max:25|regex:/^[a-z0-9]+$/',
             'position' => 'integer',
             'tags.*' => 'string',
@@ -280,16 +281,21 @@ class EntityController extends Controller
     public function deleteRelation(Request $request, $caller_entity_id, $called_entity_id, $kind)
     {
         $this->validate($request, [
-            'entity_caller_id' => 'required'.self::ID_RULE,
-            'entity_called_id' => 'required'.self::ID_RULE,
+            'caller_entity_id' => self::ID_RULE,
+            'called_entity_id' => self::ID_RULE,
             'kind' => 'required|string|max:25'
         ]);
-        $query = EntityRelation::where('caller_entity_id', $request['caller_entity_id'])
-            ->where('called_entity_id', $request['called_entity_id'])
-            ->where('kind', $request['kind']);
-        $relation = $query->first();
-        $query->delete();
-        return(["relation_id" => $relation ? $relation->relation_id : null]);
+        $relation = EntityRelation::where('caller_entity_id', $caller_entity_id)
+            ->where('called_entity_id', $called_entity_id)
+            ->where('kind', $kind)
+            ->first();
+        if ($relation) {
+            $relation_id = $relation ? $relation->relation_id : null;
+            EntityRelation::where('relation_id', $relation_id)->delete();
+            return(["relation_id" => $relation_id]);
+        } else {
+            return(JsonResponse::create(["error" => "Relation not found"], 404));
+        }
     }
 
     private function queryParamsValidation() {
