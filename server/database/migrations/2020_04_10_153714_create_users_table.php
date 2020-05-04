@@ -19,8 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('password');
             $table->string('profile');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

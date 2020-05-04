@@ -130,7 +130,6 @@ const mutations = {
   setLang (state, newLang) {
     LocalStorage.set('lang', newLang)
     state.lang = newLang
-    Vue.i18n.set(newLang)
   },
   setUiLang (state, newLang) {
     LocalStorage.set('uiLang', newLang)

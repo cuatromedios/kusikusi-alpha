@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Carbon;
 use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Illuminate\Database\Seeder;

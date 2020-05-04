@@ -19,7 +19,8 @@ class CreateAuthtokensTable extends Migration
             $table->char('created_ip', 45)->nullable();
             $table->char('updated_ip', 45)->nullable();
             $table->dateTime('expire_at')->nullable();
-            $table->timestamps();
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
         });

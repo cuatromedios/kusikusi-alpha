@@ -53,13 +53,45 @@ module.exports = configure(function (ctx) {
       //            (fastest compile time; minimum bundle size; most tedious)
       // * true   - Import everything from Quasar
       //            (not treeshaking Quasar; biggest bundle size; convenient)
-      all: 'auto',
+      all: false,
 
-      components: [],
-      directives: [],
+      components: [
+        'QAvatar',
+        'QBtn',
+        'QBtnDropdown',
+        'QBtnGroup',
+        'QCard',
+        'QCardSection',
+        'QCardActions',
+        'QCheckbox',
+        'QDate',
+        'QDrawer',
+        'QField',
+        'QForm',
+        'QHeader',
+        'QIcon',
+        'QItem',
+        'QItemLabel',
+        'QItemSection',
+        'QImg',
+        'QInput',
+        'QLayout',
+        'QList',
+        'QPageContainer',
+        'QPopupProxy',
+        'QRadio',
+        'QSelect',
+        'QSeparator',
+        'QSkeleton',
+        'QSpinner',
+        'QTime',
+        'QToolbar',
+        'QTooltip'
+      ],
+      directives: ['Ripple'],
 
       // Quasar plugins
-      plugins: ['LocalStorage', 'Notify']
+      plugins: ['LocalStorage', 'Notify', 'Dialog']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie

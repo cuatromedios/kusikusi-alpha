@@ -1,16 +1,34 @@
 <template>
   <nq-page :title="getEntityTitle" max-width="lg">
+    <div id="langSelector" v-if="$store.state.ui.config && $store.state.ui.config.langs.length > 1" class="rounded-borders shadow-1">
+      <q-radio v-model="contentLang"
+               size="sm"
+               v-for="lang in $store.state.ui.config.langs"
+               :key="lang"
+               :val="lang"
+               :label="$t(lang)"
+      />
+      <q-radio v-model="contentLang"
+               val="all"
+               :label="$t('all')"/>
+    </div>
     <template slot="aside">
       <h2>{{ $t('contents.publication') }}</h2>
       <q-card>
         <q-card-section  v-if="!loading">
           <div class="row q-col-gutter-sm">
             <nq-field dense class="col-12" :readonly="!editing">
-              <q-checkbox v-model="entity.is_active" :label="$t('contents.active')" :disable="!editing" />
+              <q-checkbox v-model="entity.is_active" :label="$t('contents.active')" :disable="!editing" left-label color="dark" />
             </nq-field>
-            <nq-input dense v-model="entity.view" :label="$t('contents.view')" class="col-12" :readonly="!editing"/>
-            <nq-input dense v-model="entity.published_at" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing"/>
-            <div class="col-12 text-grey text-center"><code>(ID: {{ entity.id }})</code></div>
+            <nq-select dense v-model="entity.view" :label="$t('contents.view')" class="col-12" :readonly="!editing" :options="views"/>
+            <nq-date-time dense v-model="entity.published_at" display-format="dddd DD MMMM YYYY, h:mm a" :label="$t('contents.publishedAt')" class="col-12" :readonly="!editing" v-if="editing"></nq-date-time>
+            <nq-field :label="$t('contents.publishedAt')" class="col-12" readonly stack-label v-if="!editing">
+              <p>{{ entity.published_at | moment('dddd DD MMMM YYYY, h:mm a') }}
+                <small>(UTC&nbsp;{{ entity.published_at | moment('Z') }})</small></p>
+            </nq-field>
+            <nq-field label="ID" class="col-12" readonly stack-label>
+              <p>{{ entity.id }}</p>
+            </nq-field>
           </div>
         </q-card-section>
         <q-card-section v-if="loading">
@@ -29,9 +47,12 @@
             <div v-for="(component, componentIndex) in fieldset.components"
                  :key="componentIndex"
                  :is="component.component"
-                 :label="$t(component.label)"
+                 :label="`${$t(component.label)} ${component.isMultiLang ? '('+component.props.lang+')' : ''}`"
                  :readonly="!editing"
+                 :data-multilingual="component.isMultiLang"
+                 :data-lang="component.props ? component.props.lang : ''"
                  :entity="entity"
+                 v-show="!component.isMultiLang || (component.isMultiLang && (component.props.lang === contentLang || contentLang === 'all'))"
                  :value="getValue(component)"
                  @input="setValue(component, $event)"
                  v-bind="component.props"
@@ -64,9 +85,10 @@
 import _ from 'lodash'
 import moment from 'moment'
 import Children from '../components/Children'
+import HtmlEditor from '../components/HtmlEditor'
 export default {
   name: 'Content',
-  components: { Children },
+  components: { Children, HtmlEditor },
   data () {
     return {
       editing: false,
@@ -128,7 +150,7 @@ export default {
         this.entity.id = entity_id || this.$route.params.entity_id
         this.entity.parent_entity_id = parent_entity_id || this.$route.params.parent_entity_id
         this.entity.published_at = moment().format()
-        this.entity.unpublished_at = '9999-12-30T23:59:59+00:00'
+        this.entity.unpublished_at = null
         this.editing = true
         this.loading = false
       }
@@ -216,6 +238,17 @@ export default {
     },
     isNew () {
       return this.$route.params.entity_id === 'new'
+    },
+    views () {
+      return _.get(this.$store.state, `ui.config.models.${this.entity.model}.views`, [this.entity.model])
+    },
+    contentLang: {
+      set (lang) {
+        this.$store.commit('setLang', lang)
+      },
+      get () {
+        return this.$store.state.ui.lang
+      }
     }
   }
 }
@@ -226,5 +259,13 @@ export default {
     .q-btn {
        max-height: 50px
     }
+  }
+  #langSelector {
+    font-size: 0.85em;
+    position: fixed;
+    top: 64px;
+    right: 24px;
+    background-color: rgba(255,255,255,0.5);
+    padding: 4px 16px;
   }
 </style>

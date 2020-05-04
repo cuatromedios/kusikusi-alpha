@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="readonly">
     <div class="q-mb-md flex justify-end">
       <q-btn-dropdown class="" outline color="positive"  icon="add_circle"  :label="$t('general.add')" v-if="models && models.length > 1">
         <q-list>
@@ -31,7 +31,6 @@
             <q-item-label><h3><router-link :to="{ name: 'content', params: { entity_id:entity.id } }">{{ entity.title }}</router-link></h3></q-item-label>
             <q-item-label caption lines="1">{{ $store.getters.nameOf(entity.model) }}</q-item-label>
           </q-item-section>
-
           <q-item-section side>
           </q-item-section>
         </q-item>
@@ -39,7 +38,6 @@
     </q-list>
   </div>
 </template>
-
 <script>
 import draggable from 'vuedraggable'
 export default {
@@ -47,6 +45,10 @@ export default {
   name: 'Children',
   props: {
     entity: {},
+    readonly: {
+      type: Boolean,
+      default: true
+    },
     ofModel: {
       type: Array,
       default: () => []
@@ -58,6 +60,10 @@ export default {
     tags: {
       type: Array,
       default: () => []
+    },
+    order_by: {
+      type: String,
+      default: 'child_relation_position'
     }
 
   },
@@ -71,7 +77,7 @@ export default {
   },
   methods: {
     async getChildren () {
-      const childrenResult = await this.$api.get(`/entities?child-of=${this.entity.id}&select=contents.title,published_at,unpublished_at,is_active,model,id&only-published=true`)
+      const childrenResult = await this.$api.get(`/entities?child-of=${this.entity.id}&select=contents.title,published_at,unpublished_at,is_active,model,id&only-published=false&order-by=${this.order_by}`)
       this.children = childrenResult.data.data
     },
     add (model) {

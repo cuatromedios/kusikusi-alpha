@@ -63,11 +63,6 @@ code.ticket-code {
   font-size: 1.75em;
   font-family: $mono-font;
 }
-.status-coupon {
-  color: white;
-  font-weight: 600;
-  font-size: 1.5em;
-}
 .q-field--readonly {
   .q-field__inner {
     .q-field__control:before {
@@ -77,9 +72,14 @@ code.ticket-code {
       background-color: transparent !important;
     }
   }
+  .q-field__append, .q-field__prepend {
+    display: none;
+  }
+}
+.q-field__control {
+  color: $dark
 }
 .nq-input-field, .nq-select {
-  font-size: 1.5em;
   font-weight: 400;
 }
 .q-field--dense .nq-input-field, .q-field--dense .nq-select {

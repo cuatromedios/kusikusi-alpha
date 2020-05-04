@@ -22,19 +22,21 @@ return [
         "home" => [
             "icon" => "home",
             "name" => "models.home",
+            "views" => ["home", "home2"],
             "form" => [
                 [
                     "label" => "contents.contents",
                     "components" => [
-                        ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
-                        ["component" => "nq-input", "value" => "contents.welcome", "label" => "contents.summary", "props" => ["type" => "textarea"]],
-                        ["component" => "nq-input", "value" => "contents.slug", "label" => "contents.slug"]
+                        ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title", "props" => ["size" => "xl"]],
+                        ["component" => "html-editor", "value" => "contents.welcome", "label" => "contents.summary", "props" => ["type" => "textarea"]],
+                        ["component" => "nq-input", "value" => "contents.slug", "label" => "contents.slug"],
+                        ["component" => "nq-input", "value" => "view", "label" => "Vista"]
                     ],
                 ],
                 [
                     "label" => "contents.children",
                     "components" => [
-                        ["component" => "children", "props" => ["models" => ["section", "page"]]]
+                        ["component" => "children", "props" => ["models" => ["section", "page"], "order_by" => "contents.title"]]
                     ],
                 ]
             ]

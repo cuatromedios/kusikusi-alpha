@@ -19,6 +19,8 @@
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "quasar": "^1.9.5",
+    "tiptap": "^1.27.1",
+    "tiptap-extensions": "^1.29.1",
     "underscore": "^1.10.2",
     "vue-class-component": "^7.2.2",
     "vue-i18n": "^8.0.0",
@@ -40,7 +42,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.1.2",
     "quasar-app-extension-api-wrapper": "0.0.8",
-    "quasar-app-extension-nequ-components": "^0.5.4",
+    "quasar-app-extension-filters": "^0.2.1",
+    "quasar-app-extension-nequ-components": "^0.6.0",
     "quasar-app-extension-vuelidate-rules": "^0.2.0"
   },
   "engines": {
