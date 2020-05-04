@@ -435,10 +435,10 @@ class ApiTest extends TestCase
     /**
      * @depends testLoginWithCorrectData
      */
-   /*  public function testDeleteEntityRelation($authorizationToken)
+    public function testDeleteEntityRelation($authorizationToken)
     {
-        $response = $this->json('DELETE', '/api/entity/pageraw/relation/home', $this->data['create_relation'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        $response = $this->json('DELETE', '/api/entity/pageraw/relation/home/medium', $this->data['create_relation'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeStatusCode(200);
-    } */
+    }
 
 }
