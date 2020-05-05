@@ -2,11 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-<<<<<<< HEAD
-        "_postman_id": "97527599-22cc-4347-bda3-2d2d2b2b9590",
-=======
-        "_postman_id": "8c8ee61f-2788-4673-b9ab-7d3c6cf6be03",
->>>>>>> 2a871603e730a2e0a54dfea61e63e7b197a80bb5
+        "_postman_id": "e468a8cd-0720-4398-8f09-3eb785a21162",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -146,11 +142,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-<<<<<<< HEAD
-                                    "value": "sunt",
-=======
-                                    "value": "exercitationem",
->>>>>>> 2a871603e730a2e0a54dfea61e63e7b197a80bb5
+                                    "value": "molestiae",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -171,34 +163,6 @@
                             "raw": "[]"
                         },
                         "description": "Returns a paginated collection of entities, filtered by all set conditions.",
-                        "response": []
-                    }
-                },
-                {
-                    "name": "Reorders an array of relations",
-                    "request": {
-                        "url": {
-                            "protocol": "http",
-                            "host": "127.0.0.1:8000",
-                            "path": "api\/entities\/relations\/reorder",
-                            "query": []
-                        },
-                        "method": "PATCH",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"relation_ids\": []\n}"
-                        },
-                        "description": "Receive an array of relation ids, and sets the individual position to its index in the array.",
                         "response": []
                     }
                 },
@@ -227,11 +191,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-<<<<<<< HEAD
-                                    "value": "aut",
-=======
-                                    "value": "at",
->>>>>>> 2a871603e730a2e0a54dfea61e63e7b197a80bb5
+                                    "value": "aliquam",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -295,11 +255,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-<<<<<<< HEAD
-                                    "value": "officiis",
-=======
-                                    "value": "repellendus",
->>>>>>> 2a871603e730a2e0a54dfea61e63e7b197a80bb5
+                                    "value": "harum",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -335,11 +291,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-<<<<<<< HEAD
-                                    "value": "nesciunt",
-=======
                                     "value": "et",
->>>>>>> 2a871603e730a2e0a54dfea61e63e7b197a80bb5
                                     "description": "The id of the entity to delete"
                                 }
                             ]
@@ -385,7 +337,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 9\n}"
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 2\n}"
                         },
                         "description": "",
                         "response": []
@@ -445,11 +397,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-<<<<<<< HEAD
-                                    "value": "optio",
-=======
-                                    "value": "officiis",
->>>>>>> 2a871603e730a2e0a54dfea61e63e7b197a80bb5
+                                    "value": "pariatur",
                                     "description": "The id of the entity to upload a medium or file"
                                 }
                             ]
@@ -467,11 +415,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-<<<<<<< HEAD
-                            "raw": "{\n    \"file\": \"quae\",\n    \"thumb\": \"qui\"\n}"
-=======
-                            "raw": "{\n    \"file\": \"quidem\",\n    \"thumb\": \"iure\"\n}"
->>>>>>> 2a871603e730a2e0a54dfea61e63e7b197a80bb5
+                            "raw": "{\n    \"file\": \"qui\",\n    \"thumb\": \"fugiat\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -547,11 +491,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-<<<<<<< HEAD
-                            "raw": "{\n    \"email\": \"eligendi\",\n    \"password\": \"saepe\"\n}"
-=======
-                            "raw": "{\n    \"email\": \"quia\",\n    \"password\": \"eius\"\n}"
->>>>>>> 2a871603e730a2e0a54dfea61e63e7b197a80bb5
+                            "raw": "{\n    \"email\": \"nostrum\",\n    \"password\": \"odit\"\n}"
                         },
                         "description": "",
                         "response": []
