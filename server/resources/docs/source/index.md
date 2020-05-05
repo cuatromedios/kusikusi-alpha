@@ -134,7 +134,11 @@ curl -X GET \
                                     "section",
                                     "page"
                                 ],
-                                "order_by": "contents.title"
+                                "order_by": "contents.title",
+                                "tags": [
+                                    "menu",
+                                    "footer"
+                                ]
                             }
                         }
                     ]
@@ -230,7 +234,7 @@ Returns a paginated collection of entities, filtered by all set conditions.
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/sunt]"
+    "http://127.0.0.1:8000/api/entities[/voluptatem]"
 );
 
 let params = {
@@ -269,7 +273,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://127.0.0.1:8000/api/entities[/sunt]',
+    'http://127.0.0.1:8000/api/entities[/voluptatem]',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -299,7 +303,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/sunt]?select=id%2Cmodel%2Cproperties.price&order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&of-model=page&only-published=true&child-of=home&parent-of=8fguTpt5SB&ancestor-of=enKSUfUcZN&descendant-of=xAaqz2RPyf&siblings-of=_tuKwVy8Aa&related-by=ElFYpgEvWS&relating=enKSUfUcZN&media-of=enKSUfUcZN&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&per-page=6" \
+    -G "http://127.0.0.1:8000/api/entities[/voluptatem]?select=id%2Cmodel%2Cproperties.price&order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&of-model=page&only-published=true&child-of=home&parent-of=8fguTpt5SB&ancestor-of=enKSUfUcZN&descendant-of=xAaqz2RPyf&siblings-of=_tuKwVy8Aa&related-by=ElFYpgEvWS&relating=enKSUfUcZN&media-of=enKSUfUcZN&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&per-page=6" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -464,6 +468,93 @@ Parameter | Status | Description
 
 <!-- END_e361c4dd3cbd2391c19b5f4811a2b853 -->
 
+<!-- START_f8974bfc4b59ca48260d995e658e9903 -->
+## Reorders an array of relations
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Receive an array of relation ids, and sets the individual position to its index in the array.
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/entities/relations/reorder"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "relation_ids": []
+}
+
+fetch(url, {
+    method: "PATCH",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->patch(
+    'http://127.0.0.1:8000/api/entities/relations/reorder',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'relation_ids' => [],
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```bash
+curl -X PATCH \
+    "http://127.0.0.1:8000/api/entities/relations/reorder" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"relation_ids":[]}'
+
+```
+
+
+> Example response (200):
+
+```json
+{
+    "relations": [
+        {
+            "relation_id": "JvE3WPG504",
+            "position": 1
+        },
+        {
+            "relation_id": "izMhhYpXA7",
+            "position": 2
+        }
+    ]
+}
+```
+
+### HTTP Request
+`PATCH api/entities/relations/reorder`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `relation_ids` | array |  required  | An array of relation ids to reorder. Example ['s4FG56mkdRT5', 'FG56mkdRT5s3', '4FG56mkdRT5d']
+    
+<!-- END_f8974bfc4b59ca48260d995e658e9903 -->
+
 <!-- START_452b2ebcc9c1afb7cfdc2a7e8a3caf40 -->
 ## Retrieve the entity for the given ID.
 
@@ -472,7 +563,7 @@ Parameter | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/aut"
+    "http://127.0.0.1:8000/api/entity/sit"
 );
 
 let params = {
@@ -499,7 +590,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://127.0.0.1:8000/api/entity/aut',
+    'http://127.0.0.1:8000/api/entity/sit',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -517,7 +608,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/aut?select=id%2Cmodel%2Cproperties.price&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/sit?select=id%2Cmodel%2Cproperties.price&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -682,7 +773,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/officiis"
+    "http://127.0.0.1:8000/api/entity/qui"
 );
 
 let headers = {
@@ -713,7 +804,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->patch(
-    'http://127.0.0.1:8000/api/entity/officiis',
+    'http://127.0.0.1:8000/api/entity/qui',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -736,7 +827,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X PATCH \
-    "http://127.0.0.1:8000/api/entity/officiis" \
+    "http://127.0.0.1:8000/api/entity/qui" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
@@ -791,7 +882,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/nesciunt"
+    "http://127.0.0.1:8000/api/entity/tempore"
 );
 
 let headers = {
@@ -811,7 +902,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->delete(
-    'http://127.0.0.1:8000/api/entity/nesciunt',
+    'http://127.0.0.1:8000/api/entity/tempore',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -825,7 +916,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X DELETE \
-    "http://127.0.0.1:8000/api/entity/nesciunt" \
+    "http://127.0.0.1:8000/api/entity/tempore" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -872,7 +963,7 @@ let body = {
     "kind": "medium | category",
     "tags": [],
     "position": 3,
-    "depth": 3
+    "depth": 16
 }
 
 fetch(url, {
@@ -899,7 +990,7 @@ $response = $client->post(
             'kind' => 'medium | category',
             'tags' => [],
             'position' => 3,
-            'depth' => 3,
+            'depth' => 16,
         ],
     ]
 );
@@ -912,7 +1003,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/entity/1/relation" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":3}'
+    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":16}'
 
 ```
 
@@ -1033,7 +1124,7 @@ Parameter | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/medium/optio/upload"
+    "http://127.0.0.1:8000/api/medium/similique/upload"
 );
 
 let headers = {
@@ -1042,8 +1133,8 @@ let headers = {
 };
 
 let body = {
-    "file": "quae",
-    "thumb": "qui"
+    "file": "est",
+    "thumb": "quia"
 }
 
 fetch(url, {
@@ -1059,15 +1150,15 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://127.0.0.1:8000/api/medium/optio/upload',
+    'http://127.0.0.1:8000/api/medium/similique/upload',
     [
         'headers' => [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ],
         'json' => [
-            'file' => 'quae',
-            'thumb' => 'qui',
+            'file' => 'est',
+            'thumb' => 'quia',
         ],
     ]
 );
@@ -1077,10 +1168,10 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/medium/optio/upload" \
+    "http://127.0.0.1:8000/api/medium/similique/upload" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"file":"quae","thumb":"qui"}'
+    -d '{"file":"est","thumb":"quia"}'
 
 ```
 
@@ -1310,8 +1401,8 @@ let headers = {
 };
 
 let body = {
-    "email": "eligendi",
-    "password": "saepe"
+    "email": "tempore",
+    "password": "perferendis"
 }
 
 fetch(url, {
@@ -1334,8 +1425,8 @@ $response = $client->post(
             'Accept' => 'application/json',
         ],
         'json' => [
-            'email' => 'eligendi',
-            'password' => 'saepe',
+            'email' => 'tempore',
+            'password' => 'perferendis',
         ],
     ]
 );
@@ -1348,7 +1439,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"eligendi","password":"saepe"}'
+    -d '{"email":"tempore","password":"perferendis"}'
 
 ```
 
