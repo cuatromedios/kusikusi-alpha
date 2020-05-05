@@ -25,7 +25,7 @@
       </span>
     </a>
     <div class="tocify-wrapper">
-        <img src="images/logo.png" />
+        <img src="images/logo.png" style="margin-left: auto; margin-right: auto; padding: 10px;"/>
                     <div class="lang-selector">
                                   <a href="#" data-language-name="javascript">javascript</a>
                                   <a href="#" data-language-name="php">php</a>
@@ -49,168 +49,7 @@
 <p>Welcome to the generated API reference.
 <a href="http://127.0.0.1:8000/docs/collection.json">Get Postman Collection</a></p>
 <!-- END_INFO -->
-<h1>Cms</h1>
-<!-- START_d6d109bb80788f15184b241103150600 -->
-<h2>Get the CMS configuration.</h2>
-<p>Returns an object with the configuration for the CMS frontend.</p>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/cms/config"
-);
 
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<pre><code class="language-php">
-$client = new \GuzzleHttp\Client();
-$response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/cms/config',
-    [
-        'headers' =&gt; [
-            'Content-Type' =&gt; 'application/json',
-            'Accept' =&gt; 'application/json',
-        ],
-    ]
-);
-$body = $response-&gt;getBody();
-print_r(json_decode((string) $body));</code></pre>
-<pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/cms/config" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"</code></pre>
-<blockquote>
-<p>Example response (200):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "langs": [
-        "en_US",
-        "es_ES"
-    ],
-    "page_size": 25,
-    "token_expiration_in_seconds": 0,
-    "short_id_length": 10,
-    "models": {
-        "home": {
-            "icon": "home",
-            "name": "models.home",
-            "form": [
-                {
-                    "label": "contents.contents",
-                    "components": [
-                        {
-                            "component": "nq-input",
-                            "value": "contents.title",
-                            "label": "contents.title"
-                        },
-                        {
-                            "component": "nq-input",
-                            "value": "contents.welcome",
-                            "label": "contents.summary"
-                        },
-                        {
-                            "component": "nq-input",
-                            "value": "contents.slug",
-                            "label": "contents.slug"
-                        }
-                    ]
-                },
-                {
-                    "label": "contents.children",
-                    "components": [
-                        {
-                            "component": "children",
-                            "props": {
-                                "models": [
-                                    "section",
-                                    "page"
-                                ]
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        "page": {
-            "icon": "description",
-            "name": "models.page",
-            "form": [
-                {
-                    "label": "content.contents",
-                    "components": [
-                        {
-                            "component": "nq-input",
-                            "value": "contents.title",
-                            "label": "contents.title"
-                        },
-                        {
-                            "component": "nq-input",
-                            "value": "contents.welcome",
-                            "label": "content.summary"
-                        },
-                        {
-                            "component": "nq-input",
-                            "value": "contents.slug",
-                            "label": "contents.slug"
-                        }
-                    ]
-                }
-            ]
-        },
-        "section": {
-            "icon": "folder",
-            "name": "models.section",
-            "form": [
-                {
-                    "label": "content.contents",
-                    "components": [
-                        {
-                            "component": "nq-input",
-                            "value": "contents.title",
-                            "label": "contents.title"
-                        },
-                        {
-                            "component": "nq-input",
-                            "value": "contents.summary",
-                            "label": "contents.summary"
-                        },
-                        {
-                            "component": "nq-input",
-                            "value": "contents.slug",
-                            "label": "contents.slug"
-                        }
-                    ]
-                },
-                {
-                    "label": "content.children",
-                    "components": [
-                        {
-                            "component": "children",
-                            "props": {
-                                "models": [
-                                    "page"
-                                ]
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        "medium": []
-    }
-}</code></pre>
-<h3>HTTP Request</h3>
-<p><code>GET api/cms/config</code></p>
-<!-- END_d6d109bb80788f15184b241103150600 -->
 <h1>Entity</h1>
 <!-- START_e361c4dd3cbd2391c19b5f4811a2b853 -->
 <h2>Get a collection of  entities.</h2>
@@ -220,7 +59,7 @@ Returns a paginated collection of entities, filtered by all set conditions.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/quo]"
+    "http://127.0.0.1:8000/api/entities[/sunt]"
 );
 
 let params = {
@@ -237,6 +76,7 @@ let params = {
     "relating": "enKSUfUcZN",
     "media-of": "enKSUfUcZN",
     "with": "media,contents,entities_related, entities_related.contents (nested relations)",
+    "per-page": "6",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -255,7 +95,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entities[/quo]',
+    'http://127.0.0.1:8000/api/entities[/sunt]',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -275,13 +115,14 @@ $response = $client-&gt;get(
             'relating'=&gt; 'enKSUfUcZN',
             'media-of'=&gt; 'enKSUfUcZN',
             'with'=&gt; 'media,contents,entities_related, entities_related.contents (nested relations)',
+            'per-page'=&gt; '6',
         ],
     ]
 );
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/quo]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;only-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entities[/sunt]?select=id%2Cmodel%2Cproperties.price&amp;order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&amp;of-model=page&amp;only-published=true&amp;child-of=home&amp;parent-of=8fguTpt5SB&amp;ancestor-of=enKSUfUcZN&amp;descendant-of=xAaqz2RPyf&amp;siblings-of=_tuKwVy8Aa&amp;related-by=ElFYpgEvWS&amp;relating=enKSUfUcZN&amp;media-of=enKSUfUcZN&amp;with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&amp;per-page=6" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -506,6 +347,11 @@ print_r(json_decode((string) $body));</code></pre>
 <td>optional</td>
 <td>A comma separated list of relationships should be included in the result.</td>
 </tr>
+<tr>
+<td><code>per-page</code></td>
+<td>optional</td>
+<td>The amount of entities per page the result should be the amount of entities on a single page.</td>
+</tr>
 </tbody>
 </table>
 <!-- END_e361c4dd3cbd2391c19b5f4811a2b853 -->
@@ -516,7 +362,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/ducimus"
+    "http://127.0.0.1:8000/api/entity/aut"
 );
 
 let params = {
@@ -540,7 +386,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/api/entity/ducimus',
+    'http://127.0.0.1:8000/api/entity/aut',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -555,7 +401,7 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/ducimus?select=id%2Cmodel%2Cproperties.price&amp;with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/aut?select=id%2Cmodel%2Cproperties.price&amp;with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -774,7 +620,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/quia"
+    "http://127.0.0.1:8000/api/entity/officiis"
 );
 
 let headers = {
@@ -802,7 +648,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;patch(
-    'http://127.0.0.1:8000/api/entity/quia',
+    'http://127.0.0.1:8000/api/entity/officiis',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -822,7 +668,7 @@ $response = $client-&gt;patch(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X PATCH \
-    "http://127.0.0.1:8000/api/entity/quia" \
+    "http://127.0.0.1:8000/api/entity/officiis" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
@@ -925,7 +771,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/entity/sint"
+    "http://127.0.0.1:8000/api/entity/nesciunt"
 );
 
 let headers = {
@@ -942,7 +788,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;delete(
-    'http://127.0.0.1:8000/api/entity/sint',
+    'http://127.0.0.1:8000/api/entity/nesciunt',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -953,7 +799,7 @@ $response = $client-&gt;delete(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X DELETE \
-    "http://127.0.0.1:8000/api/entity/sint" \
+    "http://127.0.0.1:8000/api/entity/nesciunt" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
@@ -1199,7 +1045,7 @@ print_r(json_decode((string) $body));</code></pre>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/api/medium/voluptates/upload"
+    "http://127.0.0.1:8000/api/medium/optio/upload"
 );
 
 let headers = {
@@ -1208,8 +1054,8 @@ let headers = {
 };
 
 let body = {
-    "file": "voluptatum",
-    "thumb": "voluptas"
+    "file": "quae",
+    "thumb": "qui"
 }
 
 fetch(url, {
@@ -1222,25 +1068,25 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://127.0.0.1:8000/api/medium/voluptates/upload',
+    'http://127.0.0.1:8000/api/medium/optio/upload',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'file' =&gt; 'voluptatum',
-            'thumb' =&gt; 'voluptas',
+            'file' =&gt; 'quae',
+            'thumb' =&gt; 'qui',
         ],
     ]
 );
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X POST \
-    "http://127.0.0.1:8000/api/medium/voluptates/upload" \
+    "http://127.0.0.1:8000/api/medium/optio/upload" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"file":"voluptatum","thumb":"voluptas"}'
+    -d '{"file":"quae","thumb":"qui"}'
 </code></pre>
 <blockquote>
 <p>Example response (200):</p>
@@ -1452,10 +1298,6 @@ print_r(json_decode((string) $body));</code></pre>
     -G "http://127.0.0.1:8000/media/djr4sd7Gmd/icon.[/1]" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
-<blockquote>
-<p>Example response (404):</p>
-</blockquote>
-<pre><code class="language-json">null</code></pre>
 <h3>HTTP Request</h3>
 <p><code>GET media/{entity_id}/{preset}[/{friendly}]</code></p>
 <h4>URL Parameters</h4>
@@ -1481,6 +1323,48 @@ print_r(json_decode((string) $body));</code></pre>
 </tbody>
 </table>
 <!-- END_8199ecb40612afeb4a54ea4b88c95b86 -->
+
+<h1>Web</h1>
+<!-- START_e910fbe49f78f1e787a9e4fd647a09a2 -->
+<h2>Locates an entity based on the url, and returns the HTML view of that entity as a webpage</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/1"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<pre><code class="language-php">
+$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://127.0.0.1:8000/1',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://127.0.0.1:8000/1" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET {path:.*}</code></p>
+<!-- END_e910fbe49f78f1e787a9e4fd647a09a2 -->
 <h1>User</h1>
 <!-- START_57e3b4272508c324659e49ba5758c70f -->
 <h2>Authenticate a user.</h2>
@@ -1497,8 +1381,8 @@ let headers = {
 };
 
 let body = {
-    "email": "rerum",
-    "password": "et"
+    "email": "eligendi",
+    "password": "saepe"
 }
 
 fetch(url, {
@@ -1518,8 +1402,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'email' =&gt; 'rerum',
-            'password' =&gt; 'et',
+            'email' =&gt; 'eligendi',
+            'password' =&gt; 'saepe',
         ],
     ]
 );
@@ -1529,7 +1413,7 @@ print_r(json_decode((string) $body));</code></pre>
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"rerum","password":"et"}'
+    -d '{"email":"eligendi","password":"saepe"}'
 </code></pre>
 <blockquote>
 <p>Example response (200):</p>
@@ -1569,14 +1453,15 @@ print_r(json_decode((string) $body));</code></pre>
 </tbody>
 </table>
 <!-- END_57e3b4272508c324659e49ba5758c70f -->
-<h1>Web</h1>
-<!-- START_e910fbe49f78f1e787a9e4fd647a09a2 -->
-<h2>Locates an entity based on the url, and returns the HTML view of that entity as a webpage</h2>
+<h1>Cms</h1>
+<!-- START_d6d109bb80788f15184b241103150600 -->
+<h2>Get the CMS configuration.</h2>
+<p>Returns an object with the configuration for the CMS frontend.</p>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-javascript">const url = new URL(
-    "http://127.0.0.1:8000/1"
+    "http://127.0.0.1:8000/api/cms/config"
 );
 
 let headers = {
@@ -1593,7 +1478,7 @@ fetch(url, {
 <pre><code class="language-php">
 $client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://127.0.0.1:8000/1',
+    'http://127.0.0.1:8000/api/cms/config',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1604,16 +1489,148 @@ $response = $client-&gt;get(
 $body = $response-&gt;getBody();
 print_r(json_decode((string) $body));</code></pre>
 <pre><code class="language-bash">curl -X GET \
-    -G "http://127.0.0.1:8000/1" \
+    -G "http://127.0.0.1:8000/api/cms/config" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"</code></pre>
 <blockquote>
-<p>Example response (500):</p>
+<p>Example response (200):</p>
 </blockquote>
-<pre><code class="language-json">null</code></pre>
+<pre><code class="language-json">{
+    "langs": [
+        "en_US",
+        "es_ES"
+    ],
+    "page_size": 25,
+    "token_expiration_in_seconds": 0,
+    "short_id_length": 10,
+    "models": {
+        "home": {
+            "icon": "home",
+            "name": "models.home",
+            "views": [
+                "home",
+                "home2"
+            ],
+            "form": [
+                {
+                    "label": "contents.contents",
+                    "components": [
+                        {
+                            "component": "nq-input",
+                            "value": "contents.title",
+                            "label": "contents.title",
+                            "props": {
+                                "size": "xl"
+                            }
+                        },
+                        {
+                            "component": "html-editor",
+                            "value": "contents.welcome",
+                            "label": "contents.summary",
+                            "props": {
+                                "type": "textarea"
+                            }
+                        },
+                        {
+                            "component": "nq-input",
+                            "value": "contents.slug",
+                            "label": "contents.slug"
+                        },
+                        {
+                            "component": "nq-input",
+                            "value": "view",
+                            "label": "Vista"
+                        }
+                    ]
+                },
+                {
+                    "label": "contents.children",
+                    "components": [
+                        {
+                            "component": "children",
+                            "props": {
+                                "models": [
+                                    "section",
+                                    "page"
+                                ],
+                                "order_by": "contents.title"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "page": {
+            "icon": "description",
+            "name": "models.page",
+            "form": [
+                {
+                    "label": "content.contents",
+                    "components": [
+                        {
+                            "component": "nq-input",
+                            "value": "contents.title",
+                            "label": "contents.title"
+                        },
+                        {
+                            "component": "nq-input",
+                            "value": "contents.welcome",
+                            "label": "content.summary"
+                        },
+                        {
+                            "component": "nq-input",
+                            "value": "contents.slug",
+                            "label": "contents.slug"
+                        }
+                    ]
+                }
+            ]
+        },
+        "section": {
+            "icon": "folder",
+            "name": "models.section",
+            "form": [
+                {
+                    "label": "content.contents",
+                    "components": [
+                        {
+                            "component": "nq-input",
+                            "value": "contents.title",
+                            "label": "contents.title"
+                        },
+                        {
+                            "component": "nq-input",
+                            "value": "contents.summary",
+                            "label": "contents.summary"
+                        },
+                        {
+                            "component": "nq-input",
+                            "value": "contents.slug",
+                            "label": "contents.slug"
+                        }
+                    ]
+                },
+                {
+                    "label": "content.children",
+                    "components": [
+                        {
+                            "component": "children",
+                            "props": {
+                                "models": [
+                                    "page"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "medium": []
+    }
+}</code></pre>
 <h3>HTTP Request</h3>
-<p><code>GET {path:.*}</code></p>
-<!-- END_e910fbe49f78f1e787a9e4fd647a09a2 -->
+<p><code>GET api/cms/config</code></p>
+<!-- END_d6d109bb80788f15184b241103150600 -->
 <h1>general</h1>
 <!-- START_0b975e87a66d92fbc5e8df29cdaf518b -->
 <h2>Returns the current logged user</h2>

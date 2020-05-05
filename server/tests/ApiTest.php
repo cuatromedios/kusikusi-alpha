@@ -5,6 +5,7 @@ use Laravel\Lumen\Testing\DatabaseMigrations;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Illuminate\Database\Seeder;
 use Illuminate\Eloquent\Model;
+use Illuminate\Support\Str;
 use App\Models\Entity;
 
 class ApiTest extends TestCase
@@ -441,4 +442,23 @@ class ApiTest extends TestCase
         ->seeStatusCode(200);
     }
 
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testGetCMSConfiguration($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/cms/config', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['page_size'=>25, 'short_id_length'=>10, 'langs'=>['en_US','es_ES']])
+        ->seeStatusCode(200);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testReturnsLoggedUser($authorizationToken)
+    {
+        $response = $this->json('GET', '/api/user/me', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains(['email'=>'admin@example.com', 'name'=>'Administrator', 'profile'=>'admin'])
+        ->seeStatusCode(200);
+    }
 }
