@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "f30cb25f-76df-4183-a8bf-07a6fb8ecec3",
+        "_postman_id": "a9da5252-0ad4-46c1-a252-6ddf3011cb50",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -142,7 +142,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "voluptatem",
+                                    "value": "dolorum",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -219,7 +219,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "sit",
+                                    "value": "aut",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -283,7 +283,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "qui",
+                                    "value": "praesentium",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -319,7 +319,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "tempore",
+                                    "value": "laborum",
                                     "description": "The id of the entity to delete"
                                 }
                             ]
@@ -365,7 +365,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 16\n}"
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 20\n}"
                         },
                         "description": "",
                         "response": []
@@ -406,6 +406,34 @@
                         "description": "",
                         "response": []
                     }
+                },
+                {
+                    "name": "Creates a new entity with a relation.",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000",
+                            "path": "api\/entity\/:caller_entity_id\/create_and_relate",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"model\": \"page\",\n    \"entity_called_id\": \"home\",\n    \"kind\": \"medium | category\",\n    \"view\": \"page\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"properties\": \"{\\\"price\\\": 200, \\\"format\\\": \\\"jpg\\\"}\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 10\n}"
+                        },
+                        "description": "Creates a new entity with a specific relation to another entity, the entity \"id\" and \"caller_entity_id\" should the same.",
+                        "response": []
+                    }
                 }
             ]
         },
@@ -425,7 +453,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "similique",
+                                    "value": "fugit",
                                     "description": "The id of the entity to upload a medium or file"
                                 }
                             ]
@@ -443,7 +471,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"file\": \"est\",\n    \"thumb\": \"quia\"\n}"
+                            "raw": "{\n    \"file\": \"veniam\",\n    \"thumb\": \"sed\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -519,7 +547,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"tempore\",\n    \"password\": \"perferendis\"\n}"
+                            "raw": "{\n    \"email\": \"repudiandae\",\n    \"password\": \"eos\"\n}"
                         },
                         "description": "",
                         "response": []
