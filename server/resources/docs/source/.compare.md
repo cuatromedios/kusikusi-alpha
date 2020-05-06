@@ -142,6 +142,23 @@ curl -X GET \
                             }
                         }
                     ]
+                },
+                {
+                    "label": "contents.media",
+                    "components": [
+                        {
+                            "component": "media",
+                            "props": {
+                                "allowed": [
+                                    "images"
+                                ],
+                                "tags": [
+                                    "hero",
+                                    "og"
+                                ]
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -166,6 +183,23 @@ curl -X GET \
                             "component": "nq-input",
                             "value": "contents.slug",
                             "label": "contents.slug"
+                        }
+                    ]
+                },
+                {
+                    "label": "contents.media",
+                    "components": [
+                        {
+                            "component": "media",
+                            "props": {
+                                "allowed": [
+                                    "images"
+                                ],
+                                "tags": [
+                                    "icon",
+                                    "gallery"
+                                ]
+                            }
                         }
                     ]
                 }
@@ -234,7 +268,7 @@ Returns a paginated collection of entities, filtered by all set conditions.
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/voluptatem]"
+    "http://127.0.0.1:8000/api/entities[/labore]"
 );
 
 let params = {
@@ -273,7 +307,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://127.0.0.1:8000/api/entities[/voluptatem]',
+    'http://127.0.0.1:8000/api/entities[/labore]',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -303,7 +337,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/voluptatem]?select=id%2Cmodel%2Cproperties.price&order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&of-model=page&only-published=true&child-of=home&parent-of=8fguTpt5SB&ancestor-of=enKSUfUcZN&descendant-of=xAaqz2RPyf&siblings-of=_tuKwVy8Aa&related-by=ElFYpgEvWS&relating=enKSUfUcZN&media-of=enKSUfUcZN&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&per-page=6" \
+    -G "http://127.0.0.1:8000/api/entities[/labore]?select=id%2Cmodel%2Cproperties.price&order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&of-model=page&only-published=true&child-of=home&parent-of=8fguTpt5SB&ancestor-of=enKSUfUcZN&descendant-of=xAaqz2RPyf&siblings-of=_tuKwVy8Aa&related-by=ElFYpgEvWS&relating=enKSUfUcZN&media-of=enKSUfUcZN&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&per-page=6" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -563,7 +597,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/sit"
+    "http://127.0.0.1:8000/api/entity/sunt"
 );
 
 let params = {
@@ -590,7 +624,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://127.0.0.1:8000/api/entity/sit',
+    'http://127.0.0.1:8000/api/entity/sunt',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -608,7 +642,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/sit?select=id%2Cmodel%2Cproperties.price&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/sunt?select=id%2Cmodel%2Cproperties.price&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -773,7 +807,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/qui"
+    "http://127.0.0.1:8000/api/entity/quam"
 );
 
 let headers = {
@@ -804,7 +838,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->patch(
-    'http://127.0.0.1:8000/api/entity/qui',
+    'http://127.0.0.1:8000/api/entity/quam',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -827,7 +861,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X PATCH \
-    "http://127.0.0.1:8000/api/entity/qui" \
+    "http://127.0.0.1:8000/api/entity/quam" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
@@ -882,7 +916,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/tempore"
+    "http://127.0.0.1:8000/api/entity/vel"
 );
 
 let headers = {
@@ -902,7 +936,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->delete(
-    'http://127.0.0.1:8000/api/entity/tempore',
+    'http://127.0.0.1:8000/api/entity/vel',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -916,7 +950,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X DELETE \
-    "http://127.0.0.1:8000/api/entity/tempore" \
+    "http://127.0.0.1:8000/api/entity/vel" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -963,7 +997,7 @@ let body = {
     "kind": "medium | category",
     "tags": [],
     "position": 3,
-    "depth": 16
+    "depth": 13
 }
 
 fetch(url, {
@@ -990,7 +1024,7 @@ $response = $client->post(
             'kind' => 'medium | category',
             'tags' => [],
             'position' => 3,
-            'depth' => 16,
+            'depth' => 13,
         ],
     ]
 );
@@ -1003,7 +1037,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/entity/1/relation" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":16}'
+    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":13}'
 
 ```
 
@@ -1124,7 +1158,7 @@ Parameter | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/medium/similique/upload"
+    "http://127.0.0.1:8000/api/medium/dolore/upload"
 );
 
 let headers = {
@@ -1133,8 +1167,8 @@ let headers = {
 };
 
 let body = {
-    "file": "est",
-    "thumb": "quia"
+    "file": "aut",
+    "thumb": "fuga"
 }
 
 fetch(url, {
@@ -1150,15 +1184,15 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://127.0.0.1:8000/api/medium/similique/upload',
+    'http://127.0.0.1:8000/api/medium/dolore/upload',
     [
         'headers' => [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ],
         'json' => [
-            'file' => 'est',
-            'thumb' => 'quia',
+            'file' => 'aut',
+            'thumb' => 'fuga',
         ],
     ]
 );
@@ -1168,10 +1202,10 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/medium/similique/upload" \
+    "http://127.0.0.1:8000/api/medium/dolore/upload" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"file":"est","thumb":"quia"}'
+    -d '{"file":"aut","thumb":"fuga"}'
 
 ```
 
@@ -1369,6 +1403,11 @@ curl -X GET \
 ```
 
 
+> Example response (200):
+
+```json
+null
+```
 
 ### HTTP Request
 `GET media/{entity_id}/{preset}[/{friendly}]`
@@ -1401,8 +1440,8 @@ let headers = {
 };
 
 let body = {
-    "email": "tempore",
-    "password": "perferendis"
+    "email": "quia",
+    "password": "voluptatem"
 }
 
 fetch(url, {
@@ -1425,8 +1464,8 @@ $response = $client->post(
             'Accept' => 'application/json',
         ],
         'json' => [
-            'email' => 'tempore',
-            'password' => 'perferendis',
+            'email' => 'quia',
+            'password' => 'voluptatem',
         ],
     ]
 );
@@ -1439,7 +1478,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"tempore","password":"perferendis"}'
+    -d '{"email":"quia","password":"voluptatem"}'
 
 ```
 
@@ -1519,6 +1558,11 @@ curl -X GET \
 ```
 
 
+> Example response (200):
+
+```json
+null
+```
 
 ### HTTP Request
 `GET {path:.*}`
@@ -1579,7 +1623,9 @@ curl -X GET \
 > Example response (401):
 
 ```json
-null
+{
+    "error": "Unauthorized"
+}
 ```
 
 ### HTTP Request

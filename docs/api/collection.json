@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "f30cb25f-76df-4183-a8bf-07a6fb8ecec3",
+        "_postman_id": "9d04d532-afab-4d83-9dd1-eaa65259a1de",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -142,7 +142,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "voluptatem",
+                                    "value": "labore",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -219,7 +219,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "sit",
+                                    "value": "sunt",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -283,7 +283,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "qui",
+                                    "value": "quam",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -319,7 +319,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "tempore",
+                                    "value": "vel",
                                     "description": "The id of the entity to delete"
                                 }
                             ]
@@ -365,7 +365,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 16\n}"
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 13\n}"
                         },
                         "description": "",
                         "response": []
@@ -425,7 +425,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "similique",
+                                    "value": "dolore",
                                     "description": "The id of the entity to upload a medium or file"
                                 }
                             ]
@@ -443,7 +443,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"file\": \"est\",\n    \"thumb\": \"quia\"\n}"
+                            "raw": "{\n    \"file\": \"aut\",\n    \"thumb\": \"fuga\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -519,7 +519,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"tempore\",\n    \"password\": \"perferendis\"\n}"
+                            "raw": "{\n    \"email\": \"quia\",\n    \"password\": \"voluptatem\"\n}"
                         },
                         "description": "",
                         "response": []
