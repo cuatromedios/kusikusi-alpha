@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
 class EntityController extends Controller
 {
@@ -213,21 +214,24 @@ class EntityController extends Controller
             'published_at' => self::TIMEZONED_DATE,
             'unpublished_at' => self::TIMEZONED_DATE,
             'is_active' => 'boolean',
-            'caller_entity_id' => self::ID_RULE,
-            'called_entity_id' => 'required|'.self::ID_RULE,
             'kind' => 'string|max:25|regex:/^[a-z0-9]+$/',
             'position' => 'integer',
             'tags.*' => 'string',
             'depth' => 'integer'
         ]);
-        $payload = $request->only('model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related', 'is_active');
-        $payload['id'] = $caller_entity_id;
+        $validator = Validator::make(get_defined_vars(),
+        ['caller_entity_id' => self::ID_RULE]);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+        $payload = $request->only('id','model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related', 'is_active');
         $entity = new Entity($payload);
         $entity->save();
         $payload = $request->only('called_entity_id', 'kind', 'position', 'depth', 'tags');
         $payload['caller_entity_id'] = $caller_entity_id;
+        $payload['called_entity_id'] = $entity->id;
         Entity::createRelation($payload);
-        $createdEntity = Entity::with('contents')->find($entity->id);
+        $createdEntity = Entity::with('entities_related')->find($entity->id);
         return($createdEntity);
     }
 
