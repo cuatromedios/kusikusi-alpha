@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -135,6 +136,11 @@ class EntityController extends Controller
      */
     public function show(Request $request, $entity_id)
     {
+        $validator = Validator::make(get_defined_vars(),
+            ['entity_id' => self::ID_RULE]);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
         $entityFound = Entity::select('id', 'model')
             ->where('id', $entity_id)
             ->firstOrFail();
@@ -257,9 +263,13 @@ class EntityController extends Controller
             'view' => 'string|max:32',
             'published_at' => self::TIMEZONED_DATE,
             'unpublished_at' => self::TIMEZONED_DATE,
-            'entity_id' => self::ID_RULE,
             'is_active' => 'boolean'
         ]);
+        $validator = Validator::make(get_defined_vars(),
+            ['entity_id' => self::ID_RULE]);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
         $payload = $request->only('id', 'model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related', 'is_active');
         $entity = Entity::find($entity_id);
         $entity->fill($payload);
@@ -278,9 +288,11 @@ class EntityController extends Controller
      */
     public function delete(Request $request, $entity_id)
     {
-        $this->validate($request, [
-            'entity_id' => self::ID_RULE
-        ]);
+        $validator = Validator::make(get_defined_vars(),
+            ['entity_id' => self::ID_RULE]);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
         Entity::where('id', $entity_id)->delete();
         $entity = Entity::select('id', 'deleted_at')->withTrashed()->find($entity_id);
         $entity->makeVisible('deleted_at');
@@ -304,13 +316,19 @@ class EntityController extends Controller
     public function createRelation(Request $request, $caller_entity_id)
     {
         $this->validate($request, [
-            'caller_entity_id' => self::ID_RULE,
             'called_entity_id' => 'required|'.self::ID_RULE,
             'kind' => 'string|max:25|regex:/^[a-z0-9]+$/',
             'position' => 'integer',
             'tags.*' => 'string',
             'depth' => 'integer'
         ]);
+        $validator = Validator::make(get_defined_vars(),
+            [
+                'caller_entity_id' => self::ID_RULE
+            ]);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
         $payload = $request->only( 'called_entity_id', 'kind', 'position', 'depth', 'tags');
         $payload['caller_entity_id'] = $caller_entity_id;
         Entity::createRelation($payload);
@@ -335,11 +353,15 @@ class EntityController extends Controller
      */
     public function deleteRelation(Request $request, $caller_entity_id, $called_entity_id, $kind)
     {
-        $this->validate($request, [
+       $validator = Validator::make(get_defined_vars(),
+           [
             'caller_entity_id' => self::ID_RULE,
             'called_entity_id' => self::ID_RULE,
             'kind' => 'required|string|max:25'
-        ]);
+            ]);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
         $relation = EntityRelation::where('caller_entity_id', $caller_entity_id)
             ->where('called_entity_id', $called_entity_id)
             ->where('kind', $kind)

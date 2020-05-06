@@ -121,26 +121,7 @@ class MediaController extends Controller
         $entity = Entity::findOrFail($entity_id);
         function processFile($id, $function, UploadedFile $file)
         {
-            $format = strtolower($file->getClientOriginalExtension() ? $file->getClientOriginalExtension() : $file->guessClientExtension());
-            $format = $format == 'jpeg' ? 'jpg': $format;
-            $properties = [
-                'format' => $format,
-                'mimeType' => $file->getClientMimeType(),
-                'originalName' => $file->getClientOriginalName(),
-                'size' => $file->getSize(),
-                'isImage' => array_search(strtolower($format), ['jpeg', 'jpg', 'png', 'gif']) !== false
-            ];
-            if ($properties['isImage']) {
-                $properties['exif'] = Image::make($file->getRealPath())->exif();
-                if (isset($properties['exif']['COMPUTED']['Width'])) {
-                    $properties['width'] = $properties['exif']['COMPUTED']['Width'];
-                    $properties['height'] = $properties['exif']['COMPUTED']['Height'];
-                }
-            } else {
-                $properties['exif'] = null;
-                $properties['width'] = null;
-                $properties['height'] = null;
-            }
+            $properties = Medium::getProperties($file);
             $storageFileName = $function . '.' . $properties['format'];
             Storage::disk('media_original')->putFileAs($id, $file, $storageFileName);
             Storage::disk('media_processed')->deleteDirectory($id);

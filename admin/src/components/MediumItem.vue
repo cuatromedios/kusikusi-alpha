@@ -1,24 +1,20 @@
 <template>
-  <q-item
-    class="child-item"
+  <q-card
+    class="medium-item"
     :class="{ 'cursor-drag': reorderMode }">
-    <q-item-section avatar top>
-      <div class="flex items-center item-avatar">
-        <q-icon name="drag_indicator" size="md" color="grey" v-if="reorderMode" />
-        <q-avatar :icon="$store.getters.iconOf(child.model)" color="grey" text-color="white" />
-      </div>
-    </q-item-section>
-    <q-item-section>
-      <q-item-label>
-        <h3>
-          <span v-if="reorderMode">{{ child.title || $t($store.getters.nameOf(child.model)) }}</span>
-          <router-link v-if="!reorderMode" :to="{ name: 'content', params: { entity_id:child.id } }">{{ child.title || $t($store.getters.nameOf(child.model))}}</router-link>
-        </h3>
-      </q-item-label>
-      <q-item-label caption lines="1">{{ $t($store.getters.nameOf(child.model)) }}</q-item-label>
-    </q-item-section>
-    <q-item-section side v-if="tags && tags.length > 0">
-      <div class="row items-center">
+    <q-img :src="`${$store.getters.media_url}${medium.thumb}`" :ratio="1/1" contain v-if="medium.properties.isWebImage" />
+    <q-separator/>
+    <q-card-actions side v-if="tags && tags.length > 0" class="row">
+      <h3 class="col-12">
+        <span v-if="reorderMode">{{ medium.title || $t($store.getters.nameOf(medium.model)) }}</span>
+        <span v-if="!reorderMode">
+          <router-link :to="{ name: 'content', params: { entity_id:medium.id } }" target="_blank">
+            {{ medium.title || $t($store.getters.nameOf(medium.model))}}
+          </router-link>
+          <q-icon name="launch" style="text-decoration: none"  />
+        </span>
+      </h3>
+      <div class="row items-center col-12">
         <q-select v-model="editingTags"
                   @input="onInput"
                   :options="tags"
@@ -32,14 +28,14 @@
         <q-btn dense outline rounded icon="check" size="sm" color="positive" v-if="editing" :loading="saving" @click="acceptTags">{{ $t('general.confirm') }}&nbsp;&nbsp;</q-btn>
         <q-btn dense flat rounded size="sm" color="grey" v-if="editing" @click="cancelTags">{{ $t('general.cancel') }}</q-btn>
       </div>
-    </q-item-section>
-  </q-item>
+    </q-card-actions>
+  </q-card>
 </template>
 <script>
 import _ from 'lodash'
 export default {
-  name: 'ChildItem',
-  props: ['child', 'tags', 'reorderMode', 'entity_id'],
+  name: 'MediaItem',
+  props: ['medium', 'tags', 'reorderMode', 'entity_id'],
   data () {
     return {
       saving: false,
@@ -49,8 +45,8 @@ export default {
     }
   },
   mounted () {
-    this.editingTags = _.clone(this.child.child_relation_tags)
-    this.storedTags = _.clone(this.child.child_relation_tags)
+    this.editingTags = _.clone(this.medium.media_tags)
+    this.storedTags = _.clone(this.medium.media_tags)
   },
   methods: {
     onInput () {
@@ -61,12 +57,12 @@ export default {
       this.$refs.tagSelector.hidePopup()
       this.saving = true
       this.storedTags = _.clone(this.editingTags)
-      await this.$api.post(`/entity/${this.child.id}/relation`, {
-        called_entity_id: this.entity_id,
-        kind: 'ancestor',
+      await this.$api.post(`/entity/${this.entity_id}/relation`, {
+        called_entity_id: this.medium.id,
+        kind: 'medium',
         tags: this.storedTags,
-        position: this.child.child_relation_position,
-        depth: 1
+        position: this.medium.media_position,
+        depth: 0
       })
       this.saving = false
       this.editing = false

@@ -46,9 +46,6 @@ $factory->state(Entity::class, 'medium', function (Faker $faker) {
         "model" => "entity",
         "parent_entity_id" => null,
         "properties" => [
-            "title" => [ "en" => $title ],
-            "format" => "jpg",
-            "slug" => [ "en" => Str::slug($title)],
             "path" =>  $image
         ]
     ];

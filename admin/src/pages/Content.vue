@@ -85,10 +85,11 @@
 import _ from 'lodash'
 import moment from 'moment'
 import Children from '../components/Children'
+import Media from '../components/Media'
 import HtmlEditor from '../components/HtmlEditor'
 export default {
   name: 'Content',
-  components: { Children, HtmlEditor },
+  components: { Children, Media, HtmlEditor },
   data () {
     return {
       editing: false,

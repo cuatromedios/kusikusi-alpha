@@ -110,7 +110,7 @@ module.exports = configure(function (ctx) {
       env: {
         VERSION: `"V${package.version}"`,
         API_URL: JSON.stringify(process.env.API_URL ? process.env.API_URL : ctx.dev ? 'http://127.0.0.1:8000/api' : '/api'),
-        IMAGE_URL: JSON.stringify(process.env.API_URL ? process.env.API_URL : ctx.dev ? 'http://127.0.0.1:8000/' : '/')
+        MEDIA_URL: JSON.stringify(process.env.MEDIA_URL ? process.env.MEDIA_URL : ctx.dev ? 'http://127.0.0.1:8000' : '')
       },
       // rtl: false, // https://quasar.dev/options/rtl-support
       // showProgress: false,

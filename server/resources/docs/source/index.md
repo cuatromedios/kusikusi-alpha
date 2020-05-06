@@ -142,6 +142,23 @@ curl -X GET \
                             }
                         }
                     ]
+                },
+                {
+                    "label": "contents.media",
+                    "components": [
+                        {
+                            "component": "media",
+                            "props": {
+                                "allowed": [
+                                    "images"
+                                ],
+                                "tags": [
+                                    "hero",
+                                    "og"
+                                ]
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -166,6 +183,23 @@ curl -X GET \
                             "component": "nq-input",
                             "value": "contents.slug",
                             "label": "contents.slug"
+                        }
+                    ]
+                },
+                {
+                    "label": "contents.media",
+                    "components": [
+                        {
+                            "component": "media",
+                            "props": {
+                                "allowed": [
+                                    "images"
+                                ],
+                                "tags": [
+                                    "icon",
+                                    "gallery"
+                                ]
+                            }
                         }
                     ]
                 }
@@ -1502,6 +1536,11 @@ curl -X GET \
 ```
 
 
+> Example response (200):
+
+```json
+null
+```
 
 ### HTTP Request
 `GET media/{entity_id}/{preset}[/{friendly}]`
@@ -1717,7 +1756,9 @@ curl -X GET \
 > Example response (401):
 
 ```json
-null
+{
+    "error": "Unauthorized"
+}
 ```
 
 ### HTTP Request

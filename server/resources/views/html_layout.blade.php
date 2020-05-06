@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ $lang }}">
+<html lang="{{ isset($lang) ? $lang : 'en' }}">
 <head>
     <meta charset="UTF-8">
     <title>@yield(('title'))</title>
@@ -13,7 +13,7 @@
     @yield('main')
 </main>
 <footer>
-{{ trans("texts.language") }}: {{ trans("texts.$lang") }}
+A kusikusi website
 </footer>
 @include('html.partials.debug')
 </body>

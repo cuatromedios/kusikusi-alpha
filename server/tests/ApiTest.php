@@ -266,7 +266,7 @@ class ApiTest extends TestCase
     {
         $response = $this->json('GET', '/api/entity/section', ['with'=>'routes'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeJsonContains(['path'=>'/Hola', 'lang'=>'es_ES'])
-        ->seeJsonContains(['path'=>'/Hello', 'lang'=>'en_US'])        
+        ->seeJsonContains(['path'=>'/Hello', 'lang'=>'en_US'])
         ->seeStatusCode(200);
     }
 
@@ -438,7 +438,7 @@ class ApiTest extends TestCase
      */
     public function testDeleteEntityRelation($authorizationToken)
     {
-        $response = $this->json('DELETE', '/api/entity/pageraw/relation/home/medium', $this->data['create_relation'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        $response = $this->json('DELETE', '/api/entity/pageraw/relation/medium/medium', [], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeStatusCode(200);
     }
 
