@@ -38,6 +38,12 @@ return [
                     "components" => [
                         ["component" => "children", "props" => ["models" => ["section", "page"], "order_by" => "contents.title", "tags" => ["menu", "footer"]]]
                     ],
+                ],
+                [
+                    "label" => "contents.media",
+                    "components" => [
+                        ["component" => "media", "props" => ["allowed" => [ "images" ], "tags" => ["hero", "og"]]]
+                    ],
                 ]
             ]
         ],
@@ -51,6 +57,12 @@ return [
                         ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
                         ["component" => "nq-input", "value" => "contents.welcome", "label" => "content.summary"],
                         ["component" => "nq-input", "value" => "contents.slug", "label" => "contents.slug"]
+                    ],
+                ],
+                [
+                    "label" => "contents.media",
+                    "components" => [
+                        ["component" => "media", "props" => ["allowed" => [ "images" ], "tags" => ["icon", "gallery"]]]
                     ],
                 ]
             ]

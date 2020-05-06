@@ -49,6 +49,9 @@ const state = {
 
 // getters
 const getters = {
+  media_url: () => {
+    return process.env.MEDIA_URL
+  },
   langs: (state) => {
     return _.get(state, 'config.langs', [])
   },

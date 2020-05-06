@@ -37,8 +37,10 @@ class SampleSiteSeeder extends Seeder
                         "model" => "medium",
                         "parent_entity_id" => $media->id
                     ]);
+                    $medium->properties = array_merge($medium->properties, \App\Models\Medium::getProperties($medium->properties['path']));
                     $medium->save();
-                    copy($medium->properties['path'], "storage/media/".$medium->id.".jpg");
+                    mkdir("storage/media/".$medium->id);
+                    copy($medium->properties['path'], "storage/media/".$medium->id."/file.jpg");
                     $page->addRelation([
                         "called_entity_id" => $medium->id,
                         "kind" => \App\models\EntityRelation::RELATION_MEDIA,
