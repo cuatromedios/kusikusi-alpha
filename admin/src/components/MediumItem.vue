@@ -35,7 +35,7 @@
 import _ from 'lodash'
 export default {
   name: 'MediaItem',
-  props: [ 'medium', 'tags', 'reorderMode', 'entity_id' ],
+  props: ['medium', 'tags', 'reorderMode', 'entity_id'],
   data () {
     return {
       saving: false,

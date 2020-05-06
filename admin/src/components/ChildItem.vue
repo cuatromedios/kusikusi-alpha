@@ -39,7 +39,7 @@
 import _ from 'lodash'
 export default {
   name: 'ChildItem',
-  props: [ 'child', 'tags', 'reorderMode', 'entity_id' ],
+  props: ['child', 'tags', 'reorderMode', 'entity_id'],
   data () {
     return {
       saving: false,
