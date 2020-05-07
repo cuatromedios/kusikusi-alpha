@@ -268,7 +268,7 @@ Returns a paginated collection of entities, filtered by all set conditions.
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/labore]"
+    "http://127.0.0.1:8000/api/entities[/esse]"
 );
 
 let params = {
@@ -307,7 +307,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://127.0.0.1:8000/api/entities[/labore]',
+    'http://127.0.0.1:8000/api/entities[/esse]',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -337,7 +337,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/labore]?select=id%2Cmodel%2Cproperties.price&order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&of-model=page&only-published=true&child-of=home&parent-of=8fguTpt5SB&ancestor-of=enKSUfUcZN&descendant-of=xAaqz2RPyf&siblings-of=_tuKwVy8Aa&related-by=ElFYpgEvWS&relating=enKSUfUcZN&media-of=enKSUfUcZN&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&per-page=6" \
+    -G "http://127.0.0.1:8000/api/entities[/esse]?select=id%2Cmodel%2Cproperties.price&order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&of-model=page&only-published=true&child-of=home&parent-of=8fguTpt5SB&ancestor-of=enKSUfUcZN&descendant-of=xAaqz2RPyf&siblings-of=_tuKwVy8Aa&related-by=ElFYpgEvWS&relating=enKSUfUcZN&media-of=enKSUfUcZN&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&per-page=6" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -597,7 +597,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/sunt"
+    "http://127.0.0.1:8000/api/entity/est"
 );
 
 let params = {
@@ -624,7 +624,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://127.0.0.1:8000/api/entity/sunt',
+    'http://127.0.0.1:8000/api/entity/est',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -642,7 +642,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/sunt?select=id%2Cmodel%2Cproperties.price&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/est?select=id%2Cmodel%2Cproperties.price&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -807,7 +807,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/quam"
+    "http://127.0.0.1:8000/api/entity/et"
 );
 
 let headers = {
@@ -838,7 +838,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->patch(
-    'http://127.0.0.1:8000/api/entity/quam',
+    'http://127.0.0.1:8000/api/entity/et',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -861,7 +861,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X PATCH \
-    "http://127.0.0.1:8000/api/entity/quam" \
+    "http://127.0.0.1:8000/api/entity/et" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
@@ -916,7 +916,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/vel"
+    "http://127.0.0.1:8000/api/entity/quia"
 );
 
 let headers = {
@@ -936,7 +936,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->delete(
-    'http://127.0.0.1:8000/api/entity/vel',
+    'http://127.0.0.1:8000/api/entity/quia',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -950,7 +950,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X DELETE \
-    "http://127.0.0.1:8000/api/entity/vel" \
+    "http://127.0.0.1:8000/api/entity/quia" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -997,7 +997,7 @@ let body = {
     "kind": "medium | category",
     "tags": [],
     "position": 3,
-    "depth": 13
+    "depth": 17
 }
 
 fetch(url, {
@@ -1024,7 +1024,7 @@ $response = $client->post(
             'kind' => 'medium | category',
             'tags' => [],
             'position' => 3,
-            'depth' => 13,
+            'depth' => 17,
         ],
     ]
 );
@@ -1037,7 +1037,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/entity/1/relation" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":13}'
+    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":17}'
 
 ```
 
@@ -1148,17 +1148,17 @@ Parameter | Status | Description
 
 <!-- END_50b6dbb4b64779ad76feb6520602228c -->
 
-#Media
+<!-- START_523351e4c81e5b0e7f197835980dcc51 -->
+## Creates a new entity with a relation.
 
-
-<!-- START_9936b325d480b36838e12b42abfc57fa -->
-## Uploads a medium
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Creates a new entity with a specific relation to another entity, the entity "id" and "caller_entity_id" should the same.
 
 > Example request:
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/medium/dolore/upload"
+    "http://127.0.0.1:8000/api/entity/1/create_and_relate"
 );
 
 let headers = {
@@ -1167,8 +1167,17 @@ let headers = {
 };
 
 let body = {
-    "file": "aut",
-    "thumb": "fuga"
+    "model": "home",
+    "kind": "medium | category",
+    "view": "home",
+    "published_at": "2020-02-02 12:00:00.",
+    "unpublished_at": "2020-02-02 12:00:00.",
+    "properties": "{\"price\": 200, \"format\": \"jpg\"}",
+    "contents": "{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}",
+    "relations": "\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]",
+    "tags": "[\"1\", '2\"].",
+    "position": 3,
+    "depth": 13
 }
 
 fetch(url, {
@@ -1184,15 +1193,24 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://127.0.0.1:8000/api/medium/dolore/upload',
+    'http://127.0.0.1:8000/api/entity/1/create_and_relate',
     [
         'headers' => [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ],
         'json' => [
-            'file' => 'aut',
-            'thumb' => 'fuga',
+            'model' => 'home',
+            'kind' => 'medium | category',
+            'view' => 'home',
+            'published_at' => '2020-02-02 12:00:00.',
+            'unpublished_at' => '2020-02-02 12:00:00.',
+            'properties' => '{"price": 200, "format": "jpg"}',
+            'contents' => '{ "title": {"en_US": "The page M", "es_ES": "La página M"}, "slug": {"en_US": "page-m", "es_ES": "pagina-m"}}',
+            'relations' => '"relations": [{"called_entity_id": "mf4gWE45pm","kind": "category","position": 2, "tags":["main"]}]',
+            'tags' => '["1", \'2"].',
+            'position' => 3,
+            'depth' => 13,
         ],
     ]
 );
@@ -1202,10 +1220,153 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/medium/dolore/upload" \
+    "http://127.0.0.1:8000/api/entity/1/create_and_relate" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"file":"aut","thumb":"fuga"}'
+    -d '{"model":"home","kind":"medium | category","view":"home","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]","tags":"[\"1\", '2\"].","position":3,"depth":13}'
+
+```
+
+
+> Example response (200):
+
+```json
+{
+    "id": "1",
+    "model": "page",
+    "properties": null,
+    "view": "page",
+    "parent_entity_id": "home",
+    "is_active": true,
+    "created_by": null,
+    "updated_by": null,
+    "published_at": "2020-05-06T17:31:59+00:00",
+    "unpublished_at": null,
+    "version": 3,
+    "version_tree": 0,
+    "version_relations": 2,
+    "version_full": 5,
+    "created_at": "2020-05-06T17:31:59+00:00",
+    "updated_at": "2020-05-06T17:31:59+00:00",
+    "deleted_at": null,
+    "entities_related": [
+        {
+            "id": "ptMckpZLs7",
+            "model": "home",
+            "properties": "{\"price\": 200, \"format\": \"jpg\"}",
+            "view": "home",
+            "parent_entity_id": null,
+            "is_active": true,
+            "created_by": null,
+            "updated_by": null,
+            "published_at": "2020-05-06T17:39:00+00:00",
+            "unpublished_at": null,
+            "version": 1,
+            "version_tree": 0,
+            "version_relations": 0,
+            "version_full": 1,
+            "created_at": "2020-05-06T17:39:00+00:00",
+            "updated_at": "2020-05-06T17:39:00+00:00",
+            "deleted_at": null,
+            "relation": {
+                "caller_entity_id": "pageraw",
+                "called_entity_id": "ptMckpZLs7",
+                "kind": "medium",
+                "position": 3,
+                "depth": 13,
+                "tags": [
+                    "1",
+                    "2"
+                ]
+            }
+        }
+    ]
+}
+```
+
+### HTTP Request
+`POST api/entity/{caller_entity_id}/create_and_relate`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `entity_caller_id` |  required  | The id of the entity to create or update a relation
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `model` | string |  required  | The model name.
+        `kind` | string |  required  | The kind of relation to create or update.
+        `view` | string |  optional  | The name of the view to use. Default: the same name of the model.
+        `published_at` | date |  optional  | A date time the entity should be published. Default: current date time.
+        `unpublished_at` | date |  optional  | A date time the entity should be published. Default: 9999-12-31 23:59:59.
+        `properties` | string |  optional  | An object with properties.
+        `contents` | array |  optional  | An array of contents to be created for the entity.
+        `relations` | arrya |  optional  | An array of relations to be created for the entity.
+        `tags` | array |  optional  | An array of tags to add to the relation. Defaults to an empty array.
+        `position` | integer |  optional  | The position of the relation.
+        `depth` | integer |  optional  | Yet another number value to use freely for the relation, used in ancestor type of relation to define the distance between an entity and other in the tree. Example 1.
+    
+<!-- END_523351e4c81e5b0e7f197835980dcc51 -->
+
+#Media
+
+
+<!-- START_9936b325d480b36838e12b42abfc57fa -->
+## Uploads a medium
+
+> Example request:
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/medium/ipsam/upload"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "file": "est",
+    "thumb": "ab"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'http://127.0.0.1:8000/api/medium/ipsam/upload',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+        ],
+        'json' => [
+            'file' => 'est',
+            'thumb' => 'ab',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```bash
+curl -X POST \
+    "http://127.0.0.1:8000/api/medium/ipsam/upload" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"file":"est","thumb":"ab"}'
 
 ```
 
@@ -1440,8 +1601,8 @@ let headers = {
 };
 
 let body = {
-    "email": "quia",
-    "password": "voluptatem"
+    "email": "reprehenderit",
+    "password": "rem"
 }
 
 fetch(url, {
@@ -1464,8 +1625,8 @@ $response = $client->post(
             'Accept' => 'application/json',
         ],
         'json' => [
-            'email' => 'quia',
-            'password' => 'voluptatem',
+            'email' => 'reprehenderit',
+            'password' => 'rem',
         ],
     ]
 );
@@ -1478,7 +1639,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"quia","password":"voluptatem"}'
+    -d '{"email":"reprehenderit","password":"rem"}'
 
 ```
 

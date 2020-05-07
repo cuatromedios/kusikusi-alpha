@@ -27,6 +27,7 @@ $router->group(["prefix" => "api"], function () use ($router) {
         $router->post('/entity/{caller_entity_id}/relation', ['uses' => 'EntityController@createRelation']);
         $router->delete('/entity/{caller_entity_id}/relation/{called_entity_id}/{kind}', ['uses' => 'EntityController@deleteRelation']);
         $router->post('/medium/{entity_id}/upload', ['uses' => 'MediaController@upload']);
+        $router->post('/entity/{caller_entity_id}/create_and_relate', ['uses' => 'EntityController@createAndAddRelation']);
     });
 
     $router->get('/{path:.*}', function () use ($router) {

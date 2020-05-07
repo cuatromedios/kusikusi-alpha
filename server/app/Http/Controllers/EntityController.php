@@ -136,7 +136,8 @@ class EntityController extends Controller
     public function show(Request $request, $entity_id)
     {
         $validator = Validator::make(get_defined_vars(),
-            ['entity_id' => self::ID_RULE]);
+            ['entity_id' => self::ID_RULE,
+            'entity_id' => 'exists:entities,id']);
         if ($validator->fails()) {
             return $validator->errors();
         }
@@ -188,6 +189,59 @@ class EntityController extends Controller
     }
 
     /**
+     * Creates a new entity with a relation.
+     *
+     * Creates a new entity with a specific relation to another entity, the entity "id" and "caller_entity_id" should the same.
+     * 
+     * @group Entity
+     * @authenticated
+     * @urlParam entity_caller_id required The id of the entity to create or update a relation
+     * @bodyParam model string required The model name. Example: home
+     * @bodyParam kind string required The kind of relation to create or update. Example: medium | category
+     * @bodyParam view string The name of the view to use. Default: the same name of the model. Example: home
+     * @bodyParam published_at date A date time the entity should be published. Default: current date time. Example: 2020-02-02 12:00:00.
+     * @bodyParam unpublished_at date A date time the entity should be published. Default: 9999-12-31 23:59:59. Example: 2020-02-02 12:00:00.
+     * @bodyParam properties string An object with properties. Example: {"price": 200, "format": "jpg"}
+     * @bodyParam contents array An array of contents to be created for the entity. Example: { "title": {"en_US": "The page M", "es_ES": "La página M"}, "slug": {"en_US": "page-m", "es_ES": "pagina-m"}}
+     * @bodyParam relations arrya An array of relations to be created for the entity. Example: "relations": [{"called_entity_id": "mf4gWE45pm","kind": "category","position": 2, "tags":["main"]}]
+     * @bodyParam tags array An array of tags to add to the relation. Defaults to an empty array. Example: ["1", '2"].
+     * @bodyParam position integer The position of the relation. Example: 3.
+     * @bodyParam depth integer Yet another number value to use freely for the relation, used in ancestor type of relation to define the distance between an entity and other in the tree. Example 1.
+     * @responseFile responses/entities.createAndAddRelation.json
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createAndAddRelation(Request $request, $caller_entity_id)
+    {
+        $this->validate($request, [
+            'model' => 'required|string|max:32',
+            'view' => 'string|max:32',
+            'id' => self::ID_RULE,
+            'published_at' => self::TIMEZONED_DATE,
+            'unpublished_at' => self::TIMEZONED_DATE,
+            'is_active' => 'boolean',
+            'kind' => 'string|max:25|regex:/^[a-z0-9]+$/',
+            'position' => 'integer',
+            'tags.*' => 'string',
+            'depth' => 'integer'
+        ]);
+        $validator = Validator::make(get_defined_vars(),
+        ['caller_entity_id' => self::ID_RULE,
+        'caller_entity_id' => 'exists:entities,id']);
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+        $payload = $request->only('id','model', 'view', 'parent_entity_id', 'published_at', 'unpublished_at', 'properties', 'contents', 'entities_related', 'is_active');
+        $entity = new Entity($payload);
+        $entity->save();
+        $relation_payload = $request->only('called_entity_id', 'kind', 'position', 'depth', 'tags');
+        $relation_payload['caller_entity_id'] = $caller_entity_id;
+        $relation_payload['called_entity_id'] = $entity->id;
+        Entity::createRelation($relation_payload);
+        $createdEntity = Entity::with('entities_related')->find($caller_entity_id);
+        return($createdEntity);
+    }
+
+    /**
      * Updates an entity.
      *
      * @group Entity
@@ -212,7 +266,8 @@ class EntityController extends Controller
             'is_active' => 'boolean'
         ]);
         $validator = Validator::make(get_defined_vars(),
-            ['entity_id' => self::ID_RULE]);
+            ['entity_id' => self::ID_RULE,
+            'entity_id' => 'exists:entities,id']);
         if ($validator->fails()) {
             return $validator->errors();
         }

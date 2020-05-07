@@ -25,7 +25,9 @@ class ApiTest extends TestCase
         'select' => ['select'=>'id,model,properties,view,parent_entity_id,is_active,created_by,updated_by,published_at,unpublished_at,version,version_tree,version_relations,version_full,created_at,updated_at,deleted_at'],
         'select_records' => ['id'=>'home', 'model'=>'home', 'view'=>'home', 'parent_entity_id'=>'home', 'is_active'=>true, 'updated_by'=>null, 'created_by'=>null, 'unpublished_at'=>null, 'deleted_at'=>null, 'properties'=>'"price":50.4', 'version'=>1, 'version_tree'=>26, 'version_relations'=>0, 'version_full'=>27],
         'edit' => ['id'=>'page_sones', 'view'=>'pages', 'properties'=>'"prop":10.5', 'contents'=>['title'=>['en_US'=>'page', 'es_ES'=>'pagina']], 'relations'=>['called_entity_id'=>'section']],
-        'create_relation' => ['called_entity_id'=>'medium', 'kind'=>'medium', 'tags'=>null, 'position' => 3, 'depth' => 4]
+        'create_relation' => ['called_entity_id'=>'medium', 'kind'=>'medium', 'tags'=>null, 'position' => 3, 'depth' => 4],
+        'create_entity_with_relation' => ['model'=>'home', 'kind'=>'medium', 'tags'=>["1","2"], 'properties'=>'"price":50.4', 'position' => 3, 'depth' => 4]
+
     ];
     /**
      * A basic test example.
@@ -459,6 +461,16 @@ class ApiTest extends TestCase
     {
         $response = $this->json('GET', '/api/user/me', [''=>''], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
         ->seeJsonContains(['email'=>'admin@example.com', 'name'=>'Administrator', 'profile'=>'admin'])
+        ->seeStatusCode(200);
+    }
+
+    /**
+     * @depends testLoginWithCorrectData
+     */
+    public function testCreateAndRelateEndpoint($authorizationToken)
+    {
+        $response = $this->json('POST', '/api/entity/pageraw/create_and_relate', $this->data['create_entity_with_relation'], ['HTTP_Authorization' => 'Bearer '.$authorizationToken])
+        ->seeJsonContains($this->data['create_entity_with_relation'])
         ->seeStatusCode(200);
     }
 }
