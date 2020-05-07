@@ -52,7 +52,7 @@ return [
             "name" => "models.page",
             "form" => [
                 [
-                    "label" => "content.contents",
+                    "label" => "contents.contents",
                     "components" => [
                         ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
                         ["component" => "nq-input", "value" => "contents.welcome", "label" => "content.summary"],
@@ -60,7 +60,7 @@ return [
                     ],
                 ],
                 [
-                    "label" => "contents.media",
+                    "label" => "contentss.media",
                     "components" => [
                         ["component" => "media", "props" => ["allowed" => [ "images" ], "tags" => ["icon", "gallery"]]]
                     ],
@@ -72,7 +72,7 @@ return [
             "name" => "models.section",
             "form" => [
                 [
-                    "label" => "content.contents",
+                    "label" => "contents.contents",
                     "components" => [
                         ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"],
                         ["component" => "nq-input", "value" => "contents.summary", "label" => "contents.summary"],
@@ -80,7 +80,7 @@ return [
                     ],
                 ],
                 [
-                    "label" => "content.children",
+                    "label" => "contents.children",
                     "components" => [
                         ["component" => "children", "props" => ["models" => ["page"]]]
                     ],
