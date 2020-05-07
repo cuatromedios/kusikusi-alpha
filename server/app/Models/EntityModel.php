@@ -495,14 +495,20 @@ class EntityModel extends Model
                 }
             }
             if ($routeToAdd) {
-                Route::where('entity_id', $this->getId())->where('default', true)->where('lang', $lang)->delete();
-                $parent_route = Route::where('entity_id', $this->parent_entity_id)->where('lang', $lang)->where('default', true)->first();
+                $parent_route = Route::where('entity_id', $this->parent_entity_id)->where('lang',  $routeToAdd['lang'])->where('default', true)->first();
                 $parent_route_path = $parent_route ? $parent_route->path === '/' ? '' : $parent_route->path : '';
-                Route::create([
+                $pathToAdd = $parent_route_path."/".$routeToAdd['slug'];
+                $otherRoute = Route::where('path', $pathToAdd)->where('entity_id', '!=', $this->getId())->first();
+                if ($otherRoute) {
+                    throw new HttpException(409, "A route with the path $pathToAdd already exist ($otherRoute->entity_id)");
+                }
+                Route::where('entity_id', $this->getId())->where('default', true)->where('lang', $routeToAdd['lang'])->update(["default" => false]);
+                Route::updateOrCreate([
                     "entity_id" => $this->getId(),
+                    "path" => $pathToAdd,
+                    "lang" => $routeToAdd['lang']
+                ], [
                     "entity_model" => $this->model,
-                    "path" => $parent_route_path."/".$routeToAdd['slug'],
-                    "lang" => $routeToAdd['lang'],
                     "default" => true
                 ]);
             }

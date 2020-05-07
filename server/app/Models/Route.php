@@ -10,7 +10,9 @@ class Route extends Model
     use UsesShortId;
     protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'route_id', 'entity_id', 'entity_model'];
     protected $fillable = ['entity_id', 'path', 'entity_model', 'lang', 'default'];
-
+    protected $casts = [
+        'default' => 'boolean'
+    ];
     /**
      * To avoid "ambiguous" SQL errors Change the primary key for the model.
      *

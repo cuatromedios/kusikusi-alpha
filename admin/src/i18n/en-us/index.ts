@@ -20,7 +20,8 @@ export default {
     ok: 'Ok',
     sure: 'Are you sure?',
     delete: 'Delete',
-    add: 'Add'
+    add: 'Add',
+    saveError: 'There was an error trying to send information'
   },
   login: {
     title: 'Login',

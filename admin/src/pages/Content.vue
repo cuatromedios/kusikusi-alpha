@@ -51,6 +51,7 @@
                  :readonly="!editing"
                  :data-multilingual="component.isMultiLang"
                  :data-lang="component.props ? component.props.lang : ''"
+                 :lang="component.props ? component.props.lang : null"
                  :entity="entity"
                  v-show="!component.isMultiLang || (component.isMultiLang && (component.props.lang === contentLang || contentLang === 'all'))"
                  :value="getValue(component)"
@@ -73,7 +74,7 @@
              @click="cancel" />
       <q-btn v-if="editing"
              push size="lg" icon="cloud_upload" class="bg-positive no-border-radius"
-             :disable="loading"
+             :disable="loading || saving"
              :loading="saving"
              @click="save"
              :label="$t('general.save')" />
@@ -87,9 +88,10 @@ import moment from 'moment'
 import Children from '../components/Children'
 import Media from '../components/Media'
 import HtmlEditor from '../components/HtmlEditor'
+import Slug from '../components/Slug'
 export default {
   name: 'Content',
-  components: { Children, Media, HtmlEditor },
+  components: { Children, Media, HtmlEditor, Slug },
   data () {
     return {
       editing: false,
@@ -195,39 +197,29 @@ export default {
       }
     },
     async save () {
+      this.saving = true
+      let saveResult
       if (this.isNew) {
         delete this.entity.id
-        const saveResult = await this.$api.post('/entity', this.entity)
-        if (saveResult.success) {
-          this.$q.notify({
-            position: 'top',
-            color: 'positive',
-            message: this.$t('content.saveOk')
-          })
-          this.$router.replace({ name: 'content', params: { entity_id: saveResult.data.id } })
-        } else {
-          this.$q.notify({
-            position: 'top',
-            color: 'negative',
-            message: this.$t('login.saveError')
-          })
-        }
+        saveResult = await this.$api.post('/entity', this.entity)
       } else {
-        const updateResult = await this.$api.patch(`/entity/${this.entity.id}`, this.entity)
-        if (updateResult.success) {
-          this.$q.notify({
-            position: 'top',
-            color: 'positive',
-            message: this.$t('content.saveOk')
-          })
-          this.editing = false
-        } else {
-          this.$q.notify({
-            position: 'top',
-            color: 'negative',
-            message: this.$t('login.saveError')
-          })
-        }
+        saveResult = await this.$api.patch(`/entity/${this.entity.id}`, this.entity)
+      }
+      this.saving = false
+      if (saveResult.success) {
+        this.$q.notify({
+          position: 'top',
+          color: 'positive',
+          message: this.$t('content.saveOk')
+        })
+        this.editing = false
+      } else {
+        this.$q.notify({
+          position: 'top',
+          color: 'negative',
+          message: this.$t('general.saveError'),
+          caption: `${saveResult.data.message} (${saveResult.status})`
+        })
       }
     }
   },

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\HtmlController;
 use Illuminate\Http\Request;
 use App\Models\Entity;
 use App\Models\Route;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App;
 
@@ -30,6 +32,7 @@ class WebController extends Controller
     public function any(Request $request)
     {
         $path = $request->path() == '/' ? '/' : '/' . $request->path();
+        $originalExtension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
         $format = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         if ($format === '') {
@@ -53,9 +56,17 @@ class WebController extends Controller
         $searchResult = Route::where('path', $path)->first();
         if (!$searchResult) {
             $request->lang = config('cms.langs', ['en_US'])[0];
-            $controllerClassName = "App\\Http\\Controllers\\HtmlController";
-            $controller = new $controllerClassName;
+            $controller = new HtmlController();
             return ($controller->error($request, 404));
+        }
+        if ($searchResult->default === false) {
+            $redirect = Route::where('entity_id', $searchResult->entity_id)
+                ->where('lang', $searchResult->lang)
+                ->where('default', true)
+                ->first();
+            if ($redirect) {
+                return redirect($redirect->path . ($originalExtension !== '' ? '.'.$originalExtension : ''), 301);
+            }
         }
         // Select an entity with its properties
         $lang = $searchResult->lang;
@@ -68,8 +79,7 @@ class WebController extends Controller
             ->with('routes');
         $entity=$entity->first();
         if (!$entity->isPublished()) {
-            $controllerClassName = "App\\Http\\Controllers\\HtmlController";
-            $controller = new $controllerClassName;
+            $controller = new HtmlController();
             return ($controller->error($request, 404));
         }
         $request->request->add(['lang' => $lang]);
