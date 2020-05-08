@@ -18,6 +18,8 @@ class CmsController extends Controller
      */
     public function showConfig(Request $request)
     {
-        return Config::get('cms', ["error" => "Configuration could not be loaded"]);
+        $cms = Config::get('cms', ["error" => "Configuration could not be loaded"]);
+        $formats = Config::get('media.formats', []);
+        return array_merge($cms, [ "formats" => $formats]);
     }
 }

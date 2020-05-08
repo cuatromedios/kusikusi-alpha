@@ -192,7 +192,7 @@ class EntityController extends Controller
      * Creates a new entity with a relation.
      *
      * Creates a new entity with a specific relation to another entity, the entity "id" and "caller_entity_id" should the same.
-     * 
+     *
      * @group Entity
      * @authenticated
      * @urlParam entity_caller_id required The id of the entity to create or update a relation
@@ -237,7 +237,13 @@ class EntityController extends Controller
         $relation_payload['caller_entity_id'] = $caller_entity_id;
         $relation_payload['called_entity_id'] = $entity->id;
         Entity::createRelation($relation_payload);
-        $createdEntity = Entity::with('entities_related')->find($caller_entity_id);
+        if ($payload['model']) {
+            $modelClassName = "App\\Models\\".Str::studly(Str::singular($payload['model']));
+            $createdEntity = $modelClassName::appendContents('title')->with('entities_relating')->find($entity->id);
+        } else {
+            $createdEntity = Entity::appendContents('title')->with('entities_relating')->find($entity->id);
+
+        }
         return($createdEntity);
     }
 

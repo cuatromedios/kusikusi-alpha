@@ -42,7 +42,7 @@ return [
                 [
                     "label" => "contents.media",
                     "components" => [
-                        ["component" => "media", "props" => ["allowed" => [ "images" ], "tags" => ["hero", "og"]]]
+                        ["component" => "media", "props" => ["allowed" => [ "image" ], "tags" => ["hero", "og"]]]
                     ],
                 ]
             ]
@@ -60,9 +60,9 @@ return [
                     ],
                 ],
                 [
-                    "label" => "contentss.media",
+                    "label" => "contents.media",
                     "components" => [
-                        ["component" => "media", "props" => ["allowed" => [ "images" ], "tags" => ["icon", "gallery"]]]
+                        ["component" => "media", "props" => ["allowed" => [ "webImages", "webVideos", 'xhr' ], "tags" => ["icon", "gallery"]]]
                     ],
                 ]
             ]

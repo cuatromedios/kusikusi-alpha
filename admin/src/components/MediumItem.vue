@@ -2,10 +2,10 @@
   <q-card
     class="medium-item"
     :class="{ 'cursor-drag': reorderMode }">
-    <q-img :src="`${$store.getters.media_url}${medium.thumb}`" :ratio="1/1" contain v-if="medium.properties.isWebImage" />
+    <q-img :src="`${$store.getters.media_url}${medium.thumb}`" :ratio="1/1" contain v-if="medium.properties && medium.properties.isWebImage" />
     <q-separator/>
     <q-card-actions side v-if="tags && tags.length > 0" class="row">
-      <h3 class="col-12">
+      <h3 class="col-12" style="word-break: break-all">
         <span v-if="reorderMode">{{ medium.title || $t($store.getters.nameOf(medium.model)) }}</span>
         <span v-if="!reorderMode">
           <router-link :to="{ name: 'content', params: { entity_id:medium.id } }" target="_blank">

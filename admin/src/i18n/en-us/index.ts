@@ -48,14 +48,16 @@ export default {
     publishedAt: 'Publish at',
     unpublishedAt: 'Stop publishing at',
     children: 'Children',
+    media: 'Media',
     reorder: 'Reorder'
   },
   media: {
     title: 'Media',
     singular: 'medium',
     uploader: 'Media uploader',
-    upload: 'Upload file',
-    select: 'Select or drop file...',
+    upload: 'Upload',
+    library: 'Library',
+    select: 'Select or drop files...',
     replace: 'Replace file',
     tags: 'Tags',
     tag: 'tag',
@@ -65,7 +67,7 @@ export default {
     mimetype: 'Mime Type',
     size: 'Size',
     url: 'External URL',
-    lang: 'Lenguaje del medio',
+    lang: 'Medium lang',
     status: {
       title: 'Status',
       idle: 'Idle',

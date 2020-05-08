@@ -70,7 +70,6 @@ export default {
         prop: parts[1]
       }
     }
-    console.log('referenceField', this.referenceField)
   },
   computed: {
     valueReference () {

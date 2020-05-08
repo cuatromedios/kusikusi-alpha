@@ -137,6 +137,10 @@ class MediaController extends Controller
             $entity['properties'] = array_merge($entity['properties'], $properties);
             $entity->save();
         }
-        return ($properties);
+        if ($properties === NULL) {
+            return(JsonResponse::create(["error" => "No files found in the request or exceed server setting of file size"], 422));
+        } else {
+            return ($properties);
+        }
     }
 }

@@ -696,6 +696,9 @@ class EntityModel extends Model
             if (!isset($entity['model'])) {
                 throw new HttpException(422, 'A model name is requiered to create a new entity');
             }
+            if (!isset($entity['properties'])) {
+                $entity['properties'] = [];
+            }
             //Set the view as the model name if not view set
             if (!isset($entity['view'])) {
                 $entity['view'] = $entity['model'];

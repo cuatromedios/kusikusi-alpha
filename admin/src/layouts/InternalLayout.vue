@@ -41,7 +41,7 @@ export default {
   name: 'InternalLayout',
   data () {
     return {
-      left: true,
+      left: false,
       miniState: true,
       editBus: new Vue(),
       saveBus: new Vue()
