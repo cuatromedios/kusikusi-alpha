@@ -52,20 +52,20 @@
         <q-separator />
         <q-card-section v-if="addMediaTab==='upload'" style="height: 50vh" class="scroll">
           <q-file
-            :value="files"
+            :value="uploadProgress"
             @input="updateFiles"
             :label="$t('media.select')"
             outlined
             multiple
             ref="filePicker"
             class="full-width media-library-file-picker"
-            :class="{ 'with-files': this.files.length > 0 }"
+            :class="{ 'with-files': this.uploadProgress.length > 0 }"
             :accept="acceptedFiles"
           >
             <template v-slot:file>
             </template>
           </q-file>
-          <q-list class="rounded-borders media-library-file-list q-mt-md" v-if="files.length > 0">
+          <q-list class="rounded-borders media-library-file-list q-mt-md" v-if="uploadProgress.length > 0">
             <q-item v-for="(fileToUpload, index) in uploadProgress" :key="index" class="q-pa-none q-mb-md">
               <q-item-section>
                 <nq-input v-model="fileToUpload.name"
@@ -154,7 +154,6 @@ export default {
       reordering: false,
       addMediaDialog: false,
       addMediaTab: 'upload',
-      files: [],
       uploadProgress: [],
       uploading: false
     }
@@ -207,45 +206,42 @@ export default {
       }
     },
     updateFiles (files) {
+      console.log(files)
       for (const f in files) {
-        if (!_.find(this.files, o => (o.name === files[f].name && o.lastModified === files[f].lastModified))) {
-          this.files.push(files[f])
+        if (!_.find(this.uploadProgress, o => (o.file.name === files[f].name && o.file.lastModified === files[f].lastModified))) {
+          let name = files[f].name
+          const dot = name.lastIndexOf('.')
+          if (dot > -1) {
+            name = name.substr('0', dot)
+          }
+          name = name.replace('-', ' ')
+          name = name.replace('_', ' ')
+          this.uploadProgress.push({
+            createError: false,
+            uploadError: false,
+            size: files[f].size,
+            name: name,
+            percent: 0,
+            indeterminate: false,
+            creating: false,
+            created: false,
+            uploading: false,
+            uploaded: false,
+            tags: [],
+            file: files[f],
+            color: 'primary'
+          })
         }
       }
-      this.uploadProgress = (this.files || []).map(file => {
-        let name = file.name
-        const dot = name.lastIndexOf('.')
-        if (dot > -1) {
-          name = name.substr('0', dot)
-        }
-        name = name.replace('-', ' ')
-        name = name.replace('_', ' ')
-        return {
-          createError: false,
-          uploadError: false,
-          size: file.size,
-          name: name,
-          percent: 0,
-          indeterminate: false,
-          creating: false,
-          created: false,
-          uploading: false,
-          uploaded: false,
-          tags: [],
-          file: file,
-          color: 'primary'
-        }
-      })
       this.$refs.filePicker.blur()
     },
     removeFile (index) {
-      this.files.splice(index, 1)
       this.uploadProgress.splice(index, 1)
     },
     async upload () {
       this.uploading = true
       let allRight = true
-      for (const f in this.files) {
+      for (const f in this.uploadProgress) {
         let createAndRelateResult = {}
         if (!this.uploadProgress[f].created) {
           this.uploadProgress[f].creating = true
@@ -283,6 +279,7 @@ export default {
           this.uploadProgress[f].uploading = false
           if (uploadResult.success) {
             this.uploadProgress[f].uploadError = false
+            this.uploadProgress[f].uploaded = true
             this.uploadProgress[f].percent = 1
             this.uploadProgress[f].color = 'positive'
           } else {
@@ -306,7 +303,6 @@ export default {
       this.uploading = false
     },
     onMediaDialogHide () {
-      this.files = []
       this.uploadProgress = []
     }
   },
@@ -315,9 +311,14 @@ export default {
       return this.media.length > 1
     },
     canUpload () {
-      return this.files.length > 0
+      return this.uploadProgress.length > 0
     },
     acceptedFiles () {
+      console.log('a', this.allowed)
+      if (!this.allowed || this.allowed[0] === '*' || this.allowed[0]==='' || this.allowed === '' || this.allowed === '*') {
+        return ''
+      }
+      console.log('b')
       let formatList = []
       _.each(this.allowed, (f) => {
         formatList = [...formatList, ..._.get(this.$store.state.ui.config, `formats.${f}`, [f])]

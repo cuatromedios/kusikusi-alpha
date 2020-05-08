@@ -86,6 +86,7 @@ module.exports = configure(function (ctx) {
         'QPageContainer',
         'QPopupProxy',
         'QRadio',
+        'QResponsive',
         'QSelect',
         'QSeparator',
         'QSkeleton',

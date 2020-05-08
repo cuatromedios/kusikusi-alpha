@@ -42,7 +42,7 @@ return [
                 [
                     "label" => "contents.media",
                     "components" => [
-                        ["component" => "media", "props" => ["allowed" => [ "image" ], "tags" => ["hero", "og"]]]
+                        ["component" => "media", "props" => ["allowed" => [ "*" ], "tags" => ["hero", "og"]]]
                     ],
                 ]
             ]

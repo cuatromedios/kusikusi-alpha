@@ -2,15 +2,27 @@
   <q-card
     class="medium-item"
     :class="{ 'cursor-drag': reorderMode }">
-    <q-img :src="`${$store.getters.media_url}${medium.thumb}`" :ratio="1/1" contain v-if="medium.properties && medium.properties.isWebImage" />
+    <q-img :src="`${$store.getters.media_url}${medium.thumb}`"
+           :ratio="1" contain
+           v-if="medium.properties && medium.properties.isWebImage"
+           class="bg-grey-2" />
+    <q-responsive :ratio="1" v-if="!medium.properties || !medium.properties.isWebImage" >
+      <div class="rounded-borders bg-grey-2 text-white flex flex-center">
+        <q-icon size="80px"
+                color="grey-5"
+                :name="medium.properties.isImage ? 'image' : medium.properties.isVideo ? 'movie' : medium.properties.isAudio ? 'graphic_eq' : medium.properties.isDocument ? 'description' : 'insert_drive_file'"
+                v-if="!medium.properties || !medium.properties.isWebImage" />
+      </div>
+    </q-responsive>
     <q-separator/>
     <q-card-actions side v-if="tags && tags.length > 0" class="row">
       <h3 class="col-12" style="word-break: break-all">
-        <span v-if="reorderMode">{{ medium.title || $t($store.getters.nameOf(medium.model)) }}</span>
+        <span v-if="reorderMode">{{ medium.properties.format }} {{ medium.title || $t($store.getters.nameOf(medium.model)) }}</span>
         <span v-if="!reorderMode">
           <router-link :to="{ name: 'content', params: { entity_id:medium.id } }" target="_blank">
             {{ medium.title || $t($store.getters.nameOf(medium.model))}}
           </router-link>
+          <span v-if="medium.properties" class="text-grey-8">({{ medium.properties.format }})</span>
           <q-icon name="launch" style="text-decoration: none"  />
         </span>
       </h3>

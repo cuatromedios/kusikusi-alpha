@@ -14,8 +14,8 @@ return [
         ],
         'thumb' => [
             'quality' => 80,
-            'width' => 128,
-            'height' =>  128,
+            'width' => 320,
+            'height' =>  320,
             'background' => 'crop',
             'alignment' => 'center',
             'scale' => 'cover',
