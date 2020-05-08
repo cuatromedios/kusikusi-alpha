@@ -14,17 +14,32 @@
                 v-if="!medium.properties || !medium.properties.isWebImage" />
       </div>
     </q-responsive>
+    <q-btn-dropdown round dropdown-icon="more_vert" flat color="grey-6" class="absolute-top-right">
+      <q-list>
+        <q-item clickable v-close-popup :to="{ name: 'content', params: { entity_id: medium.id } }" target="_blank">
+          <q-item-section avatar>
+            <q-icon name="launch" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t('media.edit') }}</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-close-popup @click="onUnlink">
+          <q-item-section avatar>
+            <q-icon name="link_off" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t('media.unlink') }}</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-btn-dropdown>
     <q-separator/>
     <q-card-actions side v-if="tags && tags.length > 0" class="row">
       <h3 class="col-12" style="word-break: break-all">
-        <span v-if="reorderMode">{{ medium.properties.format }} {{ medium.title || $t($store.getters.nameOf(medium.model)) }}</span>
-        <span v-if="!reorderMode">
-          <router-link :to="{ name: 'content', params: { entity_id:medium.id } }" target="_blank">
-            {{ medium.title || $t($store.getters.nameOf(medium.model))}}
-          </router-link>
-          <span v-if="medium.properties" class="text-grey-8">({{ medium.properties.format }})</span>
-          <q-icon name="launch" style="text-decoration: none"  />
-        </span>
+        <q-icon :name="medium.properties.isImage ? 'image' : medium.properties.isVideo ? 'movie' : medium.properties.isAudio ? 'graphic_eq' : medium.properties.isDocument ? 'description' : 'insert_drive_file'" class="q-mr-xs" />
+        {{ medium.title || $t($store.getters.nameOf(medium.model))}}
+        <span v-if="medium.properties" class="text-grey-8">({{ medium.properties.format }})</span>
       </h3>
       <div class="row items-center col-12">
         <q-select v-model="editingTags"
@@ -32,7 +47,7 @@
                   :options="tags"
                   multiple use-chips
                   ref="tagSelector"
-                  dense options-dense borderless hide-dropdown-icon>
+                  dense borderless hide-dropdown-icon>
           <template v-slot:prepend>
             <q-icon name="local_offer" size="xs" color="info" />
           </template>
@@ -84,6 +99,27 @@ export default {
       this.editingTags = _.clone(this.storedTags)
       this.editing = false
       this.saving = false
+    },
+    async onUnlink () {
+      this.$q.dialog({
+        title: this.$t('media.unlink'),
+        ok: {
+          label: this.$t('general.ok'),
+          color: 'primary'
+        },
+        cancel: {
+          label: this.$t('general.cancel'),
+          color: 'grey',
+          flat: true
+        },
+        message: this.$t('media.unlinkConfirm')
+      }).onOk(async () => {
+        await this.$api.delete(`/entity/${this.entity_id}/relation/${this.medium.id}/medium`)
+        this.$emit('getMedia')
+      })
+    },
+    onEdit () {
+
     }
   }
 }

@@ -27,6 +27,7 @@
           <medium-item :medium="medium"
                        :entity_id="entity.id"
                        :tags="tags"
+                       @getMedia="getMedia"
                        :reorderMode="reorderMode"
                        class="full-width full-height"
           />
@@ -314,11 +315,9 @@ export default {
       return this.uploadProgress.length > 0
     },
     acceptedFiles () {
-      console.log('a', this.allowed)
       if (!this.allowed || this.allowed[0] === '*' || this.allowed[0]==='' || this.allowed === '' || this.allowed === '*') {
         return ''
       }
-      console.log('b')
       let formatList = []
       _.each(this.allowed, (f) => {
         formatList = [...formatList, ..._.get(this.$store.state.ui.config, `formats.${f}`, [f])]

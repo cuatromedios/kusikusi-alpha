@@ -88,6 +88,16 @@ return [
             ]
         ],
         "medium" => [
+            "icon" => "insert_drive_file",
+            "name" => "models.medium",
+            "form" => [
+                [
+                    "label" => "contents.contents",
+                    "components" => [
+                        ["component" => "nq-input", "value" => "contents.title", "label" => "contents.title"]
+                    ],
+                ]
+            ]
         ]
     ]
 ];
