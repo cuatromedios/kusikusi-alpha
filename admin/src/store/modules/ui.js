@@ -20,7 +20,7 @@ const state = {
       name: 'dashboard'
     },
     content: {
-      label: 'content.title',
+      label: 'contents.home',
       icon: 'home',
       name: 'content'
     },

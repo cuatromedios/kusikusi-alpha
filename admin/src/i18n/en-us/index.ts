@@ -35,6 +35,7 @@ export default {
     invalidPassword: 'Please enter a password'
   },
   contents: {
+    home: 'Home',
     icon: 'ballot',
     view: 'Vista',
     contents: 'Contents',
