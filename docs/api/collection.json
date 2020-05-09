@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "Kusikusi API",
-        "_postman_id": "072f52b5-318a-4c17-acb0-cfa76b2f2917",
+        "_postman_id": "208c41cd-9138-45e6-b5dc-87cc6682fb52",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -142,7 +142,7 @@
                                 {
                                     "id": "model_name",
                                     "key": "model_name",
-                                    "value": "esse",
+                                    "value": "expedita",
                                     "description": "If a model name is provided, the results will have the corresponding scope and special defined relations and accesosrs will be available."
                                 }
                             ]
@@ -219,7 +219,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "est",
+                                    "value": "corporis",
                                     "description": "The id of the entity to show."
                                 }
                             ]
@@ -283,7 +283,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "et",
+                                    "value": "minus",
                                     "description": "The id of the entity to update"
                                 }
                             ]
@@ -319,7 +319,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "quia",
+                                    "value": "totam",
                                     "description": "The id of the entity to delete"
                                 }
                             ]
@@ -365,7 +365,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 17\n}"
+                            "raw": "{\n    \"entity_called_id\": \"s4FG56mkdRT5\",\n    \"kind\": \"medium | category\",\n    \"tags\": [],\n    \"position\": 3,\n    \"depth\": 13\n}"
                         },
                         "description": "",
                         "response": []
@@ -429,7 +429,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"model\": \"home\",\n    \"kind\": \"medium | category\",\n    \"view\": \"home\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"properties\": \"{\\\"price\\\": 200, \\\"format\\\": \\\"jpg\\\"}\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\",\n    \"tags\": \"[\\\"1\\\", '2\\\"].\",\n    \"position\": 3,\n    \"depth\": 13\n}"
+                            "raw": "{\n    \"model\": \"home\",\n    \"kind\": \"medium | category\",\n    \"view\": \"home\",\n    \"published_at\": \"2020-02-02 12:00:00.\",\n    \"unpublished_at\": \"2020-02-02 12:00:00.\",\n    \"properties\": \"{\\\"price\\\": 200, \\\"format\\\": \\\"jpg\\\"}\",\n    \"contents\": \"{ \\\"title\\\": {\\\"en_US\\\": \\\"The page M\\\", \\\"es_ES\\\": \\\"La p\\u00e1gina M\\\"}, \\\"slug\\\": {\\\"en_US\\\": \\\"page-m\\\", \\\"es_ES\\\": \\\"pagina-m\\\"}}\",\n    \"relations\": \"\\\"relations\\\": [{\\\"called_entity_id\\\": \\\"mf4gWE45pm\\\",\\\"kind\\\": \\\"category\\\",\\\"position\\\": 2, \\\"tags\\\":[\\\"main\\\"]}]\",\n    \"tags\": \"[\\\"1\\\", '2\\\"].\",\n    \"position\": 3,\n    \"depth\": 3\n}"
                         },
                         "description": "Creates a new entity with a specific relation to another entity, the entity \"id\" and \"caller_entity_id\" should the same.",
                         "response": []
@@ -453,7 +453,7 @@
                                 {
                                     "id": "entity_id",
                                     "key": "entity_id",
-                                    "value": "ipsam",
+                                    "value": "odio",
                                     "description": "The id of the entity to upload a medium or file"
                                 }
                             ]
@@ -471,7 +471,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"file\": \"est\",\n    \"thumb\": \"ab\"\n}"
+                            "raw": "{\n    \"file\": \"perspiciatis\",\n    \"thumb\": \"quisquam\"\n}"
                         },
                         "description": "",
                         "response": []
@@ -547,7 +547,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"reprehenderit\",\n    \"password\": \"rem\"\n}"
+                            "raw": "{\n    \"email\": \"laudantium\",\n    \"password\": \"dignissimos\"\n}"
                         },
                         "description": "",
                         "response": []

@@ -113,7 +113,7 @@ curl -X GET \
                             }
                         },
                         {
-                            "component": "nq-input",
+                            "component": "slug",
                             "value": "contents.slug",
                             "label": "contents.slug"
                         },
@@ -150,7 +150,7 @@ curl -X GET \
                             "component": "media",
                             "props": {
                                 "allowed": [
-                                    "images"
+                                    "*"
                                 ],
                                 "tags": [
                                     "hero",
@@ -167,7 +167,7 @@ curl -X GET \
             "name": "models.page",
             "form": [
                 {
-                    "label": "content.contents",
+                    "label": "contents.contents",
                     "components": [
                         {
                             "component": "nq-input",
@@ -180,7 +180,7 @@ curl -X GET \
                             "label": "content.summary"
                         },
                         {
-                            "component": "nq-input",
+                            "component": "slug",
                             "value": "contents.slug",
                             "label": "contents.slug"
                         }
@@ -193,7 +193,9 @@ curl -X GET \
                             "component": "media",
                             "props": {
                                 "allowed": [
-                                    "images"
+                                    "webImages",
+                                    "webVideos",
+                                    "xhr"
                                 ],
                                 "tags": [
                                     "icon",
@@ -210,7 +212,7 @@ curl -X GET \
             "name": "models.section",
             "form": [
                 {
-                    "label": "content.contents",
+                    "label": "contents.contents",
                     "components": [
                         {
                             "component": "nq-input",
@@ -230,7 +232,7 @@ curl -X GET \
                     ]
                 },
                 {
-                    "label": "content.children",
+                    "label": "contents.children",
                     "components": [
                         {
                             "component": "children",
@@ -244,7 +246,94 @@ curl -X GET \
                 }
             ]
         },
-        "medium": []
+        "medium": {
+            "icon": "insert_drive_file",
+            "name": "models.medium",
+            "form": [
+                {
+                    "label": "contents.contents",
+                    "components": [
+                        {
+                            "component": "nq-input",
+                            "value": "contents.title",
+                            "label": "contents.title"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "formats": {
+        "webImages": [
+            "jpeg",
+            "jpg",
+            "png",
+            "gif"
+        ],
+        "images": [
+            "jpeg",
+            "jpg",
+            "png",
+            "gif",
+            "tif",
+            "tiff",
+            "iff",
+            "bmp",
+            "psd"
+        ],
+        "audios": [
+            "mp3",
+            "wav",
+            "aiff",
+            "aac",
+            "oga",
+            "pcm",
+            "flac"
+        ],
+        "webAudios": [
+            "mp3",
+            "oga"
+        ],
+        "videos": [
+            "mov",
+            "mp4",
+            "qt",
+            "avi",
+            "mpe",
+            "mpeg",
+            "ogg",
+            "m4p",
+            "m4v",
+            "flv",
+            "wmv"
+        ],
+        "webVideos": [
+            "webm",
+            "mp4",
+            "ogg",
+            "m4p",
+            "m4v"
+        ],
+        "documents": [
+            "doc",
+            "docx",
+            "xls",
+            "xlsx",
+            "ppt",
+            "pptx",
+            "pdf",
+            "htm",
+            "html",
+            "txt",
+            "rtf",
+            "csv",
+            "pps",
+            "ppsx",
+            "odf",
+            "key",
+            "pages",
+            "numbers"
+        ]
     }
 }
 ```
@@ -268,7 +357,7 @@ Returns a paginated collection of entities, filtered by all set conditions.
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entities[/esse]"
+    "http://127.0.0.1:8000/api/entities[/expedita]"
 );
 
 let params = {
@@ -307,7 +396,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://127.0.0.1:8000/api/entities[/esse]',
+    'http://127.0.0.1:8000/api/entities[/expedita]',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -337,7 +426,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/entities[/esse]?select=id%2Cmodel%2Cproperties.price&order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&of-model=page&only-published=true&child-of=home&parent-of=8fguTpt5SB&ancestor-of=enKSUfUcZN&descendant-of=xAaqz2RPyf&siblings-of=_tuKwVy8Aa&related-by=ElFYpgEvWS&relating=enKSUfUcZN&media-of=enKSUfUcZN&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&per-page=6" \
+    -G "http://127.0.0.1:8000/api/entities[/expedita]?select=id%2Cmodel%2Cproperties.price&order-by=model%2Cproperties.price%3Adesc%2Ccontents.title&of-model=page&only-published=true&child-of=home&parent-of=8fguTpt5SB&ancestor-of=enKSUfUcZN&descendant-of=xAaqz2RPyf&siblings-of=_tuKwVy8Aa&related-by=ElFYpgEvWS&relating=enKSUfUcZN&media-of=enKSUfUcZN&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29&per-page=6" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -597,7 +686,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/est"
+    "http://127.0.0.1:8000/api/entity/corporis"
 );
 
 let params = {
@@ -624,7 +713,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->get(
-    'http://127.0.0.1:8000/api/entity/est',
+    'http://127.0.0.1:8000/api/entity/corporis',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -642,7 +731,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/entity/est?select=id%2Cmodel%2Cproperties.price&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
+    -G "http://127.0.0.1:8000/api/entity/corporis?select=id%2Cmodel%2Cproperties.price&with=media%2Ccontents%2Centities_related%2C+entities_related.contents+%28nested+relations%29" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -807,7 +896,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/et"
+    "http://127.0.0.1:8000/api/entity/minus"
 );
 
 let headers = {
@@ -838,7 +927,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->patch(
-    'http://127.0.0.1:8000/api/entity/et',
+    'http://127.0.0.1:8000/api/entity/minus',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -861,7 +950,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X PATCH \
-    "http://127.0.0.1:8000/api/entity/et" \
+    "http://127.0.0.1:8000/api/entity/minus" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"view":"page","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","id":"home","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]"}'
@@ -916,7 +1005,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/entity/quia"
+    "http://127.0.0.1:8000/api/entity/totam"
 );
 
 let headers = {
@@ -936,7 +1025,7 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->delete(
-    'http://127.0.0.1:8000/api/entity/quia',
+    'http://127.0.0.1:8000/api/entity/totam',
     [
         'headers' => [
             'Content-Type' => 'application/json',
@@ -950,7 +1039,7 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X DELETE \
-    "http://127.0.0.1:8000/api/entity/quia" \
+    "http://127.0.0.1:8000/api/entity/totam" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json"
 ```
@@ -997,7 +1086,7 @@ let body = {
     "kind": "medium | category",
     "tags": [],
     "position": 3,
-    "depth": 17
+    "depth": 13
 }
 
 fetch(url, {
@@ -1024,7 +1113,7 @@ $response = $client->post(
             'kind' => 'medium | category',
             'tags' => [],
             'position' => 3,
-            'depth' => 17,
+            'depth' => 13,
         ],
     ]
 );
@@ -1037,7 +1126,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/entity/1/relation" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":17}'
+    -d '{"entity_called_id":"s4FG56mkdRT5","kind":"medium | category","tags":[],"position":3,"depth":13}'
 
 ```
 
@@ -1177,7 +1266,7 @@ let body = {
     "relations": "\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]",
     "tags": "[\"1\", '2\"].",
     "position": 3,
-    "depth": 13
+    "depth": 3
 }
 
 fetch(url, {
@@ -1210,7 +1299,7 @@ $response = $client->post(
             'relations' => '"relations": [{"called_entity_id": "mf4gWE45pm","kind": "category","position": 2, "tags":["main"]}]',
             'tags' => '["1", \'2"].',
             'position' => 3,
-            'depth' => 13,
+            'depth' => 3,
         ],
     ]
 );
@@ -1223,7 +1312,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/entity/1/create_and_relate" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"model":"home","kind":"medium | category","view":"home","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]","tags":"[\"1\", '2\"].","position":3,"depth":13}'
+    -d '{"model":"home","kind":"medium | category","view":"home","published_at":"2020-02-02 12:00:00.","unpublished_at":"2020-02-02 12:00:00.","properties":"{\"price\": 200, \"format\": \"jpg\"}","contents":"{ \"title\": {\"en_US\": \"The page M\", \"es_ES\": \"La p\u00e1gina M\"}, \"slug\": {\"en_US\": \"page-m\", \"es_ES\": \"pagina-m\"}}","relations":"\"relations\": [{\"called_entity_id\": \"mf4gWE45pm\",\"kind\": \"category\",\"position\": 2, \"tags\":[\"main\"]}]","tags":"[\"1\", '2\"].","position":3,"depth":3}'
 
 ```
 
@@ -1232,52 +1321,82 @@ curl -X POST \
 
 ```json
 {
-    "id": "1",
-    "model": "page",
-    "properties": null,
-    "view": "page",
-    "parent_entity_id": "home",
+    "id": "tEQxMPF8hs",
+    "model": "medium",
+    "properties": [],
+    "view": "medium",
+    "parent_entity_id": null,
     "is_active": true,
     "created_by": null,
     "updated_by": null,
-    "published_at": "2020-05-06T17:31:59+00:00",
+    "published_at": "2020-05-09T00:17:54+00:00",
     "unpublished_at": null,
-    "version": 3,
+    "version": 1,
     "version_tree": 0,
-    "version_relations": 2,
-    "version_full": 5,
-    "created_at": "2020-05-06T17:31:59+00:00",
-    "updated_at": "2020-05-06T17:31:59+00:00",
+    "version_relations": 0,
+    "version_full": 1,
+    "created_at": "2020-05-09T00:17:54+00:00",
+    "updated_at": "2020-05-09T00:17:54+00:00",
     "deleted_at": null,
-    "entities_related": [
+    "thumb": "\/media\/tEQxMPF8hs\/thumb\/media.jpg",
+    "preview": "\/media\/tEQxMPF8hs\/preview\/media.jpg",
+    "entities_relating": [
         {
-            "id": "ptMckpZLs7",
-            "model": "home",
-            "properties": "{\"price\": 200, \"format\": \"jpg\"}",
-            "view": "home",
-            "parent_entity_id": null,
+            "id": "4dnK2CJspO",
+            "model": "page",
+            "properties": {
+                "exif": {
+                    "COMPUTED": {
+                        "html": "width=\"1280\" height=\"1102\"",
+                        "Width": 1280,
+                        "Height": 1102,
+                        "IsColor": 1
+                    },
+                    "FileName": "phpovyCKl",
+                    "FileSize": 82033,
+                    "FileType": 2,
+                    "MimeType": "image\/jpeg",
+                    "FileDateTime": 1588959027,
+                    "SectionsFound": ""
+                },
+                "size": 82033,
+                "type": "image",
+                "prop1": "Z",
+                "prop2": "Z",
+                "width": 1280,
+                "format": "jpg",
+                "height": 1102,
+                "isAudio": false,
+                "isImage": true,
+                "isVideo": false,
+                "mimeType": "image\/jpeg",
+                "isDocument": false,
+                "isWebAudio": false,
+                "isWebImage": true,
+                "isWebVideo": false,
+                "originalName": "3evient.jpeg"
+            },
+            "view": "yuyxo",
+            "parent_entity_id": "0qtTYPQhm4",
             "is_active": true,
             "created_by": null,
             "updated_by": null,
-            "published_at": "2020-05-06T17:39:00+00:00",
+            "published_at": "2020-05-07T12:50:49+00:00",
             "unpublished_at": null,
-            "version": 1,
+            "version": 67,
             "version_tree": 0,
-            "version_relations": 0,
-            "version_full": 1,
-            "created_at": "2020-05-06T17:39:00+00:00",
-            "updated_at": "2020-05-06T17:39:00+00:00",
+            "version_relations": 46,
+            "version_full": 113,
+            "created_at": "2020-05-07T12:50:49+00:00",
+            "updated_at": "2020-05-08T17:31:54+00:00",
             "deleted_at": null,
             "relation": {
-                "caller_entity_id": "pageraw",
-                "called_entity_id": "ptMckpZLs7",
+                "called_entity_id": "tEQxMPF8hs",
+                "caller_entity_id": "4dnK2CJspO",
                 "kind": "medium",
-                "position": 3,
-                "depth": 13,
-                "tags": [
-                    "1",
-                    "2"
-                ]
+                "position": 41,
+                "depth": 0,
+                "tags": []
             }
         }
     ]
@@ -1319,7 +1438,7 @@ Parameter | Type | Status | Description
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/medium/ipsam/upload"
+    "http://127.0.0.1:8000/api/medium/odio/upload"
 );
 
 let headers = {
@@ -1328,8 +1447,8 @@ let headers = {
 };
 
 let body = {
-    "file": "est",
-    "thumb": "ab"
+    "file": "perspiciatis",
+    "thumb": "quisquam"
 }
 
 fetch(url, {
@@ -1345,15 +1464,15 @@ fetch(url, {
 
 $client = new \GuzzleHttp\Client();
 $response = $client->post(
-    'http://127.0.0.1:8000/api/medium/ipsam/upload',
+    'http://127.0.0.1:8000/api/medium/odio/upload',
     [
         'headers' => [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ],
         'json' => [
-            'file' => 'est',
-            'thumb' => 'ab',
+            'file' => 'perspiciatis',
+            'thumb' => 'quisquam',
         ],
     ]
 );
@@ -1363,10 +1482,10 @@ print_r(json_decode((string) $body));
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/medium/ipsam/upload" \
+    "http://127.0.0.1:8000/api/medium/odio/upload" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"file":"est","thumb":"ab"}'
+    -d '{"file":"perspiciatis","thumb":"quisquam"}'
 
 ```
 
@@ -1601,8 +1720,8 @@ let headers = {
 };
 
 let body = {
-    "email": "reprehenderit",
-    "password": "rem"
+    "email": "laudantium",
+    "password": "dignissimos"
 }
 
 fetch(url, {
@@ -1625,8 +1744,8 @@ $response = $client->post(
             'Accept' => 'application/json',
         ],
         'json' => [
-            'email' => 'reprehenderit',
-            'password' => 'rem',
+            'email' => 'laudantium',
+            'password' => 'dignissimos',
         ],
     ]
 );
@@ -1639,7 +1758,7 @@ curl -X POST \
     "http://127.0.0.1:8000/api/user/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"email":"reprehenderit","password":"rem"}'
+    -d '{"email":"laudantium","password":"dignissimos"}'
 
 ```
 
