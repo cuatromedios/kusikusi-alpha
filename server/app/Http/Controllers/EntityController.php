@@ -437,7 +437,7 @@ class EntityController extends Controller
         ->when($request->get('select') || $request->get('order-by'), function ($q) use ($request, $lang, $modelClassName) {
             $selects = explode(',', $request->get('select'));
             $ordersBy = explode(',', $request->get('order-by'));
-            foreach (array_merge($selects, $ordersBy) as $select) {
+            foreach (array_merge($selects) as $select) {
                 $select = explode(":", $select)[0];
                 if (!in_array($select, $this->addedSelects)) {
                     $appendProperties = [];

@@ -58,6 +58,8 @@ module.exports = configure(function (ctx) {
       components: [
         'QAvatar',
         'QBtn',
+        'QBreadcrumbs',
+        'QBreadcrumbsEl',
         'QBtnDropdown',
         'QBtnGroup',
         'QCard',

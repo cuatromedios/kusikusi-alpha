@@ -1,5 +1,15 @@
 <template>
   <nq-page :title="getEntityTitle" max-width="lg">
+    <template slot="before" v-if="ancestors.length > 0">
+      <q-breadcrumbs>
+        <q-breadcrumbs-el v-for="ancestor in ancestors"
+                          :key="ancestor.id"
+                          :label="ancestor.title"
+                          :to="{ name: 'content', params: { entity_id: ancestor.id } }"
+        />
+        <q-breadcrumbs-el />
+      </q-breadcrumbs>
+    </template>
     <div id="langSelector" v-if="$store.state.ui.config && $store.state.ui.config.langs.length > 1" class="rounded-borders shadow-1">
       <q-radio v-model="contentLang"
                size="sm"
@@ -98,6 +108,7 @@ export default {
       loading: true,
       saving: false,
       fieldsets: [],
+      ancestors: [],
       entity: {
         id: '',
         model: '',
@@ -140,6 +151,13 @@ export default {
         this.loading = false
         if (contentResult.success) {
           this.entity = contentResult.data
+          const ancestorsResult = await this.$api.get(`/entities/?ancestor-of=${this.entity.id}&descendant-of=root&select=id,contents.title&order-by=ancestor_relation_depth:desc`)
+          if (ancestorsResult.success) {
+            this.ancestors = ancestorsResult.data.data
+          } else {
+            this.ancestors = []
+          }
+        console.log(this.ancestors)
         } else {
           this.entity = {
             contents: [],
