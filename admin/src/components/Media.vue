@@ -207,7 +207,6 @@ export default {
       }
     },
     updateFiles (files) {
-      console.log(files)
       for (const f in files) {
         if (!_.find(this.uploadProgress, o => (o.file.name === files[f].name && o.file.lastModified === files[f].lastModified))) {
           let name = files[f].name
