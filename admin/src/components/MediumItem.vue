@@ -10,7 +10,7 @@
       <div class="rounded-borders bg-grey-2 text-white flex flex-center">
         <q-icon size="80px"
                 color="grey-5"
-                :name="medium.properties.isImage ? 'image' : medium.properties.isVideo ? 'movie' : medium.properties.isAudio ? 'graphic_eq' : medium.properties.isDocument ? 'description' : 'insert_drive_file'"
+                :name="!medium.properties ? 'blur_on' : medium.properties.isImage ? 'image' : medium.properties.isVideo ? 'movie' : medium.properties.isAudio ? 'graphic_eq' : medium.properties.isDocument ? 'description' : 'insert_drive_file'"
                 v-if="!medium.properties || !medium.properties.isWebImage" />
       </div>
     </q-responsive>
@@ -37,7 +37,7 @@
     <q-separator/>
     <q-card-actions side v-if="tags && tags.length > 0" class="row">
       <h3 class="col-12" style="word-break: break-all">
-        <q-icon :name="medium.properties.isImage ? 'image' : medium.properties.isVideo ? 'movie' : medium.properties.isAudio ? 'graphic_eq' : medium.properties.isDocument ? 'description' : 'insert_drive_file'" class="q-mr-xs" />
+        <q-icon :name="!medium.properties ? 'blur_on' : medium.properties.isImage ? 'image' : medium.properties.isVideo ? 'movie' : medium.properties.isAudio ? 'graphic_eq' : medium.properties.isDocument ? 'description' : 'insert_drive_file'" class="q-mr-xs" />
         {{ medium.title || $t($store.getters.nameOf(medium.model))}}
         <span v-if="medium.properties" class="text-grey-8">({{ medium.properties.format }})</span>
       </h3>
