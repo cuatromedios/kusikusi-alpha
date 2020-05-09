@@ -157,7 +157,6 @@ export default {
           } else {
             this.ancestors = []
           }
-        console.log(this.ancestors)
         } else {
           this.entity = {
             contents: [],

@@ -246,8 +246,8 @@ export default {
         let createAndRelateResult = {}
         if (!this.uploadProgress[f].created) {
           this.uploadProgress[f].creating = true
-          let titles = {}
-          //TODO: Allow the user to set different titles for each language
+          const titles = {}
+          // TODO: Allow the user to set different titles for each language
           for (const l in this.$store.state.ui.config.langs) {
             titles[this.$store.state.ui.config.langs[l]] = this.uploadProgress[f].name
           }
@@ -315,7 +315,7 @@ export default {
       return this.uploadProgress.length > 0
     },
     acceptedFiles () {
-      if (!this.allowed || this.allowed[0] === '*' || this.allowed[0]==='' || this.allowed === '' || this.allowed === '*') {
+      if (!this.allowed || this.allowed[0] === '*' || this.allowed[0] === '' || this.allowed === '' || this.allowed === '*') {
         return ''
       }
       let formatList = []

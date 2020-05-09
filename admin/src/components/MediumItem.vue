@@ -100,7 +100,7 @@ export default {
       this.editing = false
       this.saving = false
     },
-    async onUnlink () {
+    onUnlink () {
       this.$q.dialog({
         title: this.$t('media.unlink'),
         ok: {
@@ -117,9 +117,6 @@ export default {
         await this.$api.delete(`/entity/${this.entity_id}/relation/${this.medium.id}/medium`)
         this.$emit('getMedia')
       })
-    },
-    onEdit () {
-
     }
   }
 }
