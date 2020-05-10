@@ -34,8 +34,7 @@ class SampleSiteSeeder extends Seeder
                 $media = Entity::where('id', 'media')->first();
                 for ($m = 0; $m < $media_count; $m++) {
                     $medium = factory(App\Models\Entity::class)->states('medium')->make([
-                        "model" => "medium",
-                        "parent_entity_id" => $media->id
+                        "model" => "medium"
                     ]);
                     $medium->properties = array_merge($medium->properties, \App\Models\Medium::getProperties($medium->properties['path']));
                     $medium->save();

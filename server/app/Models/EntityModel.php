@@ -443,6 +443,9 @@ class EntityModel extends Model
     public function getPropertiesFields() {
         return $this->propertiesFields ?? [];
     }
+    public function getDefaultParent() {
+        return $this->defaultParent ?? null;
+    }
 
     /**
      * Adds content rows related to an Entity.
@@ -696,6 +699,14 @@ class EntityModel extends Model
             if (!isset($entity['model'])) {
                 throw new HttpException(422, 'A model name is requiered to create a new entity');
             }
+            if (!isset($entity['parent_entity_id'])) {
+                $modelClassName = "App\\Models\\" . Str::studly($entity['model']);
+                if (class_exists($modelClassName)) {
+                    $modelInstance = new $modelClassName();
+                    $entity['parent_entity_id'] = $modelInstance->getDefaultParent();
+                }
+            }
+
             if (!isset($entity['properties'])) {
                 $entity['properties'] = [];
             }

@@ -12,6 +12,7 @@ class Medium extends EntityModel
     protected $appends = ['thumb','preview'];
     protected $contentFields = [ "title", "summary"];
     protected $propertiesFields = [ "size", "lang", "format", "length", "exif", "width", "height" ];
+    protected $defaultParent = 'media';
 
     /**
      * @return string Returns a public path to the medium using presets
