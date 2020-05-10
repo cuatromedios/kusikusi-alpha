@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Entity;
 use App\Models\Route;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App;
 
@@ -36,8 +37,10 @@ class WebController extends Controller
         $format = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
         if ($format === '') {
+            $isDirectory = true;
             $format = 'html';
         } else {
+            $isDirectory = false;
             $path = substr($path, 0, strrpos($path, "."));
         }
         $path = preg_replace('/\/index$/', '', $path);
@@ -87,7 +90,10 @@ class WebController extends Controller
         $controllerClassName = "App\\Http\\Controllers\\" . ucfirst($format) . 'Controller';
         $controller = new $controllerClassName;
         if (method_exists($controller, $model_name)) {
-            return ($controller->$model_name($request, $entity, $lang));
+            $view = $controller->$model_name($request, $entity, $lang);
+            // $render = $view->render();
+            // Storage::disk('html_processed')->put($request->getPathInfo() . ($isDirectory ? '/index.html' : ''), $render);
+            return $view;
         } else {
             return ($controller->error($request, 501));
         }
