@@ -12,6 +12,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Cuatromedios\Kusikusi\Providers\AuthServiceProvider;
+use Illuminate\Support\Str;
 
 class MediaController extends Controller
 {
@@ -33,19 +34,23 @@ class MediaController extends Controller
      * @urlParam preset required A preset configured in config/media.php to process the image. Example: icon.
      * @return Response
      */
-    public function get($entity_id, $preset, $friendly = NULL)
+    public function get(Request $request, $entity_id, $preset, $friendly = NULL)
     {
-        //die("{$id} {$preset} {$friendly}");
+
         // TODO: Review if the user can read the media
-        $entity = Entity::findOrFail($entity_id);
+        $entity = Entity::isPublished()->findOrFail($entity_id);
+        // Paths
+        $originalFilePath =   $entity_id . '/file.' . $entity->properties['format'];
         $presetSettings = Config::get('media.presets.' . $preset, NULL);
+        // $publicFilePath = $entity_id . '/' .  $preset . '.' . $presetSettings['format'];
+        $publicFilePath = Str::after($request->getPathInfo(), '/media');
+        if ($exists = Storage::disk('media_processed')->exists($publicFilePath)) {
+            return $this->getCachedImage($publicFilePath);
+        }
+
         if (NULL === $presetSettings) {
             abort(404, "No media preset '$preset' found");
         }
-
-        // Paths
-        $originalFilePath =   $entity_id . '/file.' . $entity->properties['format'];
-        $publicFilePath = $entity_id . '/' .  $preset . '.' . $presetSettings['format'];
 
         if (!$exists = Storage::disk('media_original')->exists($originalFilePath)) {
             abort(404, 'File for medium ' . $originalFilePath . ' not found');
@@ -96,6 +101,9 @@ class MediaController extends Controller
         $image->encode($presetSettings['format'], $presetSettings['quality']);
         Storage::disk('media_processed')->put($publicFilePath, $image);
 
+        return $this->getCachedImage($publicFilePath);
+    }
+    private function getCachedImage($publicFilePath) {
         $cachedImage = Storage::disk('media_processed')->get($publicFilePath);
         return new Response(
             $cachedImage,  200,
